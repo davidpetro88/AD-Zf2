@@ -16,14 +16,13 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Logging;
 
 /**
  * Interface for SQL loggers.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -31,19 +30,24 @@ namespace Doctrine\DBAL\Logging;
  */
 interface SQLLogger
 {
+
     /**
      * Logs a SQL statement somewhere.
      *
-     * @param string     $sql    The SQL to be executed.
-     * @param array|null $params The SQL parameters.
-     * @param array|null $types  The SQL parameter types.
-     *
+     * @param string $sql
+     *            The SQL to be executed.
+     * @param array|null $params
+     *            The SQL parameters.
+     * @param array|null $types
+     *            The SQL parameter types.
+     *            
      * @return void
      */
     public function startQuery($sql, array $params = null, array $types = null);
 
     /**
-     * Marks the last started query as stopped. This can be used for timing of queries.
+     * Marks the last started query as stopped.
+     * This can be used for timing of queries.
      *
      * @return void
      */

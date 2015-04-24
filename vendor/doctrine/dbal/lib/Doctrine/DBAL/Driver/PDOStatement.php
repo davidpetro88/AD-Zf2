@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver;
 
 /**
@@ -27,15 +26,17 @@ namespace Doctrine\DBAL\Driver;
  */
 class PDOStatement extends \PDOStatement implements Statement
 {
+
     /**
      * Protected constructor.
      */
     protected function __construct()
-    {
-    }
+    {}
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
@@ -47,11 +48,11 @@ class PDOStatement extends \PDOStatement implements Statement
             if ($arg2 === null && $arg3 === null) {
                 return parent::setFetchMode($fetchMode);
             }
-
+            
             if ($arg3 === null) {
                 return parent::setFetchMode($fetchMode, $arg2);
             }
-
+            
             return parent::setFetchMode($fetchMode, $arg2, $arg3);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -59,7 +60,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function bindValue($param, $value, $type = \PDO::PARAM_STR)
     {
@@ -71,7 +74,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function bindParam($column, &$variable, $type = \PDO::PARAM_STR, $length = null, $driverOptions = null)
     {
@@ -83,7 +88,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function execute($params = null)
     {
@@ -95,7 +102,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetch($fetchMode = null, $cursorOrientation = null, $cursorOffset = null)
     {
@@ -103,15 +112,15 @@ class PDOStatement extends \PDOStatement implements Statement
             if ($fetchMode === null && $cursorOrientation === null && $cursorOffset === null) {
                 return parent::fetch();
             }
-
+            
             if ($cursorOrientation === null && $cursorOffset === null) {
                 return parent::fetch($fetchMode);
             }
-
+            
             if ($cursorOffset === null) {
                 return parent::fetch($fetchMode, $cursorOrientation);
             }
-
+            
             return parent::fetch($fetchMode, $cursorOrientation, $cursorOffset);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -119,7 +128,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchAll($fetchMode = null, $fetchArgument = null, $ctorArgs = null)
     {
@@ -127,15 +138,15 @@ class PDOStatement extends \PDOStatement implements Statement
             if ($fetchMode === null && $fetchArgument === null && $ctorArgs === null) {
                 return parent::fetchAll();
             }
-
+            
             if ($fetchArgument === null && $ctorArgs === null) {
                 return parent::fetchAll($fetchMode);
             }
-
+            
             if ($ctorArgs === null) {
                 return parent::fetchAll($fetchMode, $fetchArgument);
             }
-
+            
             return parent::fetchAll($fetchMode, $fetchArgument, $ctorArgs);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -143,7 +154,9 @@ class PDOStatement extends \PDOStatement implements Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchColumn($columnIndex = 0)
     {

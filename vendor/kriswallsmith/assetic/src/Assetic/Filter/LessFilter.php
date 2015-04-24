@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -24,14 +23,17 @@ use Assetic\Util\LessUtils;
  */
 class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
 {
+
     private $nodeBin;
 
     /**
+     *
      * @var array
      */
     private $treeOptions;
 
     /**
+     *
      * @var array
      */
     private $parserOptions;
@@ -48,8 +50,10 @@ class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
     /**
      * Constructor.
      *
-     * @param string $nodeBin   The path to the node binary
-     * @param array  $nodePaths An array of node paths
+     * @param string $nodeBin
+     *            The path to the node binary
+     * @param array $nodePaths
+     *            An array of node paths
      */
     public function __construct($nodeBin = '/usr/bin/node', array $nodePaths = array())
     {
@@ -60,7 +64,8 @@ class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
     }
 
     /**
-     * @param bool $compress
+     *
+     * @param bool $compress            
      */
     public function setCompress($compress)
     {
@@ -75,7 +80,8 @@ class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
     /**
      * Adds a path where less will search for includes
      *
-     * @param string $path Load path (absolute)
+     * @param string $path
+     *            Load path (absolute)
      */
     public function addLoadPath($path)
     {
@@ -83,8 +89,9 @@ class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
     }
 
     /**
-     * @param string $code
-     * @param string $value
+     *
+     * @param string $code            
+     * @param string $value            
      */
     public function addTreeOption($code, $value)
     {
@@ -92,8 +99,9 @@ class LessFilter extends BaseNodeFilter implements DependencyExtractorInterface
     }
 
     /**
-     * @param string $code
-     * @param string $value
+     *
+     * @param string $code            
+     * @param string $value            
      */
     public function addParserOption($code, $value)
     {
@@ -124,42 +132,41 @@ less.render(%s, %s, function(error, css) {
 });
 
 EOF;
-
+        
         // parser options
         $parserOptions = $this->parserOptions;
         if ($dir = $asset->getSourceDirectory()) {
-            $parserOptions['paths'] = array($dir);
+            $parserOptions['paths'] = array(
+                $dir
+            );
             $parserOptions['filename'] = basename($asset->getSourcePath());
         }
-
+        
         foreach ($this->loadPaths as $loadPath) {
             $parserOptions['paths'][] = $loadPath;
         }
-
+        
         $pb = $this->createProcessBuilder();
-
+        
         $pb->add($this->nodeBin)->add($input = tempnam(sys_get_temp_dir(), 'assetic_less'));
-        file_put_contents($input, sprintf($format,
-            json_encode($asset->getContent()),
-            json_encode(array_merge($parserOptions, $this->treeOptions))
-        ));
-
+        file_put_contents($input, sprintf($format, json_encode($asset->getContent()), json_encode(array_merge($parserOptions, $this->treeOptions))));
+        
         $proc = $pb->getProcess();
         $code = $proc->run();
         unlink($input);
-
+        
         if (0 !== $code) {
             throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
-
+        
         $asset->setContent($proc->getOutput());
     }
 
     public function filterDump(AssetInterface $asset)
-    {
-    }
+    {}
 
     /**
+     *
      * @todo support for import-once
      * @todo support for import (less) "lib.css"
      */
@@ -169,26 +176,28 @@ EOF;
         if (null !== $loadPath) {
             $loadPaths[] = $loadPath;
         }
-
+        
         if (empty($loadPaths)) {
             return array();
         }
-
+        
         $children = array();
         foreach (LessUtils::extractImports($content) as $reference) {
-            if ('.css' === substr($reference, -4)) {
+            if ('.css' === substr($reference, - 4)) {
                 // skip normal css imports
                 // todo: skip imports with media queries
                 continue;
             }
-
-            if ('.less' !== substr($reference, -5)) {
+            
+            if ('.less' !== substr($reference, - 5)) {
                 $reference .= '.less';
             }
-
+            
             foreach ($loadPaths as $loadPath) {
-                if (file_exists($file = $loadPath.'/'.$reference)) {
-                    $coll = $factory->createAsset($file, array(), array('root' => $loadPath));
+                if (file_exists($file = $loadPath . '/' . $reference)) {
+                    $coll = $factory->createAsset($file, array(), array(
+                        'root' => $loadPath
+                    ));
                     foreach ($coll as $leaf) {
                         $leaf->ensureFilter($this);
                         $children[] = $leaf;
@@ -196,10 +205,10 @@ EOF;
                     }
                 }
             }
-
+            
             next_reference:
         }
-
+        
         return $children;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ResolveTarget
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

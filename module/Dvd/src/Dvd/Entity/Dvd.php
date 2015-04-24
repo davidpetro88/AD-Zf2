@@ -31,7 +31,7 @@ class Dvd extends AbstractEntity
 
     /**
      *
-     * @param field_type $nome
+     * @param field_type $nome            
      */
     public function setNome($nome)
     {

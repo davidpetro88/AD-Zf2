@@ -1,32 +1,51 @@
 <?php
 return [
     'zfc_rbac' => [
-//         'identity_provider' => 'ZfcRbac\Identity\AuthenticationIdentityProvider',
+        // 'identity_provider' => 'ZfcRbac\Identity\AuthenticationIdentityProvider',
         'guest_role' => 'visitante',
         'guards' => [
             'ZfcRbac\Guard\RouteGuard' => [
-                'dashboard' => ['visitante'],
-                'cliente/*' => ['usuario'],
-                'usuario/*' => ['usuario'],
+                'dashboard' => [
+                    'visitante'
+                ],
+                'cliente/*' => [
+                    'usuario'
+                ],
+                'usuario/*' => [
+                    'usuario'
+                ]
             ],
             'ZfcRbac\Guard\ControllerGuard' => [
                 [
                     'controller' => 'Usuario\Controller\Usuario',
-                    'roles'      => ['usuario']
-                ],
+                    'roles' => [
+                        'usuario'
+                    ]
+                ]
             ]
         ],
-
+        
         // 'protection_policy' => \ZfcRbac\Guard\GuardInterface::POLICY_ALLOW,
         'role_provider' => [
             'ZfcRbac\Role\InMemoryRoleProvider' => [
                 'admin' => [
-                    'children'    => ['usuario'],
-                    'permissions' => ['admin','deleteOthers','autorizar']
+                    'children' => [
+                        'usuario'
+                    ],
+                    'permissions' => [
+                        'admin',
+                        'deleteOthers',
+                        'autorizar'
+                    ]
                 ],
                 'usuario' => [
-                    'children'    => ['visitante'],
-                    'permissions' => ['usuario','delete']
+                    'children' => [
+                        'visitante'
+                    ],
+                    'permissions' => [
+                        'usuario',
+                        'delete'
+                    ]
                 ],
                 'visitante'
             ]
@@ -37,11 +56,12 @@ return [
         'redirect_strategy' => [
             'redirect_when_connected' => true,
             'redirect_to_route_connected' => 'error/403',
-            'redirect_to_route_disconnected' => 'index/auth',  // 'usuario',
+            'redirect_to_route_disconnected' => 'index/auth', // 'usuario',
             'append_previous_uri' => false,
             'previous_uri_query_key' => 'redirect'
-        ],
-        // 'guard_manager'               => [],
-        // 'role_provider_manager'       => []
+        ]
     ]
+    // 'guard_manager' => [],
+    // 'role_provider_manager' => []
+    
 ];

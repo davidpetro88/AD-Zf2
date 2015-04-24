@@ -10,8 +10,8 @@
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 namespace LosLog\Log;
-use Zend\Log\Writer\Stream;
 
+use Zend\Log\Writer\Stream;
 use Zend\Log\Logger;
 
 /**
@@ -52,13 +52,13 @@ abstract class AbstractLogger extends Logger
     {
         parent::__construct();
 
-        if (null == $logDir) {
+        if (null === $logDir) {
             $logDir = sys_get_temp_dir();
         }
         $this->setLogDir($logDir);
         $this->setLogFile($logFile);
 
-        $writer = new Stream($logDir . DIRECTORY_SEPARATOR . $logFile);
+        $writer = new Stream($logDir.DIRECTORY_SEPARATOR.$logFile);
         $this->addWriter($writer);
     }
 
@@ -88,7 +88,7 @@ abstract class AbstractLogger extends Logger
         $this->_logDir = $logDir;
     }
     /**
-     * @return the $_logFile
+     * @return string $_logFile
      */
     public function getLogFile()
     {
@@ -96,7 +96,7 @@ abstract class AbstractLogger extends Logger
     }
 
     /**
-     * @param string $_logFile
+     * @param string $logFile
      */
     public function setLogFile($logFile)
     {
@@ -106,5 +106,4 @@ abstract class AbstractLogger extends Logger
         }
         $this->_logFile = $logFile;
     }
-
 }

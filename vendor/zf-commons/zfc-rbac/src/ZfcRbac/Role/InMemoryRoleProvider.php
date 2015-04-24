@@ -51,7 +51,6 @@ class InMemoryRoleProvider implements RoleProviderInterface
      */
     public function __construct(array $rolesConfig)
     {
-
         $this->rolesConfig = $rolesConfig;
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -28,6 +28,7 @@ class City
     protected $country;
 
     /**
+     *
      * @return int|null
      */
     public function getId()
@@ -38,7 +39,7 @@ class City
     public function setName($name)
     {
         $this->name = $name;
-
+        
         return $this;
     }
 
@@ -50,7 +51,7 @@ class City
     public function setCountry(Country $country)
     {
         $this->country = $country;
-
+        
         return $this;
     }
 

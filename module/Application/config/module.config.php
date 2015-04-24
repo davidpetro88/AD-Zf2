@@ -131,9 +131,9 @@ return array(
         )
     ),
     'navlogout' => array(
-            'Nov' => array(
-                'label' => 'Logout',
-                'uri' => '#'
+        'Nov' => array(
+            'label' => 'Logout',
+            'uri' => '#'
         )
     )
 );

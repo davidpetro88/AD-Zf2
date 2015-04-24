@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOOracle;
 
 use Doctrine\DBAL\DBALException;
@@ -33,18 +32,16 @@ use Doctrine\DBAL\Driver\PDOConnection;
  */
 class Driver extends AbstractOracleDriver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         try {
-            return new PDOConnection(
-                $this->constructPdoDsn($params),
-                $username,
-                $password,
-                $driverOptions
-            );
+            return new PDOConnection($this->constructPdoDsn($params), $username, $password, $driverOptions);
         } catch (\PDOException $e) {
             throw DBALException::driverException($this, $e);
         }
@@ -53,23 +50,25 @@ class Driver extends AbstractOracleDriver
     /**
      * Constructs the Oracle PDO DSN.
      *
-     * @param array $params
+     * @param array $params            
      *
      * @return string The DSN.
      */
     private function constructPdoDsn(array $params)
     {
         $dsn = 'oci:dbname=' . $this->getEasyConnectString($params);
-
+        
         if (isset($params['charset'])) {
             $dsn .= ';charset=' . $params['charset'];
         }
-
+        
         return $dsn;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

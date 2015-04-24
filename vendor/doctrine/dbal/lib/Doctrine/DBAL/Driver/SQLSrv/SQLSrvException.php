@@ -16,13 +16,13 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
 use Doctrine\DBAL\DBALException;
 
 class SQLSrvException extends DBALException
 {
+
     /**
      * Helper method to turn sql server errors into exception.
      *
@@ -33,12 +33,12 @@ class SQLSrvException extends DBALException
         $errors = sqlsrv_errors(SQLSRV_ERR_ERRORS);
         $message = "";
         foreach ($errors as $error) {
-            $message .= "SQLSTATE [".$error['SQLSTATE'].", ".$error['code']."]: ". $error['message']."\n";
+            $message .= "SQLSTATE [" . $error['SQLSTATE'] . ", " . $error['code'] . "]: " . $error['message'] . "\n";
         }
-        if ( ! $message) {
+        if (! $message) {
             $message = "SQL Server error occurred but no error message was retrieved from driver.";
         }
-
+        
         return new self(rtrim($message));
     }
 }

@@ -10,13 +10,11 @@ class Module extends AbstractModule
 
     public function onBootstrap(MvcEvent $e)
     {
-
-        $eventManager        = $e->getApplication()->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
-        //print "<pre>"; print_r($moduleRouteListener);
-        //die();
+        
+        // print "<pre>"; print_r($moduleRouteListener);
+        // die();
     }
-
 }

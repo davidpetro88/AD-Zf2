@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Filter\Yui;
 
 use Assetic\Asset\AssetInterface;
@@ -21,6 +20,7 @@ use Assetic\Asset\AssetInterface;
  */
 class CssCompressorFilter extends BaseCompressorFilter
 {
+
     public function filterDump(AssetInterface $asset)
     {
         $asset->setContent($this->compress($asset->getContent(), 'css'));

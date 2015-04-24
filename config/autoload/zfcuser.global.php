@@ -10,20 +10,20 @@ $settings = array(
     ),
     'enable_display_name' => true,
     'auth_identity_fields' => array(
-//         'email'
+        // 'email'
         'nome' => 'nome'
     ),
     'login_form_timeout' => 300,
     'user_form_timeout' => 300,
     'use_redirect_parameter_if_present' => true,
-     'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
-    //'login_redirect_route' => 'dashboard',
-    //'logout_redirect_route' => 'home',
+    'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+    // 'login_redirect_route' => 'dashboard',
+    // 'logout_redirect_route' => 'home',
     'login_redirect_route' => 'index',
     'logout_redirect_route' => 'registration',
     // 'password_cost' => 14,
     'enable_user_state' => false,
-//     'table_name' => 'Usu'
+    // 'table_name' => 'Usu'
     'table_name' => 'usuario'
 );
 return array(

@@ -96,21 +96,21 @@ class Usuario extends AbstractEntity implements ZfcUserInterface, IdentityInterf
     /**
      *
      * @var string @ORM\Column(name="usr_registration_token", type="string", length=100, nullable=true)
-     * @Form\Exclude()
+     *      @Form\Exclude()
      */
     protected $usrRegistrationToken;
 
     /**
      *
      * @var boolean @ORM\Column(name="usr_active", type="boolean", nullable=false)
-     * @Form\Exclude()
+     *      @Form\Exclude()
      */
     protected $usrActive;
 
     /**
      *
      * @var boolean @ORM\Column(name="usr_email_confirmed", type="boolean", nullable=false)
-     * @Form\Exclude()
+     *      @Form\Exclude()
      */
     protected $usrEmailConfirmed;
 

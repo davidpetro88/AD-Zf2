@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver;
 
 /**
@@ -29,10 +28,11 @@ namespace Doctrine\DBAL\Driver;
  */
 interface Connection
 {
+
     /**
      * Prepares a statement for execution and returns a Statement object.
      *
-     * @param string $prepareString
+     * @param string $prepareString            
      *
      * @return \Doctrine\DBAL\Driver\Statement
      */
@@ -48,17 +48,17 @@ interface Connection
     /**
      * Quotes a string for use in a query.
      *
-     * @param string  $input
-     * @param integer $type
+     * @param string $input            
+     * @param integer $type            
      *
      * @return string
      */
-    function quote($input, $type=\PDO::PARAM_STR);
+    function quote($input, $type = \PDO::PARAM_STR);
 
     /**
      * Executes an SQL statement and return the number of affected rows.
      *
-     * @param string $statement
+     * @param string $statement            
      *
      * @return integer
      */
@@ -67,7 +67,7 @@ interface Connection
     /**
      * Returns the ID of the last inserted row or sequence value.
      *
-     * @param string|null $name
+     * @param string|null $name            
      *
      * @return string
      */

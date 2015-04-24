@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Factory\Resource;
 
 /**
@@ -18,11 +17,13 @@ namespace Assetic\Factory\Resource;
  */
 interface ResourceInterface
 {
+
     /**
      * Checks if a timestamp represents the latest resource.
      *
-     * @param integer $timestamp A UNIX timestamp
-     *
+     * @param integer $timestamp
+     *            A UNIX timestamp
+     *            
      * @return Boolean True if the timestamp is up to date
      */
     public function isFresh($timestamp);

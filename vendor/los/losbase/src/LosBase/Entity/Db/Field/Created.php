@@ -6,19 +6,19 @@ use Zend\Form\Annotation as Form;
 
 trait Created
 {
-
     /**
      * Created datetime
      *
      * @ORM\Column(type="datetime")
      * @Form\Exclude()
+     * @var \DateTime
      */
-    protected $created = '';
+    protected $created = null;
 
     /**
-     * Retorna o campo $created
+     * Getter for $created
      *
-     * @return $created DateTime
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -28,8 +28,8 @@ trait Created
     /**
      * Setter for $created
      *
-     * @param  DateTime                        $created
-     * @return LosBase\Entity\Db\Field\Created
+     * @param  \DateTime                      $created
+     * @return \LosBase\Entity\AbstractEntity
      */
     public function setCreated($created)
     {

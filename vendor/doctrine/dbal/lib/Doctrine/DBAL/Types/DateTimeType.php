@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -28,8 +27,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DateTimeType extends Type
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -37,7 +39,9 @@ class DateTimeType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -45,33 +49,36 @@ class DateTimeType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return ($value !== null)
-            ? $value->format($platform->getDateTimeFormatString()) : null;
+        return ($value !== null) ? $value->format($platform->getDateTimeFormatString()) : null;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
-
+        
         $val = \DateTime::createFromFormat($platform->getDateTimeFormatString(), $value);
-
-        if ( ! $val) {
+        
+        if (! $val) {
             $val = date_create($value);
         }
-
-        if ( ! $val) {
+        
+        if (! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
-
+        
         return $val;
     }
 }

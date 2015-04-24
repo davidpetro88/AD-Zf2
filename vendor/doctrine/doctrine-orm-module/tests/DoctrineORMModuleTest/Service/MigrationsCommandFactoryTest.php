@@ -15,7 +15,6 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
-
 namespace DoctrineORMModuleTest\Service;
 
 use DoctrineORMModule\Service\MigrationsCommandFactory;
@@ -28,12 +27,14 @@ use DoctrineORMModuleTest\Util\ServiceManagerFactory;
  *
  * @license MIT
  * @author Aleksandr Sandrovskiy <a.sandrovsky@gmail.com>
- *
- * @covers \DoctrineORMModule\Service\MigrationsCommandFactory
+ *        
+ *         @covers \DoctrineORMModule\Service\MigrationsCommandFactory
  */
 class MigrationsCommandFactoryTest extends TestCase
 {
+
     /**
+     *
      * @var \Zend\ServiceManager\ServiceManager
      */
     private $serviceLocator;
@@ -49,27 +50,21 @@ class MigrationsCommandFactoryTest extends TestCase
     public function testExecuteFactory()
     {
         $factory = new MigrationsCommandFactory('execute');
-
-        $this->assertInstanceOf(
-            'Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand',
-            $factory->createService($this->serviceLocator)
-        );
+        
+        $this->assertInstanceOf('Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand', $factory->createService($this->serviceLocator));
     }
 
     public function testDiffFactory()
     {
         $factory = new MigrationsCommandFactory('diff');
-
-        $this->assertInstanceOf(
-            'Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand',
-            $factory->createService($this->serviceLocator)
-        );
+        
+        $this->assertInstanceOf('Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand', $factory->createService($this->serviceLocator));
     }
 
     public function testThrowException()
     {
         $factory = new MigrationsCommandFactory('unknowncommand');
-
+        
         $this->setExpectedException('InvalidArgumentException');
         $factory->createService($this->serviceLocator);
     }

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL;
 
 /**
@@ -29,23 +28,33 @@ namespace Doctrine\DBAL;
  */
 final class Events
 {
+
     /**
-     * Private constructor. This class cannot be instantiated.
+     * Private constructor.
+     * This class cannot be instantiated.
      */
     private function __construct()
-    {
-    }
+    {}
 
     const postConnect = 'postConnect';
 
-    const onSchemaCreateTable             = 'onSchemaCreateTable';
-    const onSchemaCreateTableColumn       = 'onSchemaCreateTableColumn';
-    const onSchemaDropTable               = 'onSchemaDropTable';
-    const onSchemaAlterTable              = 'onSchemaAlterTable';
-    const onSchemaAlterTableAddColumn     = 'onSchemaAlterTableAddColumn';
-    const onSchemaAlterTableRemoveColumn  = 'onSchemaAlterTableRemoveColumn';
-    const onSchemaAlterTableChangeColumn  = 'onSchemaAlterTableChangeColumn';
-    const onSchemaAlterTableRenameColumn  = 'onSchemaAlterTableRenameColumn';
-    const onSchemaColumnDefinition        = 'onSchemaColumnDefinition';
-    const onSchemaIndexDefinition         = 'onSchemaIndexDefinition';
+    const onSchemaCreateTable = 'onSchemaCreateTable';
+
+    const onSchemaCreateTableColumn = 'onSchemaCreateTableColumn';
+
+    const onSchemaDropTable = 'onSchemaDropTable';
+
+    const onSchemaAlterTable = 'onSchemaAlterTable';
+
+    const onSchemaAlterTableAddColumn = 'onSchemaAlterTableAddColumn';
+
+    const onSchemaAlterTableRemoveColumn = 'onSchemaAlterTableRemoveColumn';
+
+    const onSchemaAlterTableChangeColumn = 'onSchemaAlterTableChangeColumn';
+
+    const onSchemaAlterTableRenameColumn = 'onSchemaAlterTableRenameColumn';
+
+    const onSchemaColumnDefinition = 'onSchemaColumnDefinition';
+
+    const onSchemaIndexDefinition = 'onSchemaIndexDefinition';
 }

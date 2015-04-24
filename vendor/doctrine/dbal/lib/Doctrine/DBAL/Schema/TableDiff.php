@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -24,18 +23,21 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 /**
  * Table Diff.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class TableDiff
 {
+
     /**
+     *
      * @var string
      */
     public $name = null;
 
     /**
+     *
      * @var string|boolean
      */
     public $newName = false;
@@ -118,6 +120,7 @@ class TableDiff
     public $removedForeignKeys = array();
 
     /**
+     *
      * @var \Doctrine\DBAL\Schema\Table
      */
     public $fromTable;
@@ -125,18 +128,16 @@ class TableDiff
     /**
      * Constructs an TableDiff object.
      *
-     * @param string                             $tableName
-     * @param \Doctrine\DBAL\Schema\Column[]     $addedColumns
-     * @param \Doctrine\DBAL\Schema\ColumnDiff[] $changedColumns
-     * @param \Doctrine\DBAL\Schema\Column[]     $removedColumns
-     * @param \Doctrine\DBAL\Schema\Index[]      $addedIndexes
-     * @param \Doctrine\DBAL\Schema\Index[]      $changedIndexes
-     * @param \Doctrine\DBAL\Schema\Index[]      $removedIndexes
-     * @param \Doctrine\DBAL\Schema\Table|null   $fromTable
+     * @param string $tableName            
+     * @param \Doctrine\DBAL\Schema\Column[] $addedColumns            
+     * @param \Doctrine\DBAL\Schema\ColumnDiff[] $changedColumns            
+     * @param \Doctrine\DBAL\Schema\Column[] $removedColumns            
+     * @param \Doctrine\DBAL\Schema\Index[] $addedIndexes            
+     * @param \Doctrine\DBAL\Schema\Index[] $changedIndexes            
+     * @param \Doctrine\DBAL\Schema\Index[] $removedIndexes            
+     * @param \Doctrine\DBAL\Schema\Table|null $fromTable            
      */
-    public function __construct($tableName, $addedColumns = array(),
-        $changedColumns = array(), $removedColumns = array(), $addedIndexes = array(),
-        $changedIndexes = array(), $removedIndexes = array(), Table $fromTable = null)
+    public function __construct($tableName, $addedColumns = array(), $changedColumns = array(), $removedColumns = array(), $addedIndexes = array(), $changedIndexes = array(), $removedIndexes = array(), Table $fromTable = null)
     {
         $this->name = $tableName;
         $this->addedColumns = $addedColumns;
@@ -149,18 +150,19 @@ class TableDiff
     }
 
     /**
-     * @param AbstractPlatform $platform The platform to use for retrieving this table diff's name.
      *
+     * @param AbstractPlatform $platform
+     *            The platform to use for retrieving this table diff's name.
+     *            
      * @return \Doctrine\DBAL\Schema\Identifier
      */
     public function getName(AbstractPlatform $platform)
     {
-        return new Identifier(
-            $this->fromTable instanceof Table ? $this->fromTable->getQuotedName($platform) : $this->name
-        );
+        return new Identifier($this->fromTable instanceof Table ? $this->fromTable->getQuotedName($platform) : $this->name);
     }
 
     /**
+     *
      * @return \Doctrine\DBAL\Schema\Identifier|boolean
      */
     public function getNewName()

@@ -17,7 +17,7 @@ class Module extends AbstractModule
     // $config = $serviceManager->get('Config');
     // $transport = new Smtp();
     // $transport->setOptions(new SmtpOptions($config['mail']['transport']['options']));
-
+    
     // return $transport;
     // },
     // ),
@@ -26,9 +26,9 @@ class Module extends AbstractModule
     public function getServiceConfig()
     {
         return array(
-            'aliases' => array( // !!! aliases not alias
-//                 'Zend\Authentication\AuthenticationService' => 'doctrine_authenticationservice'
-            ),
+            'aliases' => array() // !!! aliases not alias
+                                // 'Zend\Authentication\AuthenticationService' => 'doctrine_authenticationservice'
+            ,
             'factories' => array(
                 // taken from DoctrineModule on GitHub
                 // Please note that Iam using here a Zend\Authentication\AuthenticationService name, but it can be anything else
@@ -38,7 +38,7 @@ class Module extends AbstractModule
                     // - 'doctrine_authenticationservice' => function($serviceManager) {
                     // If you are using DoctrineORMModule:
                     return $serviceManager->get('doctrine.authenticationservice.orm_default');
-
+                    
                     // If you are using DoctrineODMModule:
                     // - return $serviceManager->get('doctrine.authenticationservice.odm_default');
                 },

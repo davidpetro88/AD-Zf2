@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -25,12 +24,15 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * Represents a GUID/UUID datatype (both are actually synonyms) in the database.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @since  2.3
+ * @since 2.3
  */
 class GuidType extends StringType
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -38,7 +40,9 @@ class GuidType extends StringType
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -46,10 +50,12 @@ class GuidType extends StringType
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
-        return !$platform->hasNativeGuidType();
+        return ! $platform->hasNativeGuidType();
     }
 }

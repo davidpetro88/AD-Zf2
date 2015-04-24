@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Extension\Twig;
 
 use Assetic\Factory\AssetFactory;
@@ -16,8 +15,11 @@ use Assetic\ValueSupplierInterface;
 
 class AsseticExtension extends \Twig_Extension
 {
+
     protected $factory;
+
     protected $functions;
+
     protected $valueSupplier;
 
     public function __construct(AssetFactory $factory, $functions = array(), ValueSupplierInterface $valueSupplier = null)
@@ -25,12 +27,16 @@ class AsseticExtension extends \Twig_Extension
         $this->factory = $factory;
         $this->functions = array();
         $this->valueSupplier = $valueSupplier;
-
+        
         foreach ($functions as $function => $options) {
             if (is_integer($function) && is_string($options)) {
-                $this->functions[$options] = array('filter' => $options);
+                $this->functions[$options] = array(
+                    'filter' => $options
+                );
             } else {
-                $this->functions[$function] = $options + array('filter' => $function);
+                $this->functions[$function] = $options + array(
+                    'filter' => $function
+                );
             }
         }
     }
@@ -40,7 +46,7 @@ class AsseticExtension extends \Twig_Extension
         return array(
             new AsseticTokenParser($this->factory, 'javascripts', 'js/*.js'),
             new AsseticTokenParser($this->factory, 'stylesheets', 'css/*.css'),
-            new AsseticTokenParser($this->factory, 'image', 'images/*', true),
+            new AsseticTokenParser($this->factory, 'image', 'images/*', true)
         );
     }
 
@@ -50,7 +56,7 @@ class AsseticExtension extends \Twig_Extension
         foreach ($this->functions as $function => $filter) {
             $functions[$function] = new AsseticFilterFunction($function);
         }
-
+        
         return $functions;
     }
 
@@ -59,8 +65,8 @@ class AsseticExtension extends \Twig_Extension
         return array(
             'assetic' => array(
                 'debug' => $this->factory->isDebug(),
-                'vars'  => null !== $this->valueSupplier ? new ValueContainer($this->valueSupplier) : array(),
-            ),
+                'vars' => null !== $this->valueSupplier ? new ValueContainer($this->valueSupplier) : array()
+            )
         );
     }
 

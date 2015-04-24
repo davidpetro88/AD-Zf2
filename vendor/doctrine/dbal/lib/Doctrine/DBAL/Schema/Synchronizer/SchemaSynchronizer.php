@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema\Synchronizer;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -29,10 +28,11 @@ use Doctrine\DBAL\Schema\Schema;
  */
 interface SchemaSynchronizer
 {
+
     /**
      * Gets the SQL statements that can be executed to create the schema.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $createSchema
+     * @param \Doctrine\DBAL\Schema\Schema $createSchema            
      *
      * @return array
      */
@@ -41,8 +41,8 @@ interface SchemaSynchronizer
     /**
      * Gets the SQL Statements to update given schema with the underlying db.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $toSchema
-     * @param boolean                      $noDrops
+     * @param \Doctrine\DBAL\Schema\Schema $toSchema            
+     * @param boolean $noDrops            
      *
      * @return array
      */
@@ -51,7 +51,7 @@ interface SchemaSynchronizer
     /**
      * Gets the SQL Statements to drop the given schema from underlying db.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $dropSchema
+     * @param \Doctrine\DBAL\Schema\Schema $dropSchema            
      *
      * @return array
      */
@@ -67,7 +67,7 @@ interface SchemaSynchronizer
     /**
      * Creates the Schema.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $createSchema
+     * @param \Doctrine\DBAL\Schema\Schema $createSchema            
      *
      * @return void
      */
@@ -76,8 +76,8 @@ interface SchemaSynchronizer
     /**
      * Updates the Schema to new schema version.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $toSchema
-     * @param boolean                      $noDrops
+     * @param \Doctrine\DBAL\Schema\Schema $toSchema            
+     * @param boolean $noDrops            
      *
      * @return void
      */
@@ -86,7 +86,7 @@ interface SchemaSynchronizer
     /**
      * Drops the given database schema from the underlying db.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $dropSchema
+     * @param \Doctrine\DBAL\Schema\Schema $dropSchema            
      *
      * @return void
      */

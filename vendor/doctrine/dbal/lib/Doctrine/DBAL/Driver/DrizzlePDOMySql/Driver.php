@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\DrizzlePDOMySql;
 
 use Doctrine\DBAL\Platforms\DrizzlePlatform;
@@ -29,23 +28,23 @@ use Doctrine\DBAL\Schema\DrizzleSchemaManager;
  */
 class Driver extends \Doctrine\DBAL\Driver\PDOMySql\Driver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        $conn = new Connection(
-            $this->constructPdoDsn($params),
-            $username,
-            $password,
-            $driverOptions
-        );
-
+        $conn = new Connection($this->constructPdoDsn($params), $username, $password, $driverOptions);
+        
         return $conn;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function createDatabasePlatformForVersion($version)
     {
@@ -53,7 +52,9 @@ class Driver extends \Doctrine\DBAL\Driver\PDOMySql\Driver
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDatabasePlatform()
     {
@@ -61,7 +62,9 @@ class Driver extends \Doctrine\DBAL\Driver\PDOMySql\Driver
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
     {
@@ -69,7 +72,9 @@ class Driver extends \Doctrine\DBAL\Driver\PDOMySql\Driver
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

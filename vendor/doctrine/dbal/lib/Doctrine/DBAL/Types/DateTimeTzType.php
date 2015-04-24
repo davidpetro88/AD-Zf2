@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -37,8 +36,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * the offset and re-created from persistence with only the offset, not the original timezone
  * attached.
  *
- * @link   www.doctrine-project.org
- * @since  1.0
+ * @link www.doctrine-project.org
+ * @since 1.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -46,8 +45,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class DateTimeTzType extends Type
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -55,7 +57,9 @@ class DateTimeTzType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -63,28 +67,31 @@ class DateTimeTzType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return ($value !== null)
-            ? $value->format($platform->getDateTimeTzFormatString()) : null;
+        return ($value !== null) ? $value->format($platform->getDateTimeTzFormatString()) : null;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
-
+        
         $val = \DateTime::createFromFormat($platform->getDateTimeTzFormatString(), $value);
-        if ( ! $val) {
+        if (! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeTzFormatString());
         }
-
+        
         return $val;
     }
 }

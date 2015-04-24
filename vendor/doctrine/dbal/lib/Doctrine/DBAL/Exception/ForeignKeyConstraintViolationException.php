@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Exception;
 
 /**
@@ -24,8 +23,8 @@ namespace Doctrine\DBAL\Exception;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link   www.doctrine-project.org
- * @since  2.5
+ * @link www.doctrine-project.org
+ * @since 2.5
  */
 class ForeignKeyConstraintViolationException extends ConstraintViolationException
 {

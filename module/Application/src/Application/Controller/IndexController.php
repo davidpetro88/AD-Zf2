@@ -13,11 +13,10 @@ class IndexController extends AbstractActionController
         if ($user = $this->identity()) {
             return $this->redirect()->toRoute('dashboard');
         }
-        //print "<pre>"; print_r($user);
-//         return $this->redirect()->toRoute('dashboard');
+        // print "<pre>"; print_r($user);
+        // return $this->redirect()->toRoute('dashboard');
     }
 
     public function dashboardAction()
-    {
-    }
+    {}
 }

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema\Synchronizer;
 
 use Doctrine\DBAL\Connection;
@@ -26,13 +25,16 @@ use Doctrine\DBAL\Connection;
  */
 abstract class AbstractSchemaSynchronizer implements SchemaSynchronizer
 {
+
     /**
+     *
      * @var \Doctrine\DBAL\Connection
      */
     protected $conn;
 
     /**
-     * @param \Doctrine\DBAL\Connection $conn
+     *
+     * @param \Doctrine\DBAL\Connection $conn            
      */
     public function __construct(Connection $conn)
     {
@@ -40,21 +42,21 @@ abstract class AbstractSchemaSynchronizer implements SchemaSynchronizer
     }
 
     /**
-     * @param array $sql
+     *
+     * @param array $sql            
      */
     protected function processSqlSafely(array $sql)
     {
         foreach ($sql as $s) {
             try {
                 $this->conn->exec($s);
-            } catch (\Exception $e) {
-
-            }
+            } catch (\Exception $e) {}
         }
     }
 
     /**
-     * @param array $sql
+     *
+     * @param array $sql            
      */
     protected function processSql(array $sql)
     {

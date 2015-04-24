@@ -7,14 +7,15 @@ This module provides a shortcut to several UI resources from some of the best fr
 I will add more libraries with time and add more resources to the current ones.
 
 - Jquery: 2.1.3 [jquery.com](http://jquery.com)
-- Bootstrap: 3.3.2 [getbootstrap.com](http://getbootstrap.com)
+- Bootstrap: 3.3.4 [getbootstrap.com](http://getbootstrap.com)
 - Font Awesome: 4.3.0 [fortawesome.github.io](http://fortawesome.github.io/Font-Awesome/) 
-- Chosen: 1.3.0 [http://harvesthq.github.io/chosen/](http://harvesthq.github.io/chosen/)
+- Chosen: 1.4.1 [http://harvesthq.github.io/chosen/](http://harvesthq.github.io/chosen/)
 - MomentJs: 2.9.0 [http://momentjs.com](http://momentjs.com)
 
 The ideia is to facilitate the front development. You do not need to worry about download individually each library, control their versions, so on. Refer to the Usage bellow.
 
 ## Requirements
+- PHP 5.4 or greater
 - Zend Framework 2 [framework.zend.com](http://framework.zend.com/).
 - AssetManager from rwoverdijk [rwoverdijk/assetmanager](https://github.com/RWOverdijk/AssetManager)
 - Any library above
@@ -125,9 +126,19 @@ You can even call and icon as a method:
 <?= $this->losIcon()->FaUser() ?>
 ```
 
+You can use icons with the "i" tag for both glyphicon and fontawesome:
+```php
+<?= $this->losIcon('fa-user','',true) ?>
+```
+Will generate:
+```html
+<i class="fa fa-user"></i>
+```
+ 
+
 ### Chosen
 If you do not provide an element as the first parameter, the module will assume "select" and will apply the Chosen for all "select" elements.
-You can pass thr Chosen attributes as an array (either as the first or second parameter).
+You can pass the Chosen attributes as an array (either as the first or second parameter).
 ```php
 <script>
 <?= $this->losChosen() ?>
@@ -166,6 +177,12 @@ Again, you can use the false parameter to get the default file:
 <link type="text/css" rel="stylesheet" media="screen" href="/chosen/chosen.css">
 <script src="/chosen/chosen.jquery.js" type="text/javascript"></script>
 ```
+
+UPDATE: Starting from version 1.0.19, you can style the Chosen element with Bootstrap 3. Just pass a true as fourth parameter:
+<?= $this->losChosen('#my_select',['disable_search_threshold'=>10], true, true) ?>
+
+Or ou can manually include the necessary styles with:
+<?php echo $this->losHeadLink()->appendChosenBootstrap() ?>
 
 ### Moment
 To include the script (can use append or prepend)

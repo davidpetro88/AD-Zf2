@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Asset;
 
 use Assetic\Asset\Iterator\AssetCollectionFilterIterator;
@@ -23,22 +22,33 @@ use Assetic\Filter\FilterInterface;
  */
 class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
 {
+
     private $assets;
+
     private $filters;
+
     private $sourceRoot;
+
     private $targetPath;
+
     private $content;
+
     private $clones;
+
     private $vars;
+
     private $values;
 
     /**
      * Constructor.
      *
-     * @param array  $assets     Assets for the current collection
-     * @param array  $filters    Filters for the current collection
-     * @param string $sourceRoot The root directory
-     * @param array  $vars
+     * @param array $assets
+     *            Assets for the current collection
+     * @param array $filters
+     *            Filters for the current collection
+     * @param string $sourceRoot
+     *            The root directory
+     * @param array $vars            
      */
     public function __construct($assets = array(), $filters = array(), $sourceRoot = null, array $vars = array())
     {
@@ -46,7 +56,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
         foreach ($assets as $asset) {
             $this->add($asset);
         }
-
+        
         $this->filters = new FilterCollection($filters);
         $this->sourceRoot = $sourceRoot;
         $this->clones = new \SplObjectStorage();
@@ -74,21 +84,24 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     {
         foreach ($this->assets as $i => $asset) {
             $clone = isset($this->clones[$asset]) ? $this->clones[$asset] : null;
-            if (in_array($needle, array($asset, $clone), true)) {
+            if (in_array($needle, array(
+                $asset,
+                $clone
+            ), true)) {
                 unset($this->clones[$asset], $this->assets[$i]);
-
+                
                 return true;
             }
-
+            
             if ($asset instanceof AssetCollectionInterface && $asset->removeLeaf($needle, true)) {
                 return true;
             }
         }
-
+        
         if ($graceful) {
             return false;
         }
-
+        
         throw new \InvalidArgumentException('Leaf not found.');
     }
 
@@ -96,22 +109,25 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     {
         foreach ($this->assets as $i => $asset) {
             $clone = isset($this->clones[$asset]) ? $this->clones[$asset] : null;
-            if (in_array($needle, array($asset, $clone), true)) {
+            if (in_array($needle, array(
+                $asset,
+                $clone
+            ), true)) {
                 unset($this->clones[$asset]);
                 $this->assets[$i] = $replacement;
-
+                
                 return true;
             }
-
+            
             if ($asset instanceof AssetCollectionInterface && $asset->replaceLeaf($needle, $replacement, true)) {
                 return true;
             }
         }
-
+        
         if ($graceful) {
             return false;
         }
-
+        
         throw new \InvalidArgumentException('Leaf not found.');
     }
 
@@ -139,7 +155,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
             $asset->load($additionalFilter);
             $parts[] = $asset->getContent();
         }
-
+        
         $this->content = implode("\n", $parts);
     }
 
@@ -150,7 +166,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
         foreach ($this as $asset) {
             $parts[] = $asset->dump($additionalFilter);
         }
-
+        
         return implode("\n", $parts);
     }
 
@@ -170,12 +186,10 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     }
 
     public function getSourcePath()
-    {
-    }
+    {}
 
     public function getSourceDirectory()
-    {
-    }
+    {}
 
     public function getTargetPath()
     {
@@ -194,10 +208,10 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
      */
     public function getLastModified()
     {
-        if (!count($this->assets)) {
+        if (! count($this->assets)) {
             return;
         }
-
+        
         $mtime = 0;
         foreach ($this as $asset) {
             $assetMtime = $asset->getLastModified();
@@ -205,7 +219,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
                 $mtime = $assetMtime;
             }
         }
-
+        
         return $mtime;
     }
 
@@ -225,7 +239,7 @@ class AssetCollection implements \IteratorAggregate, AssetCollectionInterface
     public function setValues(array $values)
     {
         $this->values = $values;
-
+        
         foreach ($this as $asset) {
             $asset->setValues(array_intersect_key($values, array_flip($asset->getVars())));
         }

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Sharding\ShardChoser;
 
 use Doctrine\DBAL\Sharding\PoolingShardConnection;
@@ -29,8 +28,11 @@ use Doctrine\DBAL\Sharding\PoolingShardConnection;
  */
 class MultiTenantShardChoser implements ShardChoser
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function pickShard($distributionValue, PoolingShardConnection $conn)
     {

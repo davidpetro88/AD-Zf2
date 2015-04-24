@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Factory\Loader;
 
 use Assetic\Factory\AssetFactory;
@@ -21,14 +20,16 @@ use Assetic\Factory\Resource\ResourceInterface;
  */
 abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
 {
+
     protected $factory;
+
     protected $prototypes;
 
     public function __construct(AssetFactory $factory)
     {
         $this->factory = $factory;
         $this->prototypes = array();
-
+        
         foreach ($this->registerPrototypes() as $prototype => $options) {
             $this->addPrototype($prototype, $options);
         }
@@ -36,25 +37,28 @@ abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
 
     public function addPrototype($prototype, array $options = array())
     {
-        $tokens = token_get_all('<?php '.$prototype);
+        $tokens = token_get_all('<?php ' . $prototype);
         array_shift($tokens);
-
-        $this->prototypes[$prototype] = array($tokens, $options);
+        
+        $this->prototypes[$prototype] = array(
+            $tokens,
+            $options
+        );
     }
 
     public function load(ResourceInterface $resource)
     {
-        if (!$nbProtos = count($this->prototypes)) {
+        if (! $nbProtos = count($this->prototypes)) {
             throw new \LogicException('There are no prototypes registered.');
         }
-
+        
         $buffers = array_fill(0, $nbProtos, '');
         $bufferLevels = array_fill(0, $nbProtos, 0);
         $buffersInWildcard = array();
-
+        
         $tokens = token_get_all($resource->getContent());
         $calls = array();
-
+        
         while ($token = array_shift($tokens)) {
             $current = self::tokenToString($token);
             // loop through each prototype (by reference)
@@ -63,17 +67,24 @@ abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
                 $options = $this->prototypes[$i][1];
                 $buffer = & $buffers[$i];
                 $level = & $bufferLevels[$i];
-
+                
                 if (isset($buffersInWildcard[$i])) {
                     switch ($current) {
-                        case '(': ++$level; break;
-                        case ')': --$level; break;
+                        case '(':
+                            ++ $level;
+                            break;
+                        case ')':
+                            -- $level;
+                            break;
                     }
-
+                    
                     $buffer .= $current;
-
-                    if (!$level) {
-                        $calls[] = array($buffer.';', $options);
+                    
+                    if (! $level) {
+                        $calls[] = array(
+                            $buffer . ';',
+                            $options
+                        );
                         $buffer = '';
                         unset($buffersInWildcard[$i]);
                     }
@@ -81,7 +92,7 @@ abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
                     $buffer .= $current;
                     if ('*' == self::tokenToString(next($prototype))) {
                         $buffersInWildcard[$i] = true;
-                        ++$level;
+                        ++ $level;
                     }
                 } else {
                     reset($prototype);
@@ -90,12 +101,15 @@ abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
                 }
             }
         }
-
+        
         $formulae = array();
         foreach ($calls as $call) {
-            $formulae += call_user_func_array(array($this, 'processCall'), $call);
+            $formulae += call_user_func_array(array(
+                $this,
+                'processCall'
+            ), $call);
         }
-
+        
         return $formulae;
     }
 
@@ -106,31 +120,37 @@ abstract class BasePhpFormulaLoader implements FormulaLoaderInterface
             '<?php',
             $this->registerSetupCode(),
             $call,
-            'echo serialize($_call);',
+            'echo serialize($_call);'
         )));
-        $args = unserialize(shell_exec('php '.escapeshellarg($tmp)));
+        $args = unserialize(shell_exec('php ' . escapeshellarg($tmp)));
         unlink($tmp);
-
-        $inputs  = isset($args[0]) ? self::argumentToArray($args[0]) : array();
+        
+        $inputs = isset($args[0]) ? self::argumentToArray($args[0]) : array();
         $filters = isset($args[1]) ? self::argumentToArray($args[1]) : array();
         $options = isset($args[2]) ? $args[2] : array();
-
-        if (!isset($options['debug'])) {
+        
+        if (! isset($options['debug'])) {
             $options['debug'] = $this->factory->isDebug();
         }
-
-        if (!is_array($options)) {
+        
+        if (! is_array($options)) {
             throw new \RuntimeException('The third argument must be omitted, null or an array.');
         }
-
+        
         // apply the prototype options
         $options += $protoOptions;
-
-        if (!isset($options['name'])) {
+        
+        if (! isset($options['name'])) {
             $options['name'] = $this->factory->generateAssetName($inputs, $filters, $options);
         }
-
-        return array($options['name'] => array($inputs, $filters, $options));
+        
+        return array(
+            $options['name'] => array(
+                $inputs,
+                $filters,
+                $options
+            )
+        );
     }
 
     /**

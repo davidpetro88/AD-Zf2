@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Event\Listeners;
 
 use Doctrine\DBAL\Event\ConnectionEventArgs;
@@ -33,13 +32,15 @@ use Doctrine\Common\EventSubscriber;
  * NLS_TIMESTAMP_FORMAT="YYYY-MM-DD HH24:MI:SS"
  * NLS_TIMESTAMP_TZ_FORMAT="YYYY-MM-DD HH24:MI:SS TZH:TZM"
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class OracleSessionInit implements EventSubscriber
 {
+
     /**
+     *
      * @var array
      */
     protected $_defaultSessionVars = array(
@@ -47,11 +48,12 @@ class OracleSessionInit implements EventSubscriber
         'NLS_DATE_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
         'NLS_TIMESTAMP_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
         'NLS_TIMESTAMP_TZ_FORMAT' => "YYYY-MM-DD HH24:MI:SS TZH:TZM",
-        'NLS_NUMERIC_CHARACTERS' => ".,",
+        'NLS_NUMERIC_CHARACTERS' => ".,"
     );
 
     /**
-     * @param array $oracleSessionVars
+     *
+     * @param array $oracleSessionVars            
      */
     public function __construct(array $oracleSessionVars = array())
     {
@@ -59,7 +61,8 @@ class OracleSessionInit implements EventSubscriber
     }
 
     /**
-     * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args
+     *
+     * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args            
      *
      * @return void
      */
@@ -69,18 +72,22 @@ class OracleSessionInit implements EventSubscriber
             array_change_key_case($this->_defaultSessionVars, \CASE_UPPER);
             $vars = array();
             foreach ($this->_defaultSessionVars as $option => $value) {
-                $vars[] = $option." = '".$value."'";
+                $vars[] = $option . " = '" . $value . "'";
             }
-            $sql = "ALTER SESSION SET ".implode(" ", $vars);
+            $sql = "ALTER SESSION SET " . implode(" ", $vars);
             $args->getConnection()->executeUpdate($sql);
         }
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSubscribedEvents()
     {
-        return array(Events::postConnect);
+        return array(
+            Events::postConnect
+        );
     }
 }

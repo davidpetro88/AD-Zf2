@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -25,22 +24,24 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EntityManagerFactory extends AbstractFactory
 {
+
     /**
      * {@inheritDoc}
+     * 
      * @return EntityManager
      */
     public function createService(ServiceLocatorInterface $sl)
     {
         /* @var $options \DoctrineORMModule\Options\EntityManager */
-        $options    = $this->getOptions($sl, 'entitymanager');
+        $options = $this->getOptions($sl, 'entitymanager');
         $connection = $sl->get($options->getConnection());
-        $config     = $sl->get($options->getConfiguration());
-
+        $config = $sl->get($options->getConfiguration());
+        
         // initializing the resolver
         // @todo should actually attach it to a fetched event manager here, and not
-        //       rely on its factory code
+        // rely on its factory code
         $sl->get($options->getEntityResolver());
-
+        
         return EntityManager::create($connection, $config);
     }
 

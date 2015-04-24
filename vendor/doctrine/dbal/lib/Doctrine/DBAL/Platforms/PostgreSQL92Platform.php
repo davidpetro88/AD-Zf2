@@ -16,20 +16,22 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
 
 /**
  * Provides the behavior, features and SQL dialect of the PostgreSQL 9.2 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link   www.doctrine-project.org
- * @since  2.5
+ * @link www.doctrine-project.org
+ * @since 2.5
  */
 class PostgreSQL92Platform extends PostgreSQL91Platform
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getJsonTypeDeclarationSQL(array $field)
     {
@@ -37,19 +39,23 @@ class PostgreSQL92Platform extends PostgreSQL91Platform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSmallIntTypeDeclarationSQL(array $field)
     {
-        if ( ! empty($field['autoincrement'])) {
+        if (! empty($field['autoincrement'])) {
             return 'SMALLSERIAL';
         }
-
+        
         return parent::getSmallIntTypeDeclarationSQL($field);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function hasNativeJsonType()
     {
@@ -57,7 +63,9 @@ class PostgreSQL92Platform extends PostgreSQL91Platform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getReservedKeywordsClass()
     {
@@ -65,7 +73,9 @@ class PostgreSQL92Platform extends PostgreSQL91Platform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function initializeDoctrineTypeMappings()
     {

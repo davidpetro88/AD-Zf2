@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
 use PDO;
@@ -31,6 +30,7 @@ use Doctrine\DBAL\Driver\Statement;
  */
 class SQLSrvStatement implements IteratorAggregate, Statement
 {
+
     /**
      * The SQLSRV Resource.
      *
@@ -67,7 +67,7 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     private static $fetchMap = array(
         PDO::FETCH_BOTH => SQLSRV_FETCH_BOTH,
         PDO::FETCH_ASSOC => SQLSRV_FETCH_ASSOC,
-        PDO::FETCH_NUM => SQLSRV_FETCH_NUMERIC,
+        PDO::FETCH_NUM => SQLSRV_FETCH_NUMERIC
     );
 
     /**
@@ -87,7 +87,8 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     /**
      * The fetch style.
      *
-     * @param integer
+     * @param
+     *            integer
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
 
@@ -106,15 +107,16 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     const LAST_INSERT_ID_SQL = ';SELECT SCOPE_IDENTITY() AS LastInsertId;';
 
     /**
-     * @param resource                                       $conn
-     * @param string                                         $sql
-     * @param \Doctrine\DBAL\Driver\SQLSrv\LastInsertId|null $lastInsertId
+     *
+     * @param resource $conn            
+     * @param string $sql            
+     * @param \Doctrine\DBAL\Driver\SQLSrv\LastInsertId|null $lastInsertId            
      */
     public function __construct($conn, $sql, LastInsertId $lastInsertId = null)
     {
         $this->conn = $conn;
         $this->sql = $sql;
-
+        
         if (stripos($sql, 'INSERT INTO ') === 0) {
             $this->sql .= self::LAST_INSERT_ID_SQL;
             $this->lastInsertId = $lastInsertId;
@@ -122,7 +124,9 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function bindValue($param, $value, $type = null)
     {
@@ -130,23 +134,32 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function bindParam($column, &$variable, $type = null, $length = null)
     {
-        if (!is_numeric($column)) {
+        if (! is_numeric($column)) {
             throw new SQLSrvException("sqlsrv does not support named parameters to queries, use question mark (?) placeholders instead.");
         }
-
+        
         if ($type === \PDO::PARAM_LOB) {
-            $this->params[$column-1] = array($variable, SQLSRV_PARAM_IN, SQLSRV_PHPTYPE_STREAM(SQLSRV_ENC_BINARY), SQLSRV_SQLTYPE_VARBINARY('max'));
+            $this->params[$column - 1] = array(
+                $variable,
+                SQLSRV_PARAM_IN,
+                SQLSRV_PHPTYPE_STREAM(SQLSRV_ENC_BINARY),
+                SQLSRV_SQLTYPE_VARBINARY('max')
+            );
         } else {
-            $this->params[$column-1] = $variable;
+            $this->params[$column - 1] = $variable;
         }
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function closeCursor()
     {
@@ -156,7 +169,9 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function columnCount()
     {
@@ -164,7 +179,9 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function errorCode()
     {
@@ -172,12 +189,14 @@ class SQLSrvStatement implements IteratorAggregate, Statement
         if ($errors) {
             return $errors[0]['code'];
         }
-
+        
         return false;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function errorInfo()
     {
@@ -185,7 +204,9 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function execute($params = null)
     {
@@ -196,12 +217,12 @@ class SQLSrvStatement implements IteratorAggregate, Statement
                 $this->bindValue($key, $val);
             }
         }
-
+        
         $this->stmt = sqlsrv_query($this->conn, $this->sql, $this->params);
-        if ( ! $this->stmt) {
+        if (! $this->stmt) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
-
+        
         if ($this->lastInsertId) {
             sqlsrv_next_result($this->stmt);
             sqlsrv_fetch($this->stmt);
@@ -210,64 +231,75 @@ class SQLSrvStatement implements IteratorAggregate, Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function setFetchMode($fetchMode, $arg2 = null, $arg3 = null)
     {
-        $this->defaultFetchMode          = $fetchMode;
-        $this->defaultFetchClass         = $arg2 ?: $this->defaultFetchClass;
+        $this->defaultFetchMode = $fetchMode;
+        $this->defaultFetchClass = $arg2 ?  : $this->defaultFetchClass;
         $this->defaultFetchClassCtorArgs = $arg3 ? (array) $arg3 : $this->defaultFetchClassCtorArgs;
-
+        
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getIterator()
     {
         $data = $this->fetchAll();
-
+        
         return new \ArrayIterator($data);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetch($fetchMode = null)
     {
-        $args      = func_get_args();
-        $fetchMode = $fetchMode ?: $this->defaultFetchMode;
-
+        $args = func_get_args();
+        $fetchMode = $fetchMode ?  : $this->defaultFetchMode;
+        
         if (isset(self::$fetchMap[$fetchMode])) {
-            return sqlsrv_fetch_array($this->stmt, self::$fetchMap[$fetchMode]) ?: false;
+            return sqlsrv_fetch_array($this->stmt, self::$fetchMap[$fetchMode]) ?  : false;
         }
-
+        
         if ($fetchMode == PDO::FETCH_OBJ || $fetchMode == PDO::FETCH_CLASS) {
             $className = $this->defaultFetchClass;
-            $ctorArgs  = $this->defaultFetchClassCtorArgs;
-
+            $ctorArgs = $this->defaultFetchClassCtorArgs;
+            
             if (count($args) >= 2) {
                 $className = $args[1];
-                $ctorArgs  = (isset($args[2])) ? $args[2] : array();
+                $ctorArgs = (isset($args[2])) ? $args[2] : array();
             }
-
-            return sqlsrv_fetch_object($this->stmt, $className, $ctorArgs) ?: false;
+            
+            return sqlsrv_fetch_object($this->stmt, $className, $ctorArgs) ?  : false;
         }
-
+        
         throw new SQLSrvException("Fetch mode is not supported!");
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchAll($fetchMode = null)
     {
         $rows = array();
-
+        
         switch ($fetchMode) {
             case PDO::FETCH_CLASS:
-                while ($row = call_user_func_array(array($this, 'fetch'), func_get_args())) {
+                while ($row = call_user_func_array(array(
+                    $this,
+                    'fetch'
+                ), func_get_args())) {
                     $rows[] = $row;
                 }
                 break;
@@ -281,26 +313,30 @@ class SQLSrvStatement implements IteratorAggregate, Statement
                     $rows[] = $row;
                 }
         }
-
+        
         return $rows;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchColumn($columnIndex = 0)
     {
         $row = $this->fetch(PDO::FETCH_NUM);
-
+        
         if (false === $row) {
             return false;
         }
-
+        
         return isset($row[$columnIndex]) ? $row[$columnIndex] : null;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function rowCount()
     {

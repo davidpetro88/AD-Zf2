@@ -16,20 +16,22 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * SQLite Keywordlist.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SQLiteKeywords extends KeywordList
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -37,7 +39,9 @@ class SQLiteKeywords extends KeywordList
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getKeywords()
     {

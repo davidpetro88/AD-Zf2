@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -21,8 +20,11 @@ use Assetic\Asset\AssetInterface;
  */
 class JSqueezeFilter implements FilterInterface
 {
+
     private $singleLine = true;
+
     private $keepImportantComments = true;
+
     private $specialVarRx = \JSqueeze::SPECIAL_VAR_RX;
 
     public function setSingleLine($bool)
@@ -41,17 +43,11 @@ class JSqueezeFilter implements FilterInterface
     }
 
     public function filterLoad(AssetInterface $asset)
-    {
-    }
+    {}
 
     public function filterDump(AssetInterface $asset)
     {
         $parser = new \JSqueeze();
-        $asset->setContent($parser->squeeze(
-            $asset->getContent(),
-            $this->singleLine,
-            $this->keepImportantComments,
-            $this->specialVarRx
-        ));
+        $asset->setContent($parser->squeeze($asset->getContent(), $this->singleLine, $this->keepImportantComments, $this->specialVarRx));
     }
 }

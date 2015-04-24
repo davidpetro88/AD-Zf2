@@ -26,7 +26,7 @@ class StaticLogger extends AbstractLogger
     /**
      * Logger instance
      *
-     * @var LosLog\Log\StaticLogger
+     * @var \LosLog\Log\StaticLogger
      */
     protected static $instance;
 
@@ -34,12 +34,12 @@ class StaticLogger extends AbstractLogger
      * Saves a message to a logfile
      *
      * @param mixed  $message
-     * @param string $filename
+     * @param string $logFile
      * @param string $logDir
      */
     public static function save($message, $logFile = 'static.log', $logDir = 'data/logs')
     {
-        if ($logFile == null) {
+        if ($logFile === null) {
             // Useful for just Z-Ray logging
             return;
         }
@@ -66,5 +66,4 @@ class StaticLogger extends AbstractLogger
 
         return static::$instance;
     }
-
 }

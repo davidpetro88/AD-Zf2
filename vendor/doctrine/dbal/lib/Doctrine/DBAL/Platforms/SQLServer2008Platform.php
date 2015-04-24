@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
 
 /**
@@ -27,6 +26,7 @@ namespace Doctrine\DBAL\Platforms;
  */
 class SQLServer2008Platform extends SQLServer2005Platform
 {
+
     /**
      * {@inheritDoc}
      */
@@ -108,9 +108,8 @@ class SQLServer2008Platform extends SQLServer2005Platform
     }
 
     /**
-     * {@inheritdoc}
      *
-     * Returns Microsoft SQL Server 2008 specific keywords class
+     * @ERROR!!! Returns Microsoft SQL Server 2008 specific keywords class
      */
     protected function getReservedKeywordsClass()
     {

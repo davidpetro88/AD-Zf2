@@ -16,16 +16,19 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\DrizzlePDOMySql;
 
 /**
+ *
  * @author Kim Hemsø Rasmussen <kimhemsoe@gmail.com>
  */
 class Connection extends \Doctrine\DBAL\Driver\PDOConnection
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function quote($value, $type = \PDO::PARAM_STR)
     {
@@ -36,7 +39,7 @@ class Connection extends \Doctrine\DBAL\Driver\PDOConnection
                 return 'false';
             }
         }
-
+        
         return parent::quote($value, $type);
     }
 }

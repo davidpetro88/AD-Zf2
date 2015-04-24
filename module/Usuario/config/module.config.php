@@ -119,7 +119,7 @@ return [
                 'options' => [
                     'route' => '/registration[/:action]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z0-9_-]+',
+                        'action' => '[a-zA-Z0-9_-]+'
                     ),
                     'defaults' => [
                         'controller' => 'Usuario\Controller\Registration',
@@ -210,10 +210,9 @@ return [
                     ]
                 ]
             ]
-
         ]
-    ]
-    ,
+        
+    ],
     'view_manager' => [
         'template_path_stack' => [
             'Usuario' => __DIR__ . '/../view',
@@ -229,21 +228,22 @@ return [
                 'identity_class' => 'Usuario\Entity\Usuario', // 'Application\Entity\User',
                 'identity_property' => 'nome', // 'username', // 'email',
                 'credential_property' => 'password'
-            ] // 'password',
-                                                 // 'credential_callable' => function (Entity\Usuario $user, $passwordGiven) { // not only User
-                                                 // // return my_awesome_check_test($user->getPassword(), $passwordGiven);
-                                                 // // echo '<h1>callback user->getPassword = ' .$user->getPassword() . ' passwordGiven = ' . $passwordGiven . '</h1>';
-                                                 // // - if ($user->getPassword() == md5($passwordGiven)) { // original
-                                                 // // ToDo find a way to access the Service Manager and get the static salt from config array
-                                                 // if ($user->getPassword() == md5('aFGQ475SDsdfsaf2342' . $passwordGiven . $user->getUsrPasswordSalt()) && $user->getUsrActive() == 1) {
-                                                 // return true;
-                                                 // } else {
-                                                 // return false;
-                                                 // }
-                                                 // }
-
-        ],
-
+            ]
+        ] // 'password',
+          // 'credential_callable' => function (Entity\Usuario $user, $passwordGiven) { // not only User
+          // // return my_awesome_check_test($user->getPassword(), $passwordGiven);
+          // // echo '<h1>callback user->getPassword = ' .$user->getPassword() . ' passwordGiven = ' . $passwordGiven . '</h1>';
+          // // - if ($user->getPassword() == md5($passwordGiven)) { // original
+          // // ToDo find a way to access the Service Manager and get the static salt from config array
+          // if ($user->getPassword() == md5('aFGQ475SDsdfsaf2342' . $passwordGiven . $user->getUsrPasswordSalt()) && $user->getUsrActive() == 1) {
+          // return true;
+          // } else {
+          // return false;
+          // }
+          // }
+        
+        ,
+        
         'driver' => [
             'Usuario_driver' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',

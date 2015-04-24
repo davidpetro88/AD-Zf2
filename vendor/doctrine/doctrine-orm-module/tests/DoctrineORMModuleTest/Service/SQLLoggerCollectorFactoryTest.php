@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModuleTest\Service;
 
 use PHPUnit_Framework_TestCase as TestCase;
@@ -27,12 +26,15 @@ use Zend\ServiceManager\ServiceManager;
 
 class SQLLoggerCollectorFactoryTest extends TestCase
 {
+
     /**
+     *
      * @var ServiceManager
      */
     protected $services;
 
     /**
+     *
      * @var SQLLoggerCollectorFactory
      */
     protected $factory;
@@ -51,16 +53,13 @@ class SQLLoggerCollectorFactoryTest extends TestCase
     {
         $configuration = new ORMConfiguration();
         $this->services->setService('doctrine.configuration.orm_default', $configuration);
-        $this->services->setService(
-            'Config',
-            array(
-                'doctrine' => array(
-                    'sql_logger_collector' => array(
-                        'orm_default' => array(),
-                    ),
-                ),
+        $this->services->setService('Config', array(
+            'doctrine' => array(
+                'sql_logger_collector' => array(
+                    'orm_default' => array()
+                )
             )
-        );
+        ));
         $service = $this->factory->createService($this->services);
         $this->assertInstanceOf('DoctrineORMModule\Collector\SQLLoggerCollector', $service);
         $this->assertInstanceOf('Doctrine\DBAL\Logging\SQLLogger', $configuration->getSQLLogger());
@@ -70,18 +69,15 @@ class SQLLoggerCollectorFactoryTest extends TestCase
     {
         $configuration = new ORMConfiguration();
         $this->services->setService('configuration_service_id', $configuration);
-        $this->services->setService(
-            'Config',
-            array(
-                'doctrine' => array(
-                    'sql_logger_collector' => array(
-                        'orm_default' => array(
-                            'configuration' => 'configuration_service_id',
-                        ),
-                    ),
-                ),
+        $this->services->setService('Config', array(
+            'doctrine' => array(
+                'sql_logger_collector' => array(
+                    'orm_default' => array(
+                        'configuration' => 'configuration_service_id'
+                    )
+                )
             )
-        );
+        ));
         $this->factory->createService($this->services);
         $this->assertInstanceOf('Doctrine\DBAL\Logging\SQLLogger', $configuration->getSQLLogger());
     }
@@ -89,32 +85,27 @@ class SQLLoggerCollectorFactoryTest extends TestCase
     public function testCreateSQLLoggerWithPreviousExistingLoggerChainsLoggers()
     {
         $originalLogger = $this->getMock('Doctrine\DBAL\Logging\SQLLogger');
-        $originalLogger
-            ->expects($this->once())
+        $originalLogger->expects($this->once())
             ->method('startQuery')
             ->with($this->equalTo('test query'));
         $injectedLogger = $this->getMock('Doctrine\DBAL\Logging\DebugStack');
-        $injectedLogger
-            ->expects($this->once())
+        $injectedLogger->expects($this->once())
             ->method('startQuery')
             ->with($this->equalTo('test query'));
-
+        
         $configuration = new ORMConfiguration();
         $configuration->setSQLLogger($originalLogger);
         $this->services->setService('doctrine.configuration.orm_default', $configuration);
         $this->services->setService('custom_logger', $injectedLogger);
-        $this->services->setService(
-            'Config',
-            array(
-                'doctrine' => array(
-                    'sql_logger_collector' => array(
-                        'orm_default' => array(
-                            'sql_logger' => 'custom_logger',
-                        ),
-                    ),
-                ),
+        $this->services->setService('Config', array(
+            'doctrine' => array(
+                'sql_logger_collector' => array(
+                    'orm_default' => array(
+                        'sql_logger' => 'custom_logger'
+                    )
+                )
             )
-        );
+        ));
         $this->factory->createService($this->services);
         /* @var $logger \Doctrine\DBAL\Logging\SQLLogger */
         $logger = $configuration->getSQLLogger();
@@ -127,18 +118,15 @@ class SQLLoggerCollectorFactoryTest extends TestCase
         $logger = new DebugStack();
         $this->services->setService('doctrine.configuration.orm_default', $configuration);
         $this->services->setService('logger_service_id', $logger);
-        $this->services->setService(
-            'Config',
-            array(
-                'doctrine' => array(
-                    'sql_logger_collector' => array(
-                        'orm_default' => array(
-                            'sql_logger' => 'logger_service_id',
-                        ),
-                    ),
-                ),
+        $this->services->setService('Config', array(
+            'doctrine' => array(
+                'sql_logger_collector' => array(
+                    'orm_default' => array(
+                        'sql_logger' => 'logger_service_id'
+                    )
+                )
             )
-        );
+        ));
         $this->factory->createService($this->services);
         $this->assertSame($logger, $configuration->getSQLLogger());
     }
@@ -146,18 +134,15 @@ class SQLLoggerCollectorFactoryTest extends TestCase
     public function testCreateSQLLoggerWithCustomName()
     {
         $this->services->setService('doctrine.configuration.orm_default', new ORMConfiguration());
-        $this->services->setService(
-            'Config',
-            array(
-                'doctrine' => array(
-                    'sql_logger_collector' => array(
-                        'orm_default' => array(
-                            'name' => 'test_collector_name',
-                        ),
-                    ),
-                ),
+        $this->services->setService('Config', array(
+            'doctrine' => array(
+                'sql_logger_collector' => array(
+                    'orm_default' => array(
+                        'name' => 'test_collector_name'
+                    )
+                )
             )
-        );
+        ));
         /* @var $service \DoctrineORMModule\Collector\SQLLoggerCollector */
         $service = $this->factory->createService($this->services);
         $this->assertSame('doctrine.sql_logger_collector.test_collector_name', $service->getName());

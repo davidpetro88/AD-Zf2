@@ -29,9 +29,9 @@ class IndexController extends AbstractActionController
 
     public function loginAction()
     {
-        //change layout
+        // change layout
         $this->layout('layout/custom');
-
+        
         $form = new LoginForm();
         $form->get('submit')->setValue('Login');
         $messages = null;
@@ -86,18 +86,16 @@ class IndexController extends AbstractActionController
                 }
             }
             
-            
             return $this->redirect()->toRoute('home');
-            
         }
-
+        
         return new ViewModel(array(
             'error' => 'Your authentication credentials are not valid',
             'form' => $form,
             'messages' => $messages
         ));
         
-        //echo $this->url('home')
+        // echo $this->url('home')
     }
 
     public function logoutAction()
@@ -118,10 +116,10 @@ class IndexController extends AbstractActionController
         $sessionManager->forgetMe();
         
         return $this->redirect()->toRoute('index/auth');
-//         return $this->redirect()->toRoute('index', array(
-//             'controller' => 'index',
-//             'action' => 'auth'
-//         ));
+        // return $this->redirect()->toRoute('index', array(
+        // 'controller' => 'index',
+        // 'action' => 'auth'
+        // ));
     }
 
     /**

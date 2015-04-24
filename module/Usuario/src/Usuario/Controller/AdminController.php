@@ -11,7 +11,7 @@ class AdminController extends AbstractActionController
 {
 
     protected $usersTable = null;
-
+    
     // R - retrieve = Index
     public function indexAction()
     {
@@ -19,7 +19,7 @@ class AdminController extends AbstractActionController
             'rowset' => $this->getUsersTable()->select()
         ));
     }
-
+    
     // C - Create
     public function createAction()
     {
@@ -44,7 +44,7 @@ class AdminController extends AbstractActionController
             'form' => $form
         ));
     }
-
+    
     // U - Update
     public function updateAction()
     {
@@ -79,13 +79,13 @@ class AdminController extends AbstractActionController
             ))
                 ->current());
         }
-
+        
         return new ViewModel(array(
             'form' => $form,
             'id' => $id
         ));
     }
-
+    
     // D - delete
     public function deleteAction()
     {
@@ -95,7 +95,7 @@ class AdminController extends AbstractActionController
                 'usr_id' => $id
             ));
         }
-
+        
         return $this->redirect()->toRoute('auth-doctrine/default', array(
             'controller' => 'admin',
             'action' => 'index'
@@ -109,7 +109,6 @@ class AdminController extends AbstractActionController
             $this->usersTable = new TableGateway('users', $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter'));
             // new \Zend\Db\TableGateway\Feature\RowGatewayFeature('usr_id') // Zend\Db\RowGateway\RowGateway Object
             // ResultSetPrototype
-
         }
         return $this->usersTable;
     }

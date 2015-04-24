@@ -10,6 +10,7 @@
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 namespace LosLog\Log;
+
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\Common\Util\Debug;
@@ -32,7 +33,7 @@ class EntityLogger extends AbstractLogger implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'onFlush'
+            'onFlush',
         ];
     }
 
@@ -47,36 +48,32 @@ class EntityLogger extends AbstractLogger implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            $this->debug('Inserting entity ' . get_class($entity) . '. Fields: ' .
+            $this->debug('Inserting entity '.get_class($entity).'. Fields: '.
                              json_encode($uow->getEntityChangeSet($entity)));
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
             $add = '';
             if (method_exists($entity, '__toString')) {
-                $add = ' '. $entity->__toString();
+                $add = ' '.$entity->__toString();
             } elseif (method_exists($entity, 'getId')) {
-                $add = ' with id '. $entity->getId();
+                $add = ' with id '.$entity->getId();
             }
 
-            $this->debug('Updating entity ' . get_class($entity) . $add .'. Data: ' .
+            $this->debug('Updating entity '.get_class($entity).$add.'. Data: '.
                              json_encode($uow->getEntityChangeSet($entity)));
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
             $add = '';
             if (method_exists($entity, '__toString')) {
-                $add = ' '. $entity->__toString();
+                $add = ' '.$entity->__toString();
             } elseif (method_exists($entity, 'getId')) {
-                $add = ' with id '. $entity->getId();
+                $add = ' with id '.$entity->getId();
             }
 
-            $this->debug('Deleting entity ' . get_class($entity) . $add . '.');
+            $this->debug('Deleting entity '.get_class($entity).$add.'.');
         }
-
-        //TODO
-        //foreach ($uow->getScheduledCollectionDeletions() as $col) {}
-        //foreach ($uow->getScheduledCollectionUpdates() as $col) {}
     }
 
     public static function dump($entity, $maxDepth = 1, $toHtml = true)

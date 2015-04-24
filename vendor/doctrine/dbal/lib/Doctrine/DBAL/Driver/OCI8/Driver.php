@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\OCI8;
 
 use Doctrine\DBAL\DBALException;
@@ -30,20 +29,16 @@ use Doctrine\DBAL\Driver\AbstractOracleDriver;
  */
 class Driver extends AbstractOracleDriver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         try {
-            return new OCI8Connection(
-                $username,
-                $password,
-                $this->_constructDsn($params),
-                isset($params['charset']) ? $params['charset'] : null,
-                isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT,
-                isset($params['persistent']) ? $params['persistent'] : false
-            );
+            return new OCI8Connection($username, $password, $this->_constructDsn($params), isset($params['charset']) ? $params['charset'] : null, isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT, isset($params['persistent']) ? $params['persistent'] : false);
         } catch (OCI8Exception $e) {
             throw DBALException::driverException($this, $e);
         }
@@ -52,7 +47,7 @@ class Driver extends AbstractOracleDriver
     /**
      * Constructs the Oracle DSN.
      *
-     * @param array $params
+     * @param array $params            
      *
      * @return string The DSN.
      */
@@ -62,7 +57,9 @@ class Driver extends AbstractOracleDriver
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

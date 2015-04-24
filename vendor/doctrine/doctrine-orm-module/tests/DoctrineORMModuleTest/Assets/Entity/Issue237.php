@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -30,6 +29,7 @@ use Zend\Form\Annotation as Form;
  */
 class Issue237
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

@@ -16,43 +16,48 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 /**
  * Represents the change of a column.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ColumnDiff
 {
+
     /**
+     *
      * @var string
      */
     public $oldColumnName;
 
     /**
+     *
      * @var Column
      */
     public $column;
 
     /**
+     *
      * @var array
      */
     public $changedProperties = array();
 
     /**
+     *
      * @var Column
      */
     public $fromColumn;
 
     /**
-     * @param string   $oldColumnName
-     * @param Column   $column
-     * @param string[] $changedProperties
-     * @param Column   $fromColumn
+     *
+     * @param string $oldColumnName            
+     * @param Column $column            
+     * @param string[] $changedProperties            
+     * @param Column $fromColumn            
      */
     public function __construct($oldColumnName, Column $column, array $changedProperties = array(), Column $fromColumn = null)
     {
@@ -63,7 +68,8 @@ class ColumnDiff
     }
 
     /**
-     * @param string $propertyName
+     *
+     * @param string $propertyName            
      *
      * @return boolean
      */
@@ -73,6 +79,7 @@ class ColumnDiff
     }
 
     /**
+     *
      * @return Identifier
      */
     public function getOldColumnName()

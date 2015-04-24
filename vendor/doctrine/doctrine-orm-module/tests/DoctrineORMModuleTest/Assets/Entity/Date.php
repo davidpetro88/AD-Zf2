@@ -1,5 +1,4 @@
 <?php
-
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Date
 {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -23,6 +23,7 @@ class Date
     protected $date;
 
     /**
+     *
      * @return int|null
      */
     public function getId()
@@ -31,7 +32,8 @@ class Date
     }
 
     /**
-     * @param \DateTime $date
+     *
+     * @param \DateTime $date            
      */
     public function setDate($date)
     {
@@ -39,6 +41,7 @@ class Date
     }
 
     /**
+     *
      * @return \DateTime
      */
     public function getDate()

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Types\Type;
@@ -25,18 +24,18 @@ use Doctrine\DBAL\Types\Type;
  * SAP Sybase SQL Anywhere schema manager.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link   www.doctrine-project.org
- * @since  2.5
+ * @link www.doctrine-project.org
+ * @since 2.5
  */
 class SQLAnywhereSchemaManager extends AbstractSchemaManager
 {
+
     /**
-     * {@inheritdoc}
      *
-     * Starts a database after creation
-     * as SQL Anywhere needs a database to be started
-     * before it can be used.
-     *
+     * @ERROR!!! Starts a database after creation
+     *           as SQL Anywhere needs a database to be started
+     *           before it can be used.
+     *          
      * @see startDatabase
      */
     public function createDatabase($database)
@@ -46,12 +45,11 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
      *
-     * Tries stopping a database before dropping
-     * as SQL Anywhere needs a database to be stopped
-     * before it can be dropped.
-     *
+     * @ERROR!!! Tries stopping a database before dropping
+     *           as SQL Anywhere needs a database to be stopped
+     *           before it can be dropped.
+     *          
      * @see stopDatabase
      */
     public function dropDatabase($database)
@@ -63,7 +61,8 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     /**
      * Starts a database.
      *
-     * @param string $database The name of the database to start.
+     * @param string $database
+     *            The name of the database to start.
      */
     public function startDatabase($database)
     {
@@ -73,7 +72,8 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     /**
      * Stops a database.
      *
-     * @param string $database The name of the database to stop.
+     * @param string $database
+     *            The name of the database to stop.
      */
     public function stopDatabase($database)
     {
@@ -81,7 +81,9 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableDatabaseDefinition($database)
     {
@@ -89,7 +91,9 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableSequenceDefinition($sequence)
     {
@@ -97,61 +101,66 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
-        $type                   = $this->_platform->getDoctrineTypeMapping($tableColumn['type']);
-        $type                   = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
+        $type = $this->_platform->getDoctrineTypeMapping($tableColumn['type']);
+        $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
         $tableColumn['comment'] = $this->removeDoctrineTypeFromComment($tableColumn['comment'], $type);
-        $precision              = null;
-        $scale                  = null;
-        $fixed                  = false;
-        $default                = null;
-
+        $precision = null;
+        $scale = null;
+        $fixed = false;
+        $default = null;
+        
         if (null !== $tableColumn['default']) {
             // Strip quotes from default value.
-            $default = preg_replace(array("/^'(.*)'$/", "/''/"), array("$1", "'"), $tableColumn['default']);
-
+            $default = preg_replace(array(
+                "/^'(.*)'$/",
+                "/''/"
+            ), array(
+                "$1",
+                "'"
+            ), $tableColumn['default']);
+            
             if ('autoincrement' == $default) {
                 $default = null;
             }
         }
-
+        
         switch ($tableColumn['type']) {
             case 'binary':
             case 'char':
             case 'nchar':
                 $fixed = true;
         }
-
+        
         switch ($type) {
             case 'decimal':
             case 'float':
                 $precision = $tableColumn['length'];
                 $scale = $tableColumn['scale'];
         }
-
-        return new Column(
-            $tableColumn['column_name'],
-            Type::getType($type),
-            array(
-                'length'        => $type == 'string' ? $tableColumn['length'] : null,
-                'precision'     => $precision,
-                'scale'         => $scale,
-                'unsigned'      => (bool) $tableColumn['unsigned'],
-                'fixed'         => $fixed,
-                'notnull'       => (bool) $tableColumn['notnull'],
-                'default'       => $default,
-                'autoincrement' => (bool) $tableColumn['autoincrement'],
-                'comment'       => isset($tableColumn['comment']) && '' !== $tableColumn['comment']
-                    ? $tableColumn['comment']
-                    : null,
+        
+        return new Column($tableColumn['column_name'], Type::getType($type), array(
+            'length' => $type == 'string' ? $tableColumn['length'] : null,
+            'precision' => $precision,
+            'scale' => $scale,
+            'unsigned' => (bool) $tableColumn['unsigned'],
+            'fixed' => $fixed,
+            'notnull' => (bool) $tableColumn['notnull'],
+            'default' => $default,
+            'autoincrement' => (bool) $tableColumn['autoincrement'],
+            'comment' => isset($tableColumn['comment']) && '' !== $tableColumn['comment'] ? $tableColumn['comment'] : null
         ));
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableDefinition($table)
     {
@@ -159,40 +168,42 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
-        return new ForeignKeyConstraint(
-            $tableForeignKey['local_columns'],
-            $tableForeignKey['foreign_table'],
-            $tableForeignKey['foreign_columns'],
-            $tableForeignKey['name'],
-            $tableForeignKey['options']
-        );
+        return new ForeignKeyConstraint($tableForeignKey['local_columns'], $tableForeignKey['foreign_table'], $tableForeignKey['foreign_columns'], $tableForeignKey['name'], $tableForeignKey['options']);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
         $foreignKeys = array();
-
+        
         foreach ($tableForeignKeys as $tableForeignKey) {
-            if (!isset($foreignKeys[$tableForeignKey['index_name']])) {
+            if (! isset($foreignKeys[$tableForeignKey['index_name']])) {
                 $foreignKeys[$tableForeignKey['index_name']] = array(
-                    'local_columns'   => array($tableForeignKey['local_column']),
-                    'foreign_table'   => $tableForeignKey['foreign_table'],
-                    'foreign_columns' => array($tableForeignKey['foreign_column']),
-                    'name'            => $tableForeignKey['index_name'],
-                    'options'         => array(
-                        'notnull'           => $tableForeignKey['notnull'],
-                        'match'             => $tableForeignKey['match'],
-                        'onUpdate'          => $tableForeignKey['on_update'],
-                        'onDelete'          => $tableForeignKey['on_delete'],
-                        'check_on_commit'   => $tableForeignKey['check_on_commit'],
-                        'clustered'         => $tableForeignKey['clustered'],
+                    'local_columns' => array(
+                        $tableForeignKey['local_column']
+                    ),
+                    'foreign_table' => $tableForeignKey['foreign_table'],
+                    'foreign_columns' => array(
+                        $tableForeignKey['foreign_column']
+                    ),
+                    'name' => $tableForeignKey['index_name'],
+                    'options' => array(
+                        'notnull' => $tableForeignKey['notnull'],
+                        'match' => $tableForeignKey['match'],
+                        'onUpdate' => $tableForeignKey['on_update'],
+                        'onDelete' => $tableForeignKey['on_delete'],
+                        'check_on_commit' => $tableForeignKey['check_on_commit'],
+                        'clustered' => $tableForeignKey['clustered'],
                         'for_olap_workload' => $tableForeignKey['for_olap_workload']
                     )
                 );
@@ -201,43 +212,44 @@ class SQLAnywhereSchemaManager extends AbstractSchemaManager
                 $foreignKeys[$tableForeignKey['index_name']]['foreign_columns'][] = $tableForeignKey['foreign_column'];
             }
         }
-
+        
         return parent::_getPortableTableForeignKeysList($foreignKeys);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableIndexesList($tableIndexRows, $tableName = null)
     {
         foreach ($tableIndexRows as &$tableIndex) {
             $tableIndex['primary'] = (boolean) $tableIndex['primary'];
             $tableIndex['flags'] = array();
-
+            
             if ($tableIndex['clustered']) {
                 $tableIndex['flags'][] = 'clustered';
             }
-
+            
             if ($tableIndex['with_nulls_not_distinct']) {
                 $tableIndex['flags'][] = 'with_nulls_not_distinct';
             }
-
+            
             if ($tableIndex['for_olap_workload']) {
                 $tableIndex['flags'][] = 'for_olap_workload';
             }
         }
-
+        
         return parent::_getPortableTableIndexesList($tableIndexRows, $tableName);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableViewDefinition($view)
     {
-        return new View(
-            $view['table_name'],
-            preg_replace('/^.*\s+as\s+SELECT(.*)/i', "SELECT$1", $view['view_def'])
-        );
+        return new View($view['table_name'], preg_replace('/^.*\s+as\s+SELECT(.*)/i', "SELECT$1", $view['view_def']));
     }
 }

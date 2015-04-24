@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModuleTest\Options;
 
 use PHPUnit_Framework_TestCase as TestCase;
@@ -24,19 +23,20 @@ use DoctrineORMModule\Options\Configuration;
 
 class ConfigurationOptionsTest extends TestCase
 {
+
     public function testSetGetNamingStrategy()
     {
         $options = new Configuration();
         $options->setNamingStrategy(null);
         $this->assertNull($options->getNamingStrategy());
-
+        
         $options->setNamingStrategy('test');
         $this->assertSame('test', $options->getNamingStrategy());
-
+        
         $namingStrategy = $this->getMock('Doctrine\ORM\Mapping\NamingStrategy');
         $options->setNamingStrategy($namingStrategy);
         $this->assertSame($namingStrategy, $options->getNamingStrategy());
-
+        
         $this->setExpectedException('Zend\Stdlib\Exception\InvalidArgumentException');
         $options->setNamingStrategy(new \stdClass());
     }
@@ -46,14 +46,14 @@ class ConfigurationOptionsTest extends TestCase
         $options = new Configuration();
         $options->setRepositoryFactory(null);
         $this->assertNull($options->getRepositoryFactory());
-
+        
         $options->setRepositoryFactory('test');
         $this->assertSame('test', $options->getRepositoryFactory());
-
+        
         $repositoryFactory = $this->getMock('Doctrine\ORM\Repository\DefaultRepositoryFactory');
         $options->setRepositoryFactory($repositoryFactory);
         $this->assertSame($repositoryFactory, $options->getRepositoryFactory());
-
+        
         $this->setExpectedException('Zend\Stdlib\Exception\InvalidArgumentException');
         $options->setRepositoryFactory(new \stdClass());
     }

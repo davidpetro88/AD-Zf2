@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -29,12 +28,15 @@ use Doctrine\DBAL\Types\Type;
  * @author Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
  * @author Roman Borschel <roman@code-factory.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @since  2.0
+ * @since 2.0
  */
 class MySqlSchemaManager extends AbstractSchemaManager
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableViewDefinition($view)
     {
@@ -42,7 +44,9 @@ class MySqlSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableDefinition($table)
     {
@@ -50,20 +54,24 @@ class MySqlSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableUserDefinition($user)
     {
         return array(
             'user' => $user['User'],
-            'password' => $user['Password'],
+            'password' => $user['Password']
         );
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
-    protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
+    protected function _getPortableTableIndexesList($tableIndexes, $tableName = null)
     {
         foreach ($tableIndexes as $k => $v) {
             $v = array_change_key_case($v, CASE_LOWER);
@@ -73,18 +81,24 @@ class MySqlSchemaManager extends AbstractSchemaManager
                 $v['primary'] = false;
             }
             if (strpos($v['index_type'], 'FULLTEXT') !== false) {
-                $v['flags'] = array('FULLTEXT');
+                $v['flags'] = array(
+                    'FULLTEXT'
+                );
             } elseif (strpos($v['index_type'], 'SPATIAL') !== false) {
-                $v['flags'] = array('SPATIAL');
+                $v['flags'] = array(
+                    'SPATIAL'
+                );
             }
             $tableIndexes[$k] = $v;
         }
-
+        
         return parent::_getPortableTableIndexesList($tableIndexes, $tableName);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableSequenceDefinition($sequence)
     {
@@ -92,7 +106,9 @@ class MySqlSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableDatabaseDefinition($database)
     {
@@ -100,12 +116,14 @@ class MySqlSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
-
+        
         $dbType = strtolower($tableColumn['type']);
         $dbType = strtok($dbType, '(), ');
         if (isset($tableColumn['length'])) {
@@ -113,24 +131,24 @@ class MySqlSchemaManager extends AbstractSchemaManager
         } else {
             $length = strtok('(), ');
         }
-
+        
         $fixed = null;
-
-        if ( ! isset($tableColumn['name'])) {
+        
+        if (! isset($tableColumn['name'])) {
             $tableColumn['name'] = '';
         }
-
+        
         $scale = null;
         $precision = null;
-
+        
         $type = $this->_platform->getDoctrineTypeMapping($dbType);
-
+        
         // In cases where not connected to a database DESCRIBE $table does not return 'Comment'
         if (isset($tableColumn['comment'])) {
             $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
             $tableColumn['comment'] = $this->removeDoctrineTypeFromComment($tableColumn['comment'], $type);
         }
-
+        
         switch ($dbType) {
             case 'char':
             case 'binary':
@@ -175,78 +193,74 @@ class MySqlSchemaManager extends AbstractSchemaManager
                 $length = null;
                 break;
         }
-
+        
         $length = ((int) $length == 0) ? null : (int) $length;
-
+        
         $options = array(
-            'length'        => $length,
-            'unsigned'      => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
-            'fixed'         => (bool) $fixed,
-            'default'       => isset($tableColumn['default']) ? $tableColumn['default'] : null,
-            'notnull'       => (bool) ($tableColumn['null'] != 'YES'),
-            'scale'         => null,
-            'precision'     => null,
+            'length' => $length,
+            'unsigned' => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
+            'fixed' => (bool) $fixed,
+            'default' => isset($tableColumn['default']) ? $tableColumn['default'] : null,
+            'notnull' => (bool) ($tableColumn['null'] != 'YES'),
+            'scale' => null,
+            'precision' => null,
             'autoincrement' => (bool) (strpos($tableColumn['extra'], 'auto_increment') !== false),
-            'comment'       => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
-                ? $tableColumn['comment']
-                : null,
+            'comment' => isset($tableColumn['comment']) && $tableColumn['comment'] !== '' ? $tableColumn['comment'] : null
         );
-
+        
         if ($scale !== null && $precision !== null) {
             $options['scale'] = $scale;
             $options['precision'] = $precision;
         }
-
+        
         $column = new Column($tableColumn['field'], Type::getType($type), $options);
-
+        
         if (isset($tableColumn['collation'])) {
             $column->setPlatformOption('collation', $tableColumn['collation']);
         }
-
+        
         return $column;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
         $list = array();
         foreach ($tableForeignKeys as $value) {
             $value = array_change_key_case($value, CASE_LOWER);
-            if (!isset($list[$value['constraint_name']])) {
-                if (!isset($value['delete_rule']) || $value['delete_rule'] == "RESTRICT") {
+            if (! isset($list[$value['constraint_name']])) {
+                if (! isset($value['delete_rule']) || $value['delete_rule'] == "RESTRICT") {
                     $value['delete_rule'] = null;
                 }
-                if (!isset($value['update_rule']) || $value['update_rule'] == "RESTRICT") {
+                if (! isset($value['update_rule']) || $value['update_rule'] == "RESTRICT") {
                     $value['update_rule'] = null;
                 }
-
+                
                 $list[$value['constraint_name']] = array(
                     'name' => $value['constraint_name'],
                     'local' => array(),
                     'foreign' => array(),
                     'foreignTable' => $value['referenced_table_name'],
                     'onDelete' => $value['delete_rule'],
-                    'onUpdate' => $value['update_rule'],
+                    'onUpdate' => $value['update_rule']
                 );
             }
             $list[$value['constraint_name']]['local'][] = $value['column_name'];
             $list[$value['constraint_name']]['foreign'][] = $value['referenced_column_name'];
         }
-
+        
         $result = array();
         foreach ($list as $constraint) {
-            $result[] = new ForeignKeyConstraint(
-                array_values($constraint['local']), $constraint['foreignTable'],
-                array_values($constraint['foreign']), $constraint['name'],
-                array(
-                    'onDelete' => $constraint['onDelete'],
-                    'onUpdate' => $constraint['onUpdate'],
-                )
-            );
+            $result[] = new ForeignKeyConstraint(array_values($constraint['local']), $constraint['foreignTable'], array_values($constraint['foreign']), $constraint['name'], array(
+                'onDelete' => $constraint['onDelete'],
+                'onUpdate' => $constraint['onUpdate']
+            ));
         }
-
+        
         return $result;
     }
 }

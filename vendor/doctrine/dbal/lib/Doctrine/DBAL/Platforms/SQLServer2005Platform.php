@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
 
 /**
@@ -26,15 +25,16 @@ namespace Doctrine\DBAL\Platforms;
  * Differences to SQL Server 2008 are:
  *
  * - DATETIME2 datatype does not exist, only DATETIME which has a precision of
- *   3. This is not supported by PHP DateTime, so we are emulating it by
- *   setting .000 manually.
+ * 3. This is not supported by PHP DateTime, so we are emulating it by
+ * setting .000 manually.
  * - Starting with SQLServer2005 VARCHAR(MAX), VARBINARY(MAX) and
- *   NVARCHAR(max) replace the old TEXT, NTEXT and IMAGE types. See
- *   {@link http://www.sql-server-helper.com/faq/sql-server-2005-varchar-max-p01.aspx}
- *   for more information.
+ * NVARCHAR(max) replace the old TEXT, NTEXT and IMAGE types. See
+ * {@link http://www.sql-server-helper.com/faq/sql-server-2005-varchar-max-p01.aspx}
+ * for more information.
  */
 class SQLServer2005Platform extends SQLServerPlatform
 {
+
     /**
      * {@inheritDoc}
      */
@@ -52,9 +52,8 @@ class SQLServer2005Platform extends SQLServerPlatform
     }
 
     /**
-     * {@inheritdoc}
      *
-     * Returns Microsoft SQL Server 2005 specific keywords class
+     * @ERROR!!! Returns Microsoft SQL Server 2005 specific keywords class
      */
     protected function getReservedKeywordsClass()
     {

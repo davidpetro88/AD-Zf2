@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -20,6 +19,7 @@ use Assetic\Asset\AssetInterface;
  */
 class FilterCollection implements FilterInterface, \IteratorAggregate, \Countable
 {
+
     private $filters = array();
 
     public function __construct($filters = array())
@@ -41,7 +41,7 @@ class FilterCollection implements FilterInterface, \IteratorAggregate, \Countabl
             foreach ($filter as $f) {
                 $this->ensure($f);
             }
-        } elseif (!in_array($filter, $this->filters, true)) {
+        } elseif (! in_array($filter, $this->filters, true)) {
             $this->filters[] = $filter;
         }
     }

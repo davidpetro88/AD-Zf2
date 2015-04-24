@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Form\Annotation;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
@@ -25,24 +24,31 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\Form\Annotation\AnnotationBuilder as ZendAnnotationBuilder;
 
 /**
+ *
  * @author Kyle Spraggs <theman@spiffyjr.me>
  */
 class AnnotationBuilder extends ZendAnnotationBuilder
 {
-    const EVENT_CONFIGURE_FIELD       = 'configureField';
+
+    const EVENT_CONFIGURE_FIELD = 'configureField';
+
     const EVENT_CONFIGURE_ASSOCIATION = 'configureAssociation';
-    const EVENT_EXCLUDE_FIELD         = 'excludeField';
-    const EVENT_EXCLUDE_ASSOCIATION   = 'excludeAssociation';
+
+    const EVENT_EXCLUDE_FIELD = 'excludeField';
+
+    const EVENT_EXCLUDE_ASSOCIATION = 'excludeAssociation';
 
     /**
+     *
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
     protected $objectManager;
 
     /**
-     * Constructor. Ensures ObjectManager is present.
+     * Constructor.
+     * Ensures ObjectManager is present.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager
+     * @param \Doctrine\Common\Persistence\ObjectManager $objectManager            
      */
     public function __construct(ObjectManager $objectManager)
     {
@@ -55,9 +61,9 @@ class AnnotationBuilder extends ZendAnnotationBuilder
     public function setEventManager(EventManagerInterface $events)
     {
         parent::setEventManager($events);
-
+        
         $this->getEventManager()->attach(new ElementAnnotationsListener($this->objectManager));
-
+        
         return $this;
     }
 
@@ -72,74 +78,79 @@ class AnnotationBuilder extends ZendAnnotationBuilder
      */
     public function getFormSpecification($entity)
     {
-        $formSpec    = parent::getFormSpecification($entity);
-        $metadata    = $this->objectManager->getClassMetadata(is_object($entity) ? get_class($entity) : $entity);
+        $formSpec = parent::getFormSpecification($entity);
+        $metadata = $this->objectManager->getClassMetadata(is_object($entity) ? get_class($entity) : $entity);
         $inputFilter = $formSpec['input_filter'];
-
+        
         foreach ($formSpec['elements'] as $key => $elementSpec) {
             $name = isset($elementSpec['spec']['name']) ? $elementSpec['spec']['name'] : null;
-
-            if (!$name) {
+            
+            if (! $name) {
                 continue;
             }
-
-            if (!isset($inputFilter[$name])) {
+            
+            if (! isset($inputFilter[$name])) {
                 $inputFilter[$name] = new \ArrayObject();
             }
-
+            
             $params = array(
-                'metadata'    => $metadata,
-                'name'        => $name,
+                'metadata' => $metadata,
+                'name' => $name,
                 'elementSpec' => $elementSpec,
-                'inputSpec'   => $inputFilter[$name]
+                'inputSpec' => $inputFilter[$name]
             );
-
+            
             if ($this->checkForExcludeElementFromMetadata($metadata, $name)) {
                 $elementSpec = $formSpec['elements'];
                 unset($elementSpec[$key]);
                 $formSpec['elements'] = $elementSpec;
-
+                
                 if (isset($inputFilter[$name])) {
                     unset($inputFilter[$name]);
                 }
-
+                
                 $formSpec['input_filter'] = $inputFilter;
                 continue;
             }
-
+            
             if ($metadata->hasField($name)) {
                 $this->getEventManager()->trigger(static::EVENT_CONFIGURE_FIELD, $this, $params);
             } elseif ($metadata->hasAssociation($name)) {
                 $this->getEventManager()->trigger(static::EVENT_CONFIGURE_ASSOCIATION, $this, $params);
             }
         }
-
+        
         return $formSpec;
     }
 
     /**
-     * @param ClassMetadata $metadata
-     * @param $name
+     *
+     * @param ClassMetadata $metadata            
+     * @param
+     *            $name
      * @return bool
      */
     protected function checkForExcludeElementFromMetadata(ClassMetadata $metadata, $name)
     {
-        $params = array('metadata' => $metadata, 'name' => $name);
+        $params = array(
+            'metadata' => $metadata,
+            'name' => $name
+        );
         $result = false;
-        $test   = function ($r) {
+        $test = function ($r) {
             return (true === $r);
         };
-
+        
         if ($metadata->hasField($name)) {
             $result = $this->getEventManager()->trigger(static::EVENT_EXCLUDE_FIELD, $this, $params, $test);
         } elseif ($metadata->hasAssociation($name)) {
             $result = $this->getEventManager()->trigger(static::EVENT_EXCLUDE_ASSOCIATION, $this, $params, $test);
         }
-
+        
         if ($result) {
             $result = (bool) $result->last();
         }
-
+        
         return $result;
     }
 }

@@ -16,13 +16,11 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Sharding\SQLAzure;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-
 use Doctrine\DBAL\Schema\Synchronizer\AbstractSchemaSynchronizer;
 use Doctrine\DBAL\Schema\Synchronizer\SingleDatabaseSynchronizer;
 use Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer;
@@ -39,72 +37,82 @@ use Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer;
  */
 class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
 {
-    const FEDERATION_TABLE_FEDERATED   = 'azure.federated';
+
+    const FEDERATION_TABLE_FEDERATED = 'azure.federated';
+
     const FEDERATION_DISTRIBUTION_NAME = 'azure.federatedOnDistributionName';
 
     /**
+     *
      * @var \Doctrine\DBAL\Sharding\SQLAzure\SQLAzureShardManager
      */
     private $shardManager;
 
     /**
+     *
      * @var \Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer
      */
     private $synchronizer;
 
     /**
-     * @param \Doctrine\DBAL\Connection                                  $conn
-     * @param \Doctrine\DBAL\Sharding\SQLAzure\SQLAzureShardManager      $shardManager
-     * @param \Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer|null $sync
+     *
+     * @param \Doctrine\DBAL\Connection $conn            
+     * @param \Doctrine\DBAL\Sharding\SQLAzure\SQLAzureShardManager $shardManager            
+     * @param \Doctrine\DBAL\Schema\Synchronizer\SchemaSynchronizer|null $sync            
      */
     public function __construct(Connection $conn, SQLAzureShardManager $shardManager, SchemaSynchronizer $sync = null)
     {
         parent::__construct($conn);
         $this->shardManager = $shardManager;
-        $this->synchronizer = $sync ?: new SingleDatabaseSynchronizer($conn);
+        $this->synchronizer = $sync ?  : new SingleDatabaseSynchronizer($conn);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getCreateSchema(Schema $createSchema)
     {
         $sql = array();
-
-        list($global, $federation) = $this->partitionSchema($createSchema);
-
+        
+        list ($global, $federation) = $this->partitionSchema($createSchema);
+        
         $globalSql = $this->synchronizer->getCreateSchema($global);
         if ($globalSql) {
-            $sql[] = "-- Create Root Federation\n" .
-                     "USE FEDERATION ROOT WITH RESET;";
+            $sql[] = "-- Create Root Federation\n" . "USE FEDERATION ROOT WITH RESET;";
             $sql = array_merge($sql, $globalSql);
         }
-
+        
         $federationSql = $this->synchronizer->getCreateSchema($federation);
-
+        
         if ($federationSql) {
             $defaultValue = $this->getFederationTypeDefaultValue();
-
+            
             $sql[] = $this->getCreateFederationStatement();
             $sql[] = "USE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " = " . $defaultValue . ") WITH RESET, FILTERING = OFF;";
             $sql = array_merge($sql, $federationSql);
         }
-
+        
         return $sql;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getUpdateSchema(Schema $toSchema, $noDrops = false)
     {
-        return $this->work($toSchema, function ($synchronizer, $schema) use ($noDrops) {
+        return $this->work($toSchema, function ($synchronizer, $schema) use($noDrops) {
             return $synchronizer->getUpdateSchema($schema, $noDrops);
         });
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDropSchema(Schema $dropSchema)
     {
@@ -114,7 +122,9 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function createSchema(Schema $createSchema)
     {
@@ -122,7 +132,9 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function updateSchema(Schema $toSchema, $noDrops = false)
     {
@@ -130,7 +142,9 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function dropSchema(Schema $dropSchema)
     {
@@ -138,38 +152,41 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDropAllSchema()
     {
         $this->shardManager->selectGlobal();
         $globalSql = $this->synchronizer->getDropAllSchema();
-
+        
         if ($globalSql) {
             $sql[] = "-- Work on Root Federation\nUSE FEDERATION ROOT WITH RESET;";
             $sql = array_merge($sql, $globalSql);
         }
-
+        
         $shards = $this->shardManager->getShards();
         foreach ($shards as $shard) {
             $this->shardManager->selectShard($shard['rangeLow']);
-
+            
             $federationSql = $this->synchronizer->getDropAllSchema();
             if ($federationSql) {
-                $sql[] = "-- Work on Federation ID " . $shard['id'] . "\n" .
-                         "USE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " = " . $shard['rangeLow'].") WITH RESET, FILTERING = OFF;";
+                $sql[] = "-- Work on Federation ID " . $shard['id'] . "\n" . "USE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " = " . $shard['rangeLow'] . ") WITH RESET, FILTERING = OFF;";
                 $sql = array_merge($sql, $federationSql);
             }
         }
-
+        
         $sql[] = "USE FEDERATION ROOT WITH RESET;";
         $sql[] = "DROP FEDERATION " . $this->shardManager->getFederationName();
-
+        
         return $sql;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function dropAllSchema()
     {
@@ -177,7 +194,8 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * @param \Doctrine\DBAL\Schema\Schema $schema
+     *
+     * @param \Doctrine\DBAL\Schema\Schema $schema            
      *
      * @return array
      */
@@ -185,13 +203,14 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     {
         return array(
             $this->extractSchemaFederation($schema, false),
-            $this->extractSchemaFederation($schema, true),
+            $this->extractSchemaFederation($schema, true)
         );
     }
 
     /**
-     * @param \Doctrine\DBAL\Schema\Schema $schema
-     * @param boolean                      $isFederation
+     *
+     * @param \Doctrine\DBAL\Schema\Schema $schema            
+     * @param boolean $isFederation            
      *
      * @return \Doctrine\DBAL\Schema\Schema
      *
@@ -200,12 +219,12 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
     private function extractSchemaFederation(Schema $schema, $isFederation)
     {
         $partitionedSchema = clone $schema;
-
+        
         foreach ($partitionedSchema->getTables() as $table) {
             if ($isFederation) {
                 $table->addOption(self::FEDERATION_DISTRIBUTION_NAME, $this->shardManager->getDistributionKey());
             }
-
+            
             if ($table->hasOption(self::FEDERATION_TABLE_FEDERATED) !== $isFederation) {
                 $partitionedSchema->dropTable($table->getName());
             } else {
@@ -217,7 +236,7 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
                 }
             }
         }
-
+        
         return $partitionedSchema;
     }
 
@@ -226,47 +245,47 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
      * perform the given operation on the underlying schema synchronizer given
      * the different partitioned schema instances.
      *
-     * @param \Doctrine\DBAL\Schema\Schema $schema
-     * @param \Closure                     $operation
+     * @param \Doctrine\DBAL\Schema\Schema $schema            
+     * @param \Closure $operation            
      *
      * @return array
      */
     private function work(Schema $schema, \Closure $operation)
     {
-        list($global, $federation) = $this->partitionSchema($schema);
+        list ($global, $federation) = $this->partitionSchema($schema);
         $sql = array();
-
+        
         $this->shardManager->selectGlobal();
         $globalSql = $operation($this->synchronizer, $global);
-
+        
         if ($globalSql) {
             $sql[] = "-- Work on Root Federation\nUSE FEDERATION ROOT WITH RESET;";
-            $sql   = array_merge($sql, $globalSql);
+            $sql = array_merge($sql, $globalSql);
         }
-
+        
         $shards = $this->shardManager->getShards();
-
+        
         foreach ($shards as $shard) {
             $this->shardManager->selectShard($shard['rangeLow']);
-
+            
             $federationSql = $operation($this->synchronizer, $federation);
             if ($federationSql) {
-                $sql[] = "-- Work on Federation ID " . $shard['id'] . "\n" .
-                         "USE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " = " . $shard['rangeLow'].") WITH RESET, FILTERING = OFF;";
-                $sql   = array_merge($sql, $federationSql);
+                $sql[] = "-- Work on Federation ID " . $shard['id'] . "\n" . "USE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " = " . $shard['rangeLow'] . ") WITH RESET, FILTERING = OFF;";
+                $sql = array_merge($sql, $federationSql);
             }
         }
-
+        
         return $sql;
     }
 
     /**
+     *
      * @return string
      */
     private function getFederationTypeDefaultValue()
     {
         $federationType = Type::getType($this->shardManager->getDistributionType());
-
+        
         switch ($federationType->getName()) {
             case Type::GUID:
                 $defaultValue = '00000000-0000-0000-0000-000000000000';
@@ -280,19 +299,19 @@ class SQLAzureFederationsSynchronizer extends AbstractSchemaSynchronizer
                 $defaultValue = '';
                 break;
         }
-
+        
         return $defaultValue;
     }
 
     /**
+     *
      * @return string
      */
     private function getCreateFederationStatement()
     {
         $federationType = Type::getType($this->shardManager->getDistributionType());
         $federationTypeSql = $federationType->getSqlDeclaration(array(), $this->conn->getDatabasePlatform());
-
-        return "--Create Federation\n" .
-               "CREATE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " " . $federationTypeSql ."  RANGE)";
+        
+        return "--Create Federation\n" . "CREATE FEDERATION " . $this->shardManager->getFederationName() . " (" . $this->shardManager->getDistributionKey() . " " . $federationTypeSql . "  RANGE)";
     }
 }

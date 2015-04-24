@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -25,13 +24,15 @@ use Zend\Stdlib\AbstractOptions;
  * DBAL Connection options
  *
  * @license MIT
- * @link    http://www.doctrine-project.org/
- * @author  Kyle Spraggs <theman@spiffyjr.me>
+ * @link http://www.doctrine-project.org/
+ * @author Kyle Spraggs <theman@spiffyjr.me>
  */
 class DBALConnection extends AbstractOptions
 {
+
     /**
-     * Set the configuration key for the Configuration. Configuration key
+     * Set the configuration key for the Configuration.
+     * Configuration key
      * is assembled as "doctrine.configuration.{key}" and pulled from
      * service locator.
      *
@@ -40,7 +41,8 @@ class DBALConnection extends AbstractOptions
     protected $configuration = 'orm_default';
 
     /**
-     * Set the eventmanager key for the EventManager. EventManager key
+     * Set the eventmanager key for the EventManager.
+     * EventManager key
      * is assembled as "doctrine.eventmanager.{key}" and pulled from
      * service locator.
      *
@@ -49,7 +51,8 @@ class DBALConnection extends AbstractOptions
     protected $eventmanager = 'orm_default';
 
     /**
-     * Set the PDO instance, if any, to use. If a string is set
+     * Set the PDO instance, if any, to use.
+     * If a string is set
      * then the alias is pulled from the service locator.
      *
      * @var null|string|\PDO
@@ -57,7 +60,8 @@ class DBALConnection extends AbstractOptions
     protected $pdo = null;
 
     /**
-     * Setting the driver is deprecated. You should set the
+     * Setting the driver is deprecated.
+     * You should set the
      * driver class directly instead.
      *
      * @var string
@@ -65,7 +69,8 @@ class DBALConnection extends AbstractOptions
     protected $driverClass = 'Doctrine\DBAL\Driver\PDOMySql\Driver';
 
     /**
-     * Set the wrapper class for the driver. In general, this should not
+     * Set the wrapper class for the driver.
+     * In general, this should not
      * need to be changed.
      *
      * @var string|null
@@ -80,12 +85,14 @@ class DBALConnection extends AbstractOptions
     protected $params = array();
 
     /**
+     *
      * @var array
      */
     protected $doctrineTypeMappings = array();
 
     /**
-     * @param string $configuration
+     *
+     * @param string $configuration            
      */
     public function setConfiguration($configuration)
     {
@@ -93,6 +100,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getConfiguration()
@@ -101,7 +109,8 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param string $eventmanager
+     *
+     * @param string $eventmanager            
      */
     public function setEventmanager($eventmanager)
     {
@@ -109,6 +118,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getEventmanager()
@@ -117,7 +127,8 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param array $params
+     *
+     * @param array $params            
      */
     public function setParams($params)
     {
@@ -125,6 +136,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return array
      */
     public function getParams()
@@ -133,13 +145,14 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param  array                                     $doctrineTypeMappings
+     *
+     * @param array $doctrineTypeMappings            
      * @return \DoctrineORMModule\Options\DBALConnection
      */
     public function setDoctrineTypeMappings($doctrineTypeMappings)
     {
         $this->doctrineTypeMappings = (array) $doctrineTypeMappings;
-
+        
         return $this;
     }
 
@@ -153,7 +166,8 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param null|string $driverClass
+     *
+     * @param null|string $driverClass            
      */
     public function setDriverClass($driverClass)
     {
@@ -161,6 +175,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return null|string
      */
     public function getDriverClass()
@@ -169,7 +184,8 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param null|\PDO|string $pdo
+     *
+     * @param null|\PDO|string $pdo            
      */
     public function setPdo($pdo)
     {
@@ -177,6 +193,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return null|\PDO|string
      */
     public function getPdo()
@@ -185,7 +202,8 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
-     * @param string $wrapperClass
+     *
+     * @param string $wrapperClass            
      */
     public function setWrapperClass($wrapperClass)
     {
@@ -193,6 +211,7 @@ class DBALConnection extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getWrapperClass()

@@ -16,26 +16,26 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Query;
 
 use Doctrine\DBAL\DBALException;
 
 /**
+ *
  * @since 2.1.4
  */
 class QueryException extends DBALException
 {
+
     /**
-     * @param string $alias
-     * @param array  $registeredAliases
+     *
+     * @param string $alias            
+     * @param array $registeredAliases            
      *
      * @return \Doctrine\DBAL\Query\QueryException
      */
     static public function unknownAlias($alias, $registeredAliases)
     {
-        return new self("The given alias '" . $alias . "' is not part of " .
-            "any FROM or JOIN clause table. The currently registered " .
-            "aliases are: " . implode(", ", $registeredAliases) . ".");
+        return new self("The given alias '" . $alias . "' is not part of " . "any FROM or JOIN clause table. The currently registered " . "aliases are: " . implode(", ", $registeredAliases) . ".");
     }
 }

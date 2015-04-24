@@ -5,6 +5,7 @@
  */
 return array(
     'modules' => array(
+        'Application',
         'DoctrineModule',
         'DoctrineORMModule',
         'ZfcBase',
@@ -15,7 +16,6 @@ return array(
         'LosBase',
         'LosUi',
         'LosLog',
-        'Application',
         'Cliente',
         'Usuario',
         'Dvd'

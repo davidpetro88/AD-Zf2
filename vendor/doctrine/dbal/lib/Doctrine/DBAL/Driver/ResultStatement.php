@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver;
 
 /**
@@ -26,6 +25,7 @@ namespace Doctrine\DBAL\Driver;
  */
 interface ResultStatement extends \Traversable
 {
+
     /**
      * Closes the cursor, enabling the statement to be executed again.
      *
@@ -37,17 +37,18 @@ interface ResultStatement extends \Traversable
      * Returns the number of columns in the result set
      *
      * @return integer The number of columns in the result set represented
-     *                 by the PDOStatement object. If there is no result set,
-     *                 this method should return 0.
+     *         by the PDOStatement object. If there is no result set,
+     *         this method should return 0.
      */
     public function columnCount();
 
     /**
      * Sets the fetch mode to use while iterating this statement.
      *
-     * @param integer $fetchMode The fetch mode must be one of the PDO::FETCH_* constants.
-     * @param mixed   $arg2
-     * @param mixed   $arg3
+     * @param integer $fetchMode
+     *            The fetch mode must be one of the PDO::FETCH_* constants.
+     * @param mixed $arg2            
+     * @param mixed $arg3            
      *
      * @return boolean
      *
@@ -58,13 +59,14 @@ interface ResultStatement extends \Traversable
     /**
      * Returns the next row of a result set.
      *
-     * @param integer|null $fetchMode Controls how the next row will be returned to the caller.
-     *                                The value must be one of the PDO::FETCH_* constants,
-     *                                defaulting to PDO::FETCH_BOTH.
-     *
+     * @param integer|null $fetchMode
+     *            Controls how the next row will be returned to the caller.
+     *            The value must be one of the PDO::FETCH_* constants,
+     *            defaulting to PDO::FETCH_BOTH.
+     *            
      * @return mixed The return value of this method on success depends on the fetch mode. In all cases, FALSE is
-     *               returned on failure.
-     *
+     *         returned on failure.
+     *        
      * @see PDO::FETCH_* constants.
      */
     public function fetch($fetchMode = null);
@@ -72,10 +74,11 @@ interface ResultStatement extends \Traversable
     /**
      * Returns an array containing all of the result set rows.
      *
-     * @param integer|null $fetchMode Controls how the next row will be returned to the caller.
-     *                                The value must be one of the PDO::FETCH_* constants,
-     *                                defaulting to PDO::FETCH_BOTH.
-     *
+     * @param integer|null $fetchMode
+     *            Controls how the next row will be returned to the caller.
+     *            The value must be one of the PDO::FETCH_* constants,
+     *            defaulting to PDO::FETCH_BOTH.
+     *            
      * @return array
      *
      * @see PDO::FETCH_* constants.
@@ -85,10 +88,11 @@ interface ResultStatement extends \Traversable
     /**
      * Returns a single column from the next row of a result set or FALSE if there are no more rows.
      *
-     * @param integer $columnIndex 0-indexed number of the column you wish to retrieve from the row.
-     *                             If no value is supplied, PDOStatement->fetchColumn()
-     *                             fetches the first column.
-     *
+     * @param integer $columnIndex
+     *            0-indexed number of the column you wish to retrieve from the row.
+     *            If no value is supplied, PDOStatement->fetchColumn()
+     *            fetches the first column.
+     *            
      * @return string|boolean A single column in the next row of a result set, or FALSE if there are no more rows.
      */
     public function fetchColumn($columnIndex = 0);

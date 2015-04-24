@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Factory\Resource;
 
 /**
@@ -18,12 +17,14 @@ namespace Assetic\Factory\Resource;
  */
 class FileResource implements ResourceInterface
 {
+
     private $path;
 
     /**
      * Constructor.
      *
-     * @param string $path The path to a file
+     * @param string $path
+     *            The path to a file
      */
     public function __construct($path)
     {

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Types\Type;
@@ -28,40 +27,43 @@ use Doctrine\DBAL\Types\Type;
  */
 class DrizzleSchemaManager extends AbstractSchemaManager
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $dbType = strtolower($tableColumn['DATA_TYPE']);
-
+        
         $type = $this->_platform->getDoctrineTypeMapping($dbType);
         $type = $this->extractDoctrineTypeFromComment($tableColumn['COLUMN_COMMENT'], $type);
         $tableColumn['COLUMN_COMMENT'] = $this->removeDoctrineTypeFromComment($tableColumn['COLUMN_COMMENT'], $type);
-
+        
         $options = array(
-            'notnull' => !(bool) $tableColumn['IS_NULLABLE'],
+            'notnull' => ! (bool) $tableColumn['IS_NULLABLE'],
             'length' => (int) $tableColumn['CHARACTER_MAXIMUM_LENGTH'],
             'default' => isset($tableColumn['COLUMN_DEFAULT']) ? $tableColumn['COLUMN_DEFAULT'] : null,
             'autoincrement' => (bool) $tableColumn['IS_AUTO_INCREMENT'],
             'scale' => (int) $tableColumn['NUMERIC_SCALE'],
             'precision' => (int) $tableColumn['NUMERIC_PRECISION'],
-            'comment' => isset($tableColumn['COLUMN_COMMENT']) && '' !== $tableColumn['COLUMN_COMMENT']
-                ? $tableColumn['COLUMN_COMMENT']
-                : null,
+            'comment' => isset($tableColumn['COLUMN_COMMENT']) && '' !== $tableColumn['COLUMN_COMMENT'] ? $tableColumn['COLUMN_COMMENT'] : null
         );
-
+        
         $column = new Column($tableColumn['COLUMN_NAME'], Type::getType($type), $options);
-
-        if ( ! empty($tableColumn['COLLATION_NAME'])) {
+        
+        if (! empty($tableColumn['COLLATION_NAME'])) {
             $column->setPlatformOption('collation', $tableColumn['COLLATION_NAME']);
         }
-
+        
         return $column;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableDatabaseDefinition($database)
     {
@@ -69,7 +71,9 @@ class DrizzleSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableDefinition($table)
     {
@@ -77,7 +81,9 @@ class DrizzleSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
@@ -85,26 +91,22 @@ class DrizzleSchemaManager extends AbstractSchemaManager
         foreach (explode(',', $tableForeignKey['CONSTRAINT_COLUMNS']) as $value) {
             $columns[] = trim($value, ' `');
         }
-
+        
         $refColumns = array();
         foreach (explode(',', $tableForeignKey['REFERENCED_TABLE_COLUMNS']) as $value) {
             $refColumns[] = trim($value, ' `');
         }
-
-        return new ForeignKeyConstraint(
-            $columns,
-            $tableForeignKey['REFERENCED_TABLE_NAME'],
-            $refColumns,
-            $tableForeignKey['CONSTRAINT_NAME'],
-            array(
-                'onUpdate' => $tableForeignKey['UPDATE_RULE'],
-                'onDelete' => $tableForeignKey['DELETE_RULE'],
-            )
-        );
+        
+        return new ForeignKeyConstraint($columns, $tableForeignKey['REFERENCED_TABLE_NAME'], $refColumns, $tableForeignKey['CONSTRAINT_NAME'], array(
+            'onUpdate' => $tableForeignKey['UPDATE_RULE'],
+            'onDelete' => $tableForeignKey['DELETE_RULE']
+        ));
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function _getPortableTableIndexesList($tableIndexes, $tableName = null)
     {
@@ -113,7 +115,7 @@ class DrizzleSchemaManager extends AbstractSchemaManager
             $k['primary'] = (boolean) $k['primary'];
             $indexes[] = $k;
         }
-
+        
         return parent::_getPortableTableIndexesList($indexes, $tableName);
     }
 }

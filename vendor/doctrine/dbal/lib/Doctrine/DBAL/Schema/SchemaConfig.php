@@ -16,39 +16,44 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 /**
  * Configuration for a Schema.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SchemaConfig
 {
+
     /**
+     *
      * @var boolean
      */
     protected $hasExplicitForeignKeyIndexes = false;
 
     /**
+     *
      * @var integer
      */
     protected $maxIdentifierLength = 63;
 
     /**
+     *
      * @var string
      */
     protected $name;
 
     /**
+     *
      * @var array
      */
     protected $defaultTableOptions = array();
 
     /**
+     *
      * @return boolean
      */
     public function hasExplicitForeignKeyIndexes()
@@ -57,7 +62,8 @@ class SchemaConfig
     }
 
     /**
-     * @param boolean $flag
+     *
+     * @param boolean $flag            
      *
      * @return void
      */
@@ -67,7 +73,8 @@ class SchemaConfig
     }
 
     /**
-     * @param integer $length
+     *
+     * @param integer $length            
      *
      * @return void
      */
@@ -77,6 +84,7 @@ class SchemaConfig
     }
 
     /**
+     *
      * @return integer
      */
     public function getMaxIdentifierLength()
@@ -97,8 +105,9 @@ class SchemaConfig
     /**
      * Sets the default namespace name of schema objects.
      *
-     * @param string $name The value to set.
-     *
+     * @param string $name
+     *            The value to set.
+     *            
      * @return void
      */
     public function setName($name)
@@ -118,7 +127,8 @@ class SchemaConfig
     }
 
     /**
-     * @param array $defaultTableOptions
+     *
+     * @param array $defaultTableOptions            
      *
      * @return void
      */

@@ -51,7 +51,7 @@ echo $this->losHeadLink(array(
 			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
     		    </ul>
 				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
-					<li style="min-width:100px;"></li>
+					<li style="min-width: 100px;"></li>
 				</ul>
 
 				<div class="pull-right header-btns">
@@ -285,8 +285,7 @@ echo $this->losHeadLink(array(
 							<span class="glyphicons glyphicons-user"></span> <b> <?php echo $this->escapeHtml($user->getNome()); ?>  </b>
 						</button>
 						<button data-toggle="dropdown"
-							class="btn btn-sm dropdown-toggle padding-none" type="button">
-						</button>
+							class="btn btn-sm dropdown-toggle padding-none" type="button"></button>
 						<ul role="menu"
 							class="dropdown-menu checkbox-persist animated-short">
 							<li class="menu-arrow">
@@ -299,36 +298,41 @@ echo $this->losHeadLink(array(
 									<li>
 										<div class="item-icon">
 											<i class="fa fa-sign-in"></i>
-										</div> <a href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>" class="item-message">Sair</a>
+										</div> <a
+										href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>"
+										class="item-message">Sair</a>
 									</li>
 									<li class="border-bottom-none">
 										<div class="item-icon">
 											<i class="fa fa-cog"></i>
-										</div> <a href="<?php echo $this->url('usuario/edit', array('controller' => 'usuario', 'action' => 'edit', 'id' => $user->getId()));?>" class="item-message">Editar Perfil</a>
+										</div> <a
+										href="<?php echo $this->url('usuario/edit', array('controller' => 'usuario', 'action' => 'edit', 'id' => $user->getId()));?>"
+										class="item-message">Editar Perfil</a>
 									</li>
 									<li class="padding-none">
 										<div class="dropdown-lockout">
- 											<i class="fa fa-lock"></i> 
-                                                <!--<a href="screen-lock.html">Screen Lock</a> -->
+											<i class="fa fa-lock"></i>
+											<!--<a href="screen-lock.html">Screen Lock</a> -->
 										</div>
 										<div class="dropdown-signout">
- 											<i class="fa fa-sign-out"></i> 
- 											    <a href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>"><?php echo $this->translate('Sair'); ?></a>
+											<i class="fa fa-sign-out"></i> <a
+												href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>"><?php echo $this->translate('Sair'); ?></a>
 										</div>
 									</li>
 								</ul>
 							</li>
 						</ul>
 					</div>
-				
-				
-				
-				
-				
-			</div>
-			<!--/.nav-collapse -->
 
-		</div>
+
+
+
+
+				</div>
+				<!--/.nav-collapse -->
+
+			</div>
+	
 	</nav>
 	<?php else:; ?>
     	<nav class="navbar navbar-fixed-top navbar-inverse"
@@ -349,7 +353,7 @@ echo $this->losHeadLink(array(
 			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
     		    </ul>
 				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
-					<li style="min-width:100px;"></li>
+					<li style="min-width: 100px;"></li>
 				</ul>
 
 				<div class="pull-right header-btns">
@@ -583,8 +587,7 @@ echo $this->losHeadLink(array(
 							<span class="glyphicons glyphicons-user"></span> <b>Visitante</b>
 						</button>
 						<button data-toggle="dropdown"
-							class="btn btn-sm dropdown-toggle padding-none" type="button">
-						</button>
+							class="btn btn-sm dropdown-toggle padding-none" type="button"></button>
 						<ul role="menu"
 							class="dropdown-menu checkbox-persist animated-short">
 							<li class="menu-arrow">
@@ -597,21 +600,24 @@ echo $this->losHeadLink(array(
 									<li>
 										<div class="item-icon">
 											<i class="fa fa-sign-in"></i>
-										</div> <a href="<?php echo $this->url('index/auth') ?>" class="item-message">Logar</a>
+										</div> <a href="<?php echo $this->url('index/auth') ?>"
+										class="item-message">Logar</a>
 									</li>
 									<li class="border-bottom-none">
 										<div class="item-icon">
 											<i class="fa fa-cog"></i>
-										</div> <a href="<?php echo $this->url('registration', array('controller' => 'registration', 'action' => 'index'));?>" class="item-message">Cadastrar</a>
+										</div> <a
+										href="<?php echo $this->url('registration', array('controller' => 'registration', 'action' => 'index'));?>"
+										class="item-message">Cadastrar</a>
 									</li>
 									<li class="padding-none">
 										<div class="dropdown-lockout">
- 											<i class="fa fa-lock"></i> 
-                                                <!--<a href="screen-lock.html">Screen Lock</a> -->
+											<i class="fa fa-lock"></i>
+											<!--<a href="screen-lock.html">Screen Lock</a> -->
 										</div>
 										<div class="dropdown-signout">
- 											<i class="fa fa-sign-out"></i> 
- 											    <!-- <a href="login.html">Sign Out</a> -->
+											<i class="fa fa-sign-out"></i>
+											<!-- <a href="login.html">Sign Out</a> -->
 										</div>
 									</li>
 								</ul>

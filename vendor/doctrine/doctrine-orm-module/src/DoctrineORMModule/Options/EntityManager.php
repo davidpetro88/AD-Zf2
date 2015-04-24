@@ -1,13 +1,14 @@
 <?php
-
 namespace DoctrineORMModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
 class EntityManager extends AbstractOptions
 {
+
     /**
-     * Set the configuration key for the Configuration. Configuration key
+     * Set the configuration key for the Configuration.
+     * Configuration key
      * is assembled as "doctrine.configuration.{key}" and pulled from
      * service locator.
      *
@@ -16,7 +17,8 @@ class EntityManager extends AbstractOptions
     protected $configuration = 'orm_default';
 
     /**
-     * Set the connection key for the Connection. Connection key
+     * Set the connection key for the Connection.
+     * Connection key
      * is assembled as "doctrine.connection.{key}" and pulled from
      * service locator.
      *
@@ -35,17 +37,19 @@ class EntityManager extends AbstractOptions
     protected $entityResolver = 'orm_default';
 
     /**
-     * @param  string $configuration
+     *
+     * @param string $configuration            
      * @return self
      */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
-
+        
         return $this;
     }
 
     /**
+     *
      * @return string
      */
     public function getConfiguration()
@@ -54,17 +58,19 @@ class EntityManager extends AbstractOptions
     }
 
     /**
-     * @param  string $connection
+     *
+     * @param string $connection            
      * @return self
      */
     public function setConnection($connection)
     {
         $this->connection = $connection;
-
+        
         return $this;
     }
 
     /**
+     *
      * @return string
      * @return self
      */
@@ -74,17 +80,19 @@ class EntityManager extends AbstractOptions
     }
 
     /**
-     * @param  string $entityResolver
+     *
+     * @param string $entityResolver            
      * @return self
      */
     public function setEntityResolver($entityResolver)
     {
         $this->entityResolver = (string) $entityResolver;
-
+        
         return $this;
     }
 
     /**
+     *
      * @return string
      * @return self
      */

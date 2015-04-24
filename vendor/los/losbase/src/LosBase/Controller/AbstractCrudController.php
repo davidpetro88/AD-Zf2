@@ -7,7 +7,7 @@
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 namespace LosBase\Controller;
@@ -32,7 +32,7 @@ use LosBase\Validator\NoOtherEntityExists;
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 abstract class AbstractCrudController extends AbstractActionController
@@ -74,9 +74,7 @@ abstract class AbstractCrudController extends AbstractActionController
      */
     public function getEntityService()
     {
-
-
-        if (null == $this->entityService) {
+        if (null === $this->entityService) {
             $entityServiceClass = $this->getEntityServiceClass();
             if (! class_exists($entityServiceClass)) {
                 throw new \RuntimeException("Classe $entityServiceClass inexistente!");
@@ -88,31 +86,31 @@ abstract class AbstractCrudController extends AbstractActionController
         return $this->entityService;
     }
 
+    protected function getModuleName()
+    {
+        $module_array = explode('\\', get_class($this));
+
+        return $module_array[0];
+    }
+
     /**
      * Nome da rota raiz do controlador
      */
     public function getRouteName()
     {
-
-        $module_array = explode('\\', get_class($this));
-        $module = $module_array[0];
-
-        return strtolower($module);
+        return strtolower($this->getModuleName());
     }
 
     public function getEntityClass()
     {
-
-        $module_array = explode('\\', get_class($this));
-        $module = $module_array[0];
+        $module = $this->getModuleName();
 
         return "$module\Entity\\$module";
     }
 
     public function getEntityServiceClass()
     {
-        $module_array = explode('\\', get_class($this));
-        $module = $module_array[0];
+        $module = $this->getModuleName();
 
         return "$module\Service\\$module";
     }
@@ -121,12 +119,12 @@ abstract class AbstractCrudController extends AbstractActionController
     {
         $form = $this->getForm();
 
-        if ($this->uniqueField != null) {
+        if ($this->uniqueField !== null) {
             $validator = new NoEntityExists([
                 'object_repository' => $this->getEntityManager()->getRepository($this->getEntityClass()),
-                'fields' => $this->uniqueField
+                'fields' => $this->uniqueField,
             ]);
-            if ($this->uniqueEntityMessage != null) {
+            if ($this->uniqueEntityMessage !== null) {
                 $validator->setMessage($this->uniqueEntityMessage, 'objectFound');
             }
             $form->getInputFilter()
@@ -142,15 +140,15 @@ abstract class AbstractCrudController extends AbstractActionController
     {
         $form = $this->getForm();
 
-        if ($this->uniqueField != null) {
+        if ($this->uniqueField !== null) {
             $validator = new NoOtherEntityExists([
                 'object_repository' => $this->getEntityManager()->getRepository($this->getEntityClass()),
                 'fields' => $this->uniqueField,
                 'id' => $this->getEvent()
                     ->getRouteMatch()
-                    ->getParam('id', 0)
+                    ->getParam('id', 0),
             ]);
-            if ($this->uniqueEntityMessage != null) {
+            if ($this->uniqueEntityMessage !== null) {
                 $validator->setMessage($this->uniqueEntityMessage, 'objectFound');
             }
             $form->getInputFilter()
@@ -197,46 +195,43 @@ abstract class AbstractCrudController extends AbstractActionController
 
         $form->add([
             'type' => 'Zend\Form\Element\Csrf',
-            'name' => 'csrf'
+            'name' => 'csrf',
         ]);
 
         $submitElement = new \Zend\Form\Element\Button('submit');
         $submitElement->setAttributes([
             'type' => 'submit',
-            'class' => 'btn btn-primary'
+            'class' => 'btn btn-primary',
         ]);
         $submitElement->setLabel('Salvar');
         $form->add($submitElement, [
-            'priority' => - 100
+            'priority' => - 100,
         ]);
 
         $cancelarElement = new \Zend\Form\Element\Button('cancelar');
         $cancelarElement->setAttributes([
             'type' => 'button',
             'class' => 'btn btn-default',
-            'onclick' => 'top.location=\'' . $this->url()
-                ->fromRoute($this->getActionRoute('list')) . '\''
+            'onclick' => 'top.location=\''.$this->url()
+                ->fromRoute($this->getActionRoute('list')).'\'',
         ]);
         $cancelarElement->setLabel('Cancelar');
         $form->add($cancelarElement, [
-            'priority' => - 100
+            'priority' => - 100,
         ]);
 
         return $form;
     }
 
     public function handleSearch(QueryBuilder $qb)
-    {}
+    {
+    }
 
     /**
      * Lista as entidades, suporte a paginação, ordenação e busca
      */
     public function listAction()
     {
-
-        $pm = $this->getPluginManager();
-
-
         $page = $this->getRequest()->getQuery('page', 0);
         $limit = $this->getRequest()->getQuery('limit', $this->defaultPageSize);
         $sort = $this->getRequest()->getQuery('sort', $this->defaultSort);
@@ -254,8 +249,8 @@ abstract class AbstractCrudController extends AbstractActionController
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->add('select', 'e')
-            ->add('from', $this->getEntityClass() . ' e')
-            ->orderBy('e.' . $sort, $order)
+            ->add('from', $this->getEntityClass().' e')
+            ->orderBy('e.'.$sort, $order)
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
@@ -271,7 +266,7 @@ abstract class AbstractCrudController extends AbstractActionController
             'sort' => $sort,
             'order' => $order,
             'page' => $page,
-            'query' => $this->params()->fromQuery()
+            'query' => $this->params()->fromQuery(),
         ];
     }
 
@@ -282,19 +277,17 @@ abstract class AbstractCrudController extends AbstractActionController
      */
     public function getActionRoute($action = null)
     {
-        if (null == $action) {
+        if (null === $action) {
             $action = $this->getEvent()
                 ->getRouteMatch()
                 ->getParam('action');
         }
 
-        return $this->getRouteName() . '/' . $action;
+        return $this->getRouteName().'/'.$action;
     }
 
     public function addAction()
     {
-        $request = $this->getRequest();
-
         if (method_exists($this, 'getAddForm')) {
             $form = $this->getAddForm();
         } else {
@@ -311,23 +304,22 @@ abstract class AbstractCrudController extends AbstractActionController
         if ($prg instanceof Response) {
             return $prg;
         } elseif ($prg === false) {
-
             $this->getEventManager()->trigger('getForm', $this, [
                 'form' => $form,
                 'entityClass' => $this->getEntityClass(),
-                'entity' => $entity
+                'entity' => $entity,
             ]);
 
             return [
                 'entityForm' => $form,
-                'entity' => $entity
+                'entity' => $entity,
             ];
         }
 
         $this->getEventManager()->trigger('getForm', $this, [
             'form' => $form,
             'entityClass' => $this->getEntityClass(),
-            'entity' => $entity
+            'entity' => $entity,
         ]);
 
         $savedEntity = $this->getEntityService()->save($form, $entity);
@@ -335,7 +327,7 @@ abstract class AbstractCrudController extends AbstractActionController
         if (! $savedEntity) {
             return [
                 'entityForm' => $form,
-                'entity' => $entity
+                'entity' => $entity,
             ];
         }
 
@@ -351,8 +343,6 @@ abstract class AbstractCrudController extends AbstractActionController
      */
     public function editAction()
     {
-        $request = $this->getRequest();
-
         if (method_exists($this, 'getEditForm')) {
             $form = $this->getEditForm();
         } else {
@@ -368,18 +358,18 @@ abstract class AbstractCrudController extends AbstractActionController
             'name' => 'id',
             'attributes' => [
                 'id' => 'id',
-                'value' => $id
+                'value' => $id,
             ],
             'filters' => [
                 [
-                    'name' => 'Int'
-                ]
+                    'name' => 'Int',
+                ],
             ],
             'validators' => [
                 [
-                    'name' => 'Digits'
-                ]
-            ]
+                    'name' => 'Digits',
+                ],
+            ],
         ]);
 
         $em = $this->getEntityManager();
@@ -393,17 +383,16 @@ abstract class AbstractCrudController extends AbstractActionController
         if ($prg instanceof Response) {
             return $prg;
         } elseif ($prg === false) {
-
             $this->getEventManager()->trigger('getForm', $this, [
                 'form' => $form,
                 'entityClass' => $this->getEntityClass(),
                 'id' => $id,
-                'entity' => $entity
+                'entity' => $entity,
             ]);
 
             return [
                 'entityForm' => $form,
-                'entity' => $entity
+                'entity' => $entity,
             ];
         }
 
@@ -411,7 +400,7 @@ abstract class AbstractCrudController extends AbstractActionController
             'form' => $form,
             'entityClass' => $this->getEntityClass(),
             'id' => $id,
-            'entity' => $entity
+            'entity' => $entity,
         ]);
 
         $savedEntity = $this->getEntityService()->save($form, $entity);
@@ -419,7 +408,7 @@ abstract class AbstractCrudController extends AbstractActionController
         if (! $savedEntity) {
             return [
                 'entityForm' => $form,
-                'entity' => $entity
+                'entity' => $entity,
             ];
         }
 
@@ -435,8 +424,9 @@ abstract class AbstractCrudController extends AbstractActionController
         if (is_array($post) && array_key_exists('confirm', $post)) {
             $confirm = $post['confirm'];
 
-            if ($confirm == "1")
+            if ($confirm == "1") {
                 return true;
+            }
         }
 
         return false;
@@ -444,8 +434,6 @@ abstract class AbstractCrudController extends AbstractActionController
 
     public function deleteAction()
     {
-        $request = $this->getRequest();
-
         $id = $this->getEvent()
             ->getRouteMatch()
             ->getParam('id', 0);
@@ -456,13 +444,12 @@ abstract class AbstractCrudController extends AbstractActionController
         if ($prg instanceof Response) {
             return $prg;
         } elseif ($prg === false) {
-
             $em = $this->getEntityManager();
             $objRepository = $em->getRepository($this->getEntityClass());
             $entity = $objRepository->find($id);
 
             return [
-                'entity' => $entity
+                'entity' => $entity,
             ];
         }
 
@@ -487,7 +474,7 @@ abstract class AbstractCrudController extends AbstractActionController
             ->translate($this->errorDeleteMessage));
 
         return [
-            'entity' => $entity
+            'entity' => $entity,
         ];
     }
 

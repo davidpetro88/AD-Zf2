@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Event\Listeners;
 
 use Doctrine\DBAL\Event\ConnectionEventArgs;
@@ -26,19 +25,22 @@ use Doctrine\Common\EventSubscriber;
 /**
  * Session init listener for executing a single SQL statement right after a connection is opened.
  *
- * @link    www.doctrine-project.org
- * @since   2.2
- * @author  Benjamin Eberlei <kontakt@beberlei.de>
+ * @link www.doctrine-project.org
+ * @since 2.2
+ * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SQLSessionInit implements EventSubscriber
 {
+
     /**
+     *
      * @var string
      */
     protected $sql;
 
     /**
-     * @param string $sql
+     *
+     * @param string $sql            
      */
     public function __construct($sql)
     {
@@ -46,7 +48,8 @@ class SQLSessionInit implements EventSubscriber
     }
 
     /**
-     * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args
+     *
+     * @param \Doctrine\DBAL\Event\ConnectionEventArgs $args            
      *
      * @return void
      */
@@ -57,10 +60,14 @@ class SQLSessionInit implements EventSubscriber
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSubscribedEvents()
     {
-        return array(Events::postConnect);
+        return array(
+            Events::postConnect
+        );
     }
 }

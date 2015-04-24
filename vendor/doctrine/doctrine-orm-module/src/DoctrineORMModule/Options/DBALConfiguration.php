@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -25,13 +24,15 @@ use Zend\Stdlib\AbstractOptions;
  * Configuration options for a DBAL Connection
  *
  * @license MIT
- * @link    http://www.doctrine-project.org/
- * @author  Kyle Spraggs <theman@spiffyjr.me>
+ * @link http://www.doctrine-project.org/
+ * @author Kyle Spraggs <theman@spiffyjr.me>
  */
 class DBALConfiguration extends AbstractOptions
 {
+
     /**
-     * Set the cache key for the result cache. Cache key
+     * Set the cache key for the result cache.
+     * Cache key
      * is assembled as "doctrine.cache.{key}" and pulled from
      * service locator.
      *
@@ -55,7 +56,8 @@ class DBALConfiguration extends AbstractOptions
     protected $types = array();
 
     /**
-     * @param string $resultCache
+     *
+     * @param string $resultCache            
      */
     public function setResultCache($resultCache)
     {
@@ -63,6 +65,7 @@ class DBALConfiguration extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getResultCache()
@@ -71,7 +74,8 @@ class DBALConfiguration extends AbstractOptions
     }
 
     /**
-     * @param string $sqlLogger
+     *
+     * @param string $sqlLogger            
      */
     public function setSqlLogger($sqlLogger)
     {
@@ -79,6 +83,7 @@ class DBALConfiguration extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getSqlLogger()
@@ -87,7 +92,8 @@ class DBALConfiguration extends AbstractOptions
     }
 
     /**
-     * @param array $types
+     *
+     * @param array $types            
      */
     public function setTypes(array $types)
     {
@@ -95,6 +101,7 @@ class DBALConfiguration extends AbstractOptions
     }
 
     /**
+     *
      * @return string
      */
     public function getTypes()

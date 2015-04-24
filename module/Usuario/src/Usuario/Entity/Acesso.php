@@ -29,6 +29,7 @@ class Acesso extends AbstractEntity
 
     /**
      * Retorna o campo $ip
+     * 
      * @return $ip
      */
     public function getIp()
@@ -38,7 +39,8 @@ class Acesso extends AbstractEntity
 
     /**
      * Seta o campo $ip
-     * @param field_type $ip
+     * 
+     * @param field_type $ip            
      * @return Acesso
      */
     public function setIp($ip)
@@ -49,16 +51,18 @@ class Acesso extends AbstractEntity
 
     /**
      * Retorna o campo $usuario
+     * 
      * @return $usuario
      */
     public function getUsuario()
     {
-           return $this->usuario;
+        return $this->usuario;
     }
 
     /**
      * Seta o campo $usuario
-     * @param field_type $usuario
+     * 
+     * @param field_type $usuario            
      * @return Compra
      */
     public function setUsuario($usuario)

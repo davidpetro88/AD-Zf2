@@ -7,7 +7,7 @@
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 namespace LosBase\Validator;
@@ -22,12 +22,11 @@ use DoctrineModule\Validator\NoObjectExists;
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 class NoEntityExists extends NoObjectExists
 {
-
     private $additionalFields = null;
 
     public function __construct(array $options)
@@ -41,11 +40,11 @@ class NoEntityExists extends NoObjectExists
 
     public function isValid($value, $context = null)
     {
-        if (null != $this->additionalFields && is_array($context)) {
+        if (null !== $this->additionalFields && is_array($context)) {
             $value = (array) $value;
             foreach ($this->additionalFields as $field) {
                 if (! isset($context[$field])) {
-                    throw new InvalidArgumentException('Campo "' . $field . '"não especificado em additionalFields');
+                    throw new InvalidArgumentException('Campo "'.$field.'"não especificado em additionalFields');
                 }
                 $value[] = $context[$field];
             }

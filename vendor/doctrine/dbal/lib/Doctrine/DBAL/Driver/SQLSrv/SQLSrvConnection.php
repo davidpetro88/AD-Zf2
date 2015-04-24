@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
 use Doctrine\DBAL\Driver\Connection;
@@ -30,47 +29,55 @@ use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
  */
 class SQLSrvConnection implements Connection, ServerInfoAwareConnection
 {
+
     /**
+     *
      * @var resource
      */
     protected $conn;
 
     /**
+     *
      * @var \Doctrine\DBAL\Driver\SQLSrv\LastInsertId
      */
     protected $lastInsertId;
 
     /**
-     * @param string $serverName
-     * @param array  $connectionOptions
+     *
+     * @param string $serverName            
+     * @param array $connectionOptions            
      *
      * @throws \Doctrine\DBAL\Driver\SQLSrv\SQLSrvException
      */
     public function __construct($serverName, $connectionOptions)
     {
-        if ( ! sqlsrv_configure('WarningsReturnAsErrors', 0)) {
+        if (! sqlsrv_configure('WarningsReturnAsErrors', 0)) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
-
+        
         $this->conn = sqlsrv_connect($serverName, $connectionOptions);
-        if ( ! $this->conn) {
+        if (! $this->conn) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
         $this->lastInsertId = new LastInsertId();
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getServerVersion()
     {
         $serverInfo = sqlsrv_server_info($this->conn);
-
+        
         return $serverInfo['SQLServerVersion'];
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function requiresQueryForServerVersion()
     {
@@ -94,22 +101,23 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
         $sql = $args[0];
         $stmt = $this->prepare($sql);
         $stmt->execute();
-
+        
         return $stmt;
     }
 
     /**
      * {@inheritDoc}
+     * 
      * @license New BSD, code from Zend Framework
      */
-    public function quote($value, $type=\PDO::PARAM_STR)
+    public function quote($value, $type = \PDO::PARAM_STR)
     {
         if (is_int($value)) {
             return $value;
         } elseif (is_float($value)) {
             return sprintf('%F', $value);
         }
-
+        
         return "'" . str_replace("'", "''", $value) . "'";
     }
 
@@ -120,7 +128,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
     {
         $stmt = $this->prepare($statement);
         $stmt->execute();
-
+        
         return $stmt->rowCount();
     }
 
@@ -130,13 +138,13 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
     public function lastInsertId($name = null)
     {
         if ($name !== null) {
-            $sql = "SELECT IDENT_CURRENT(".$this->quote($name).") AS LastInsertId";
+            $sql = "SELECT IDENT_CURRENT(" . $this->quote($name) . ") AS LastInsertId";
             $stmt = $this->prepare($sql);
             $stmt->execute();
-
+            
             return $stmt->fetchColumn();
         }
-
+        
         return $this->lastInsertId->getId();
     }
 
@@ -145,7 +153,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
      */
     public function beginTransaction()
     {
-        if ( ! sqlsrv_begin_transaction($this->conn)) {
+        if (! sqlsrv_begin_transaction($this->conn)) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
     }
@@ -155,7 +163,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
      */
     public function commit()
     {
-        if ( ! sqlsrv_commit($this->conn)) {
+        if (! sqlsrv_commit($this->conn)) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
     }
@@ -165,7 +173,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
      */
     public function rollBack()
     {
-        if ( ! sqlsrv_rollback($this->conn)) {
+        if (! sqlsrv_rollback($this->conn)) {
             throw SQLSrvException::fromSqlSrvErrors();
         }
     }
@@ -179,7 +187,7 @@ class SQLSrvConnection implements Connection, ServerInfoAwareConnection
         if ($errors) {
             return $errors[0]['code'];
         }
-
+        
         return false;
     }
 

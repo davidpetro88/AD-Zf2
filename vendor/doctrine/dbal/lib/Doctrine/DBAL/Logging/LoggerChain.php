@@ -16,19 +16,20 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Logging;
 
 /**
  * Chains multiple SQLLogger.
  *
- * @link   www.doctrine-project.org
- * @since  2.2
+ * @link www.doctrine-project.org
+ * @since 2.2
  * @author Christophe Coevoet <stof@notk.org>
  */
 class LoggerChain implements SQLLogger
 {
+
     /**
+     *
      * @var \Doctrine\DBAL\Logging\SQLLogger[]
      */
     private $loggers = array();
@@ -36,7 +37,7 @@ class LoggerChain implements SQLLogger
     /**
      * Adds a logger in the chain.
      *
-     * @param \Doctrine\DBAL\Logging\SQLLogger $logger
+     * @param \Doctrine\DBAL\Logging\SQLLogger $logger            
      *
      * @return void
      */
@@ -46,7 +47,9 @@ class LoggerChain implements SQLLogger
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
@@ -56,7 +59,9 @@ class LoggerChain implements SQLLogger
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function stopQuery()
     {

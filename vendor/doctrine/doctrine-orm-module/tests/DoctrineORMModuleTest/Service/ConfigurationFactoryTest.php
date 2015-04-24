@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModuleTest\Service;
 
 use PHPUnit_Framework_TestCase;
@@ -26,12 +25,15 @@ use Zend\ServiceManager\ServiceManager;
 
 class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
 {
+
     /**
+     *
      * @var ServiceManager
      */
     protected $serviceManager;
 
     /**
+     *
      * @var ConfigurationFactory
      */
     protected $factory;
@@ -44,10 +46,7 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $this->serviceManager = new ServiceManager();
         $this->factory = new ConfigurationFactory('test_default');
         $this->serviceManager->setService('doctrine.cache.array', new ArrayCache());
-        $this->serviceManager->setService(
-            'doctrine.driver.orm_default',
-            $this->getMock('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver')
-        );
+        $this->serviceManager->setService('doctrine.driver.orm_default', $this->getMock('Doctrine\Common\Persistence\Mapping\Driver\MappingDriver'));
     }
 
     public function testWillInstantiateConfigWithoutNamingStrategySetting()
@@ -55,9 +54,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $config = array(
             'doctrine' => array(
                 'configuration' => array(
-                    'test_default' => array(),
-                ),
-            ),
+                    'test_default' => array()
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $ormConfig = $this->factory->createService($this->serviceManager);
@@ -67,15 +66,15 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
     public function testWillInstantiateConfigWithNamingStrategyObject()
     {
         $namingStrategy = $this->getMock('Doctrine\ORM\Mapping\NamingStrategy');
-
+        
         $config = array(
             'doctrine' => array(
                 'configuration' => array(
                     'test_default' => array(
-                        'naming_strategy' => $namingStrategy,
-                    ),
-                ),
-            ),
+                        'naming_strategy' => $namingStrategy
+                    )
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $factory = new ConfigurationFactory('test_default');
@@ -90,10 +89,10 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             'doctrine' => array(
                 'configuration' => array(
                     'test_default' => array(
-                        'naming_strategy' => 'test_naming_strategy',
-                    ),
-                ),
-            ),
+                        'naming_strategy' => 'test_naming_strategy'
+                    )
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $this->serviceManager->setService('test_naming_strategy', $namingStrategy);
@@ -107,10 +106,10 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             'doctrine' => array(
                 'configuration' => array(
                     'test_default' => array(
-                        'naming_strategy' => 'test_naming_strategy',
-                    ),
-                ),
-            ),
+                        'naming_strategy' => 'test_naming_strategy'
+                    )
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $this->setExpectedException('Zend\ServiceManager\Exception\InvalidArgumentException');
@@ -123,10 +122,10 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
             'doctrine' => array(
                 'configuration' => array(
                     'test_default' => array(
-                        'hydration_cache' => 'array',
-                    ),
-                ),
-            ),
+                        'hydration_cache' => 'array'
+                    )
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $factory = new ConfigurationFactory('test_default');
@@ -141,9 +140,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
                 'configuration' => array(
                     'test_default' => array(
                         'classMetadataFactoryName' => 'Factory'
-                    ),
-                ),
-            ),
+                    )
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $factory = new ConfigurationFactory('test_default');
@@ -156,10 +155,9 @@ class ConfigurationFactoryTest extends PHPUnit_Framework_TestCase
         $config = array(
             'doctrine' => array(
                 'configuration' => array(
-                    'test_default' => array(
-                    ),
-                ),
-            ),
+                    'test_default' => array()
+                )
+            )
         );
         $this->serviceManager->setService('Config', $config);
         $factory = new ConfigurationFactory('test_default');

@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Factory\Resource;
 
 /**
@@ -18,12 +17,13 @@ namespace Assetic\Factory\Resource;
  */
 class CoalescingDirectoryResource implements IteratorResourceInterface
 {
+
     private $directories;
 
     public function __construct($directories)
     {
         $this->directories = array();
-
+        
         foreach ($directories as $directory) {
             $this->addDirectory($directory);
         }
@@ -37,11 +37,11 @@ class CoalescingDirectoryResource implements IteratorResourceInterface
     public function isFresh($timestamp)
     {
         foreach ($this->getFileResources() as $file) {
-            if (!$file->isFresh($timestamp)) {
+            if (! $file->isFresh($timestamp)) {
                 return false;
             }
         }
-
+        
         return true;
     }
 
@@ -51,7 +51,7 @@ class CoalescingDirectoryResource implements IteratorResourceInterface
         foreach ($this->getFileResources() as $file) {
             $parts[] = $file->getContent();
         }
-
+        
         return implode("\n", $parts);
     }
 
@@ -66,7 +66,7 @@ class CoalescingDirectoryResource implements IteratorResourceInterface
         foreach ($this->directories as $directory) {
             $parts[] = (string) $directory;
         }
-
+        
         return implode(',', $parts);
     }
 
@@ -78,9 +78,11 @@ class CoalescingDirectoryResource implements IteratorResourceInterface
     /**
      * Returns the relative version of a filename.
      *
-     * @param ResourceInterface $file      The file
-     * @param ResourceInterface $directory The directory
-     *
+     * @param ResourceInterface $file
+     *            The file
+     * @param ResourceInterface $directory
+     *            The directory
+     *            
      * @return string The name to compare with files from other directories
      */
     protected function getRelativeName(ResourceInterface $file, ResourceInterface $directory)
@@ -96,17 +98,17 @@ class CoalescingDirectoryResource implements IteratorResourceInterface
     private function getFileResources()
     {
         $paths = array();
-
+        
         foreach ($this->directories as $directory) {
             foreach ($directory as $file) {
                 $relative = $this->getRelativeName($file, $directory);
-
-                if (!isset($paths[$relative])) {
+                
+                if (! isset($paths[$relative])) {
                     $paths[$relative] = $file;
                 }
             }
         }
-
+        
         return array_values($paths);
     }
 }

@@ -16,19 +16,22 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\Mysqli;
 
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\DBALException;
 
 /**
+ *
  * @author Kim Hemsø Rasmussen <kimhemsoe@gmail.com>
  */
 class Driver extends AbstractMySQLDriver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
@@ -40,7 +43,9 @@ class Driver extends AbstractMySQLDriver
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

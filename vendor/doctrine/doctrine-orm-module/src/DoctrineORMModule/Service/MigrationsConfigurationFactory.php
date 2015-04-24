@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Service;
 
 use Doctrine\DBAL\DriverManager;
@@ -28,11 +27,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * DBAL Connection ServiceManager factory
  *
  * @license MIT
- * @link    http://www.doctrine-project.org/
- * @author  Marco Pivetta <ocramius@gmail.com>
+ * @link http://www.doctrine-project.org/
+ * @author Marco Pivetta <ocramius@gmail.com>
  */
 class MigrationsConfigurationFactory extends AbstractFactory
 {
+
     /**
      * {@inheritDoc}
      *
@@ -40,19 +40,19 @@ class MigrationsConfigurationFactory extends AbstractFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $name             = $this->getName();
+        $name = $this->getName();
         /* @var $connection \Doctrine\DBAL\Connection */
-        $connection       = $serviceLocator->get('doctrine.connection.' . $name);
-        $appConfig        = $serviceLocator->get('Config');
+        $connection = $serviceLocator->get('doctrine.connection.' . $name);
+        $appConfig = $serviceLocator->get('Config');
         $migrationsConfig = $appConfig['doctrine']['migrations_configuration'][$name];
-        $configuration    = new Configuration($connection);
-
+        $configuration = new Configuration($connection);
+        
         $configuration->setName($migrationsConfig['name']);
         $configuration->setMigrationsDirectory($migrationsConfig['directory']);
         $configuration->setMigrationsNamespace($migrationsConfig['namespace']);
         $configuration->setMigrationsTableName($migrationsConfig['table']);
         $configuration->registerMigrationsFromDirectory($migrationsConfig['directory']);
-
+        
         return $configuration;
     }
 
@@ -60,6 +60,5 @@ class MigrationsConfigurationFactory extends AbstractFactory
      * {@inheritDoc}
      */
     public function getOptionsClass()
-    {
-    }
+    {}
 }

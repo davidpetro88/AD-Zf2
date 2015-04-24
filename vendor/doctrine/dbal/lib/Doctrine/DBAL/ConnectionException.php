@@ -16,17 +16,19 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL;
 
 /**
- * @link   www.doctrine-project.org
- * @since  2.0
+ *
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Jonathan H. Wage <jonwage@gmail.com
  */
 class ConnectionException extends DBALException
 {
+
     /**
+     *
      * @return \Doctrine\DBAL\ConnectionException
      */
     public static function commitFailedRollbackOnly()
@@ -35,6 +37,7 @@ class ConnectionException extends DBALException
     }
 
     /**
+     *
      * @return \Doctrine\DBAL\ConnectionException
      */
     public static function noActiveTransaction()
@@ -43,6 +46,7 @@ class ConnectionException extends DBALException
     }
 
     /**
+     *
      * @return \Doctrine\DBAL\ConnectionException
      */
     public static function savepointsNotSupported()
@@ -51,6 +55,7 @@ class ConnectionException extends DBALException
     }
 
     /**
+     *
      * @return \Doctrine\DBAL\ConnectionException
      */
     public static function mayNotAlterNestedTransactionWithSavepointsInTransaction()

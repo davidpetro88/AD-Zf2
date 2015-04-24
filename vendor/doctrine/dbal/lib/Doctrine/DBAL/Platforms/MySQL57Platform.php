@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\Schema\Index;
@@ -26,13 +25,16 @@ use Doctrine\DBAL\Schema\TableDiff;
  * Provides the behavior, features and SQL dialect of the MySQL 5.7 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link   www.doctrine-project.org
- * @since  2.5
+ * @link www.doctrine-project.org
+ * @since 2.5
  */
 class MySQL57Platform extends MySqlPlatform
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getPreAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
@@ -40,7 +42,9 @@ class MySQL57Platform extends MySqlPlatform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getPostAlterTableRenameIndexForeignKeySQL(TableDiff $diff)
     {
@@ -48,7 +52,9 @@ class MySQL57Platform extends MySqlPlatform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getRenameIndexSQL($oldIndexName, Index $index, $tableName)
     {
@@ -58,7 +64,9 @@ class MySQL57Platform extends MySqlPlatform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     protected function getReservedKeywordsClass()
     {

@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Service;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -26,11 +25,12 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Factory that provides the `Doctrine\ORM\EntityManager` alias for `doctrine.entitymanager.orm_default`
  *
  * @license MIT
- * @link    http://www.doctrine-project.org/
- * @author  Marco Pivetta <ocramius@gmail.com>
+ * @link http://www.doctrine-project.org/
+ * @author Marco Pivetta <ocramius@gmail.com>
  */
 class EntityManagerAliasCompatFactory implements FactoryInterface
 {
+
     /**
      * {@inheritDoc}
      *

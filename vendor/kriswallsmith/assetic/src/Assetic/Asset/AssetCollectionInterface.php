@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Asset;
 
 /**
@@ -18,6 +17,7 @@ namespace Assetic\Asset;
  */
 interface AssetCollectionInterface extends AssetInterface, \Traversable
 {
+
     /**
      * Returns all child assets.
      *
@@ -28,18 +28,21 @@ interface AssetCollectionInterface extends AssetInterface, \Traversable
     /**
      * Adds an asset to the current collection.
      *
-     * @param AssetInterface $asset An asset
+     * @param AssetInterface $asset
+     *            An asset
      */
     public function add(AssetInterface $asset);
 
     /**
      * Removes a leaf.
      *
-     * @param AssetInterface $leaf     The leaf to remove
-     * @param Boolean        $graceful Whether the failure should return false or throw an exception
-     *
+     * @param AssetInterface $leaf
+     *            The leaf to remove
+     * @param Boolean $graceful
+     *            Whether the failure should return false or throw an exception
+     *            
      * @return Boolean Whether the asset has been found
-     *
+     *        
      * @throws \InvalidArgumentException If the asset cannot be found
      */
     public function removeLeaf(AssetInterface $leaf, $graceful = false);
@@ -47,12 +50,15 @@ interface AssetCollectionInterface extends AssetInterface, \Traversable
     /**
      * Replaces an existing leaf with a new one.
      *
-     * @param AssetInterface $needle      The current asset to replace
-     * @param AssetInterface $replacement The new asset
-     * @param Boolean        $graceful    Whether the failure should return false or throw an exception
-     *
+     * @param AssetInterface $needle
+     *            The current asset to replace
+     * @param AssetInterface $replacement
+     *            The new asset
+     * @param Boolean $graceful
+     *            Whether the failure should return false or throw an exception
+     *            
      * @return Boolean Whether the asset has been found
-     *
+     *        
      * @throws \InvalidArgumentException If the asset cannot be found
      */
     public function replaceLeaf(AssetInterface $needle, AssetInterface $replacement, $graceful = false);

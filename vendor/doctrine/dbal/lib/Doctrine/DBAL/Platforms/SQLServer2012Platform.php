@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\Schema\Sequence;
@@ -30,40 +29,45 @@ use Doctrine\DBAL\Schema\Sequence;
  */
 class SQLServer2012Platform extends SQLServer2008Platform
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getAlterSequenceSQL(Sequence $sequence)
     {
-        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) .
-               ' INCREMENT BY ' . $sequence->getAllocationSize();
+        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) . ' INCREMENT BY ' . $sequence->getAllocationSize();
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getCreateSequenceSQL(Sequence $sequence)
     {
-        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) .
-               ' START WITH ' . $sequence->getInitialValue() .
-               ' INCREMENT BY ' . $sequence->getAllocationSize() .
-               ' MINVALUE ' . $sequence->getInitialValue();
+        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) . ' START WITH ' . $sequence->getInitialValue() . ' INCREMENT BY ' . $sequence->getAllocationSize() . ' MINVALUE ' . $sequence->getInitialValue();
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDropSequenceSQL($sequence)
     {
         if ($sequence instanceof Sequence) {
             $sequence = $sequence->getQuotedName($this);
         }
-
+        
         return 'DROP SEQUENCE ' . $sequence;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getListSequencesSQL($database)
     {
@@ -78,7 +82,9 @@ class SQLServer2012Platform extends SQLServer2008Platform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSequenceNextValSQL($sequenceName)
     {
@@ -86,7 +92,9 @@ class SQLServer2012Platform extends SQLServer2008Platform
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function supportsSequences()
     {
@@ -94,9 +102,8 @@ class SQLServer2012Platform extends SQLServer2008Platform
     }
 
     /**
-     * {@inheritdoc}
      *
-     * Returns Microsoft SQL Server 2012 specific keywords class
+     * @ERROR!!! Returns Microsoft SQL Server 2012 specific keywords class
      */
     protected function getReservedKeywordsClass()
     {

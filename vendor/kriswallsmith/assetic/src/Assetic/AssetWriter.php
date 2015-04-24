@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic;
 
 use Assetic\Asset\AssetInterface;
@@ -22,27 +21,31 @@ use Assetic\Util\VarUtils;
  */
 class AssetWriter
 {
+
     private $dir;
+
     private $values;
 
     /**
      * Constructor.
      *
-     * @param string $dir    The base web directory
-     * @param array  $values Variable values
-     *
+     * @param string $dir
+     *            The base web directory
+     * @param array $values
+     *            Variable values
+     *            
      * @throws \InvalidArgumentException if a variable value is not a string
      */
     public function __construct($dir, array $values = array())
     {
         foreach ($values as $var => $vals) {
             foreach ($vals as $value) {
-                if (!is_string($value)) {
+                if (! is_string($value)) {
                     throw new \InvalidArgumentException(sprintf('All variable values must be strings, but got %s for variable "%s".', json_encode($value), $var));
                 }
             }
         }
-
+        
         $this->dir = $dir;
         $this->values = $values;
     }
@@ -58,26 +61,19 @@ class AssetWriter
     {
         foreach (VarUtils::getCombinations($asset->getVars(), $this->values) as $combination) {
             $asset->setValues($combination);
-
-            static::write(
-                $this->dir.'/'.VarUtils::resolve(
-                    $asset->getTargetPath(),
-                    $asset->getVars(),
-                    $asset->getValues()
-                ),
-                $asset->dump()
-            );
+            
+            static::write($this->dir . '/' . VarUtils::resolve($asset->getTargetPath(), $asset->getVars(), $asset->getValues()), $asset->dump());
         }
     }
 
     protected static function write($path, $contents)
     {
-        if (!is_dir($dir = dirname($path)) && false === @mkdir($dir, 0777, true)) {
-            throw new \RuntimeException('Unable to create directory '.$dir);
+        if (! is_dir($dir = dirname($path)) && false === @mkdir($dir, 0777, true)) {
+            throw new \RuntimeException('Unable to create directory ' . $dir);
         }
-
+        
         if (false === @file_put_contents($path, $contents)) {
-            throw new \RuntimeException('Unable to write file '.$path);
+            throw new \RuntimeException('Unable to write file ' . $path);
         }
     }
 

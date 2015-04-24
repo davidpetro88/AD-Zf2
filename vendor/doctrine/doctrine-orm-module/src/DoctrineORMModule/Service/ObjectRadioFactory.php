@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModule\Service;
 
 use DoctrineModule\Form\Element\ObjectRadio;
@@ -27,22 +26,23 @@ use Zend\ServiceManager\FactoryInterface;
  * Factory for {@see ObjectRadio}
  *
  * @license MIT
- * @link    http://www.doctrine-project.org/
- * @author  Daniel Gimenes <daniel@danielgimenes.com.br>
+ * @link http://www.doctrine-project.org/
+ * @author Daniel Gimenes <daniel@danielgimenes.com.br>
  */
 class ObjectRadioFactory implements FactoryInterface
 {
+
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $pluginManager)
     {
-        $services      = $pluginManager->getServiceLocator();
+        $services = $pluginManager->getServiceLocator();
         $entityManager = $services->get('Doctrine\ORM\EntityManager');
-        $element       = new ObjectRadio;
-
+        $element = new ObjectRadio();
+        
         $element->getProxy()->setObjectManager($entityManager);
-
+        
         return $element;
     }
 }

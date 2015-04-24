@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema\Synchronizer;
 
 use Doctrine\DBAL\Connection;
@@ -31,13 +30,16 @@ use Doctrine\DBAL\Schema\Visitor\DropSchemaSqlCollector;
  */
 class SingleDatabaseSynchronizer extends AbstractSchemaSynchronizer
 {
+
     /**
+     *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $platform;
 
     /**
-     * @param \Doctrine\DBAL\Connection $conn
+     *
+     * @param \Doctrine\DBAL\Connection $conn            
      */
     public function __construct(Connection $conn)
     {
@@ -46,104 +48,113 @@ class SingleDatabaseSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getCreateSchema(Schema $createSchema)
     {
         return $createSchema->toSql($this->platform);
     }
 
-
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getUpdateSchema(Schema $toSchema, $noDrops = false)
     {
         $comparator = new Comparator();
-        $sm         = $this->conn->getSchemaManager();
-
+        $sm = $this->conn->getSchemaManager();
+        
         $fromSchema = $sm->createSchema();
         $schemaDiff = $comparator->compare($fromSchema, $toSchema);
-
+        
         if ($noDrops) {
             return $schemaDiff->toSaveSql($this->platform);
         }
-
+        
         return $schemaDiff->toSql($this->platform);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDropSchema(Schema $dropSchema)
     {
-        $visitor    = new DropSchemaSqlCollector($this->platform);
-        $sm         = $this->conn->getSchemaManager();
-
+        $visitor = new DropSchemaSqlCollector($this->platform);
+        $sm = $this->conn->getSchemaManager();
+        
         $fullSchema = $sm->createSchema();
-
+        
         foreach ($fullSchema->getTables() as $table) {
             if ($dropSchema->hasTable($table->getName())) {
                 $visitor->acceptTable($table);
             }
-
+            
             foreach ($table->getForeignKeys() as $foreignKey) {
-                if ( ! $dropSchema->hasTable($table->getName())) {
+                if (! $dropSchema->hasTable($table->getName())) {
                     continue;
                 }
-
-                if ( ! $dropSchema->hasTable($foreignKey->getForeignTableName())) {
+                
+                if (! $dropSchema->hasTable($foreignKey->getForeignTableName())) {
                     continue;
                 }
-
+                
                 $visitor->acceptForeignKey($table, $foreignKey);
             }
         }
-
-        if ( ! $this->platform->supportsSequences()) {
+        
+        if (! $this->platform->supportsSequences()) {
             return $visitor->getQueries();
         }
-
+        
         foreach ($dropSchema->getSequences() as $sequence) {
             $visitor->acceptSequence($sequence);
         }
-
+        
         foreach ($dropSchema->getTables() as $table) {
-            if ( ! $table->hasPrimaryKey()) {
+            if (! $table->hasPrimaryKey()) {
                 continue;
             }
-
+            
             $columns = $table->getPrimaryKey()->getColumns();
             if (count($columns) > 1) {
                 continue;
             }
-
+            
             $checkSequence = $table->getName() . "_" . $columns[0] . "_seq";
             if ($fullSchema->hasSequence($checkSequence)) {
                 $visitor->acceptSequence($fullSchema->getSequence($checkSequence));
             }
         }
-
+        
         return $visitor->getQueries();
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getDropAllSchema()
     {
-        $sm      = $this->conn->getSchemaManager();
+        $sm = $this->conn->getSchemaManager();
         $visitor = new DropSchemaSqlCollector($this->platform);
-
+        
         /* @var $schema \Doctrine\DBAL\Schema\Schema */
-        $schema  = $sm->createSchema();
+        $schema = $sm->createSchema();
         $schema->visit($visitor);
-
+        
         return $visitor->getQueries();
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function createSchema(Schema $createSchema)
     {
@@ -151,7 +162,9 @@ class SingleDatabaseSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function updateSchema(Schema $toSchema, $noDrops = false)
     {
@@ -159,7 +172,9 @@ class SingleDatabaseSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function dropSchema(Schema $dropSchema)
     {
@@ -167,7 +182,9 @@ class SingleDatabaseSynchronizer extends AbstractSchemaSynchronizer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function dropAllSchema()
     {

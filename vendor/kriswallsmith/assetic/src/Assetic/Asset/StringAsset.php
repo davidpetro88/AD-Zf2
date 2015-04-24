@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Asset;
 
 use Assetic\Filter\FilterInterface;
@@ -20,21 +19,27 @@ use Assetic\Filter\FilterInterface;
  */
 class StringAsset extends BaseAsset
 {
+
     private $string;
+
     private $lastModified;
 
     /**
      * Constructor.
      *
-     * @param string $content    The content of the asset
-     * @param array  $filters    Filters for the asset
-     * @param string $sourceRoot The source asset root directory
-     * @param string $sourcePath The source asset path
+     * @param string $content
+     *            The content of the asset
+     * @param array $filters
+     *            Filters for the asset
+     * @param string $sourceRoot
+     *            The source asset root directory
+     * @param string $sourcePath
+     *            The source asset path
      */
     public function __construct($content, $filters = array(), $sourceRoot = null, $sourcePath = null)
     {
         $this->string = $content;
-
+        
         parent::__construct($filters, $sourceRoot, $sourcePath);
     }
 

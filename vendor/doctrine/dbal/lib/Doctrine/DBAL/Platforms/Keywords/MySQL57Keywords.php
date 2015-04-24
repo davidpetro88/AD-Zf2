@@ -16,20 +16,22 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * MySQL 5.7 reserved keywords list.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link   www.doctrine-project.org
- * @since  2.5
+ * @link www.doctrine-project.org
+ * @since 2.5
  */
 class MySQL57Keywords extends MySQLKeywords
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -37,7 +39,8 @@ class MySQL57Keywords extends MySQLKeywords
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
      *
      * @link http://dev.mysql.com/doc/mysqld-version-reference/en/mysqld-version-reference-reservedwords-5-7.html
      */
@@ -275,7 +278,7 @@ class MySQL57Keywords extends MySQLKeywords
             'WRITE',
             'XOR',
             'YEAR_MONTH',
-            'ZEROFILL',
+            'ZEROFILL'
         );
     }
 }

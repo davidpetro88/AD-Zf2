@@ -43,9 +43,14 @@ class HeadScript extends ZfHeadScript
 {
     const VERSION_JQUERY = "2.1.3";
 
-    const VERSION_BOOTSTRAP = "3.3.2";
+    const VERSION_BOOTSTRAP = "3.3.4";
 
-    private function callWithCdn($method, $matches, $basePath, $args)
+    /**
+     * @param array  $matches
+     * @param string $basePath
+     * @param array  $args
+     */
+    private function callWithCdn($matches, $basePath, $args)
     {
         $action = $matches['action'];
         $mode = $matches['mode'];
@@ -88,7 +93,12 @@ class HeadScript extends ZfHeadScript
         return false;
     }
 
-    private function callWithoutCdn($method, $matches, $basePath, $args)
+    /**
+     * @param array  $matches
+     * @param string $basePath
+     * @param array  $args
+     */
+    private function callWithoutCdn($matches, $basePath, $args)
     {
         $action = $matches['action'];
         $mode = $matches['mode'];
@@ -136,7 +146,7 @@ class HeadScript extends ZfHeadScript
      * @param  array                            $args
      *                                                  Arguments of method
      * @throws Exception\BadMethodCallException if too few arguments or invalid method
-     * @return HeadScript
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -148,9 +158,9 @@ class HeadScript extends ZfHeadScript
         $ret = false;
 
         if (preg_match('/^(?P<action>(ap|pre)pend)(?P<mode>Bootstrap|Jquery)$/', $method, $matches)) {
-            $ret = $this->callWithCdn($method, $matches, $basePath, $args);
+            $ret = $this->callWithCdn($matches, $basePath, $args);
         } elseif (preg_match('/^(?P<action>(ap|pre)pend)(?P<mode>Chosen|Moment)$/', $method, $matches)) {
-            $ret = $this->callWithoutCdn($method, $matches, $basePath, $args);
+            $ret = $this->callWithoutCdn($matches, $basePath, $args);
         }
 
         return ($ret !== false) ? $ret : parent::__call($method, $args);

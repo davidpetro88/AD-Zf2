@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Portability;
 
 use PDO;
@@ -24,28 +23,33 @@ use PDO;
 /**
  * Portability wrapper for a Statement.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
 {
+
     /**
+     *
      * @var integer
      */
     private $portability;
 
     /**
+     *
      * @var \Doctrine\DBAL\Driver\Statement
      */
     private $stmt;
 
     /**
+     *
      * @var integer
      */
     private $case;
 
     /**
+     *
      * @var integer
      */
     private $defaultFetchMode = PDO::FETCH_BOTH;
@@ -53,8 +57,8 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     /**
      * Wraps <tt>Statement</tt> and applies portability measures.
      *
-     * @param \Doctrine\DBAL\Driver\Statement       $stmt
-     * @param \Doctrine\DBAL\Portability\Connection $conn
+     * @param \Doctrine\DBAL\Driver\Statement $stmt            
+     * @param \Doctrine\DBAL\Portability\Connection $conn            
      */
     public function __construct($stmt, Connection $conn)
     {
@@ -64,23 +68,29 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function bindParam($column, &$variable, $type = null, $length = null)
     {
         return $this->stmt->bindParam($column, $variable, $type, $length);
     }
-    /**
-     * {@inheritdoc}
-     */
 
+    /**
+     *
+     * @ERROR!!!
+     *
+     */
     public function bindValue($param, $value, $type = null)
     {
         return $this->stmt->bindValue($param, $value, $type);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function closeCursor()
     {
@@ -88,7 +98,9 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function columnCount()
     {
@@ -96,7 +108,9 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function errorCode()
     {
@@ -104,7 +118,9 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function errorInfo()
     {
@@ -112,7 +128,9 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function execute($params = null)
     {
@@ -120,85 +138,91 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function setFetchMode($fetchMode, $arg1 = null, $arg2 = null)
     {
         $this->defaultFetchMode = $fetchMode;
-
+        
         return $this->stmt->setFetchMode($fetchMode, $arg1, $arg2);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getIterator()
     {
         $data = $this->fetchAll();
-
+        
         return new \ArrayIterator($data);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetch($fetchMode = null)
     {
-        $fetchMode = $fetchMode ?: $this->defaultFetchMode;
-
+        $fetchMode = $fetchMode ?  : $this->defaultFetchMode;
+        
         $row = $this->stmt->fetch($fetchMode);
-
-        $row = $this->fixRow($row,
-            $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM),
-            !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE)
-        );
-
+        
+        $row = $this->fixRow($row, $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM), ! is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE));
+        
         return $row;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchAll($fetchMode = null, $columnIndex = 0)
     {
-        $fetchMode = $fetchMode ?: $this->defaultFetchMode;
-
+        $fetchMode = $fetchMode ?  : $this->defaultFetchMode;
+        
         if ($columnIndex != 0) {
             $rows = $this->stmt->fetchAll($fetchMode, $columnIndex);
         } else {
             $rows = $this->stmt->fetchAll($fetchMode);
         }
-
-        $iterateRow = $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM);
-        $fixCase = !is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE);
-        if ( ! $iterateRow && !$fixCase) {
+        
+        $iterateRow = $this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM);
+        $fixCase = ! is_null($this->case) && ($fetchMode == PDO::FETCH_ASSOC || $fetchMode == PDO::FETCH_BOTH) && ($this->portability & Connection::PORTABILITY_FIX_CASE);
+        if (! $iterateRow && ! $fixCase) {
             return $rows;
         }
-
+        
         foreach ($rows as $num => $row) {
             $rows[$num] = $this->fixRow($row, $iterateRow, $fixCase);
         }
-
+        
         return $rows;
     }
 
     /**
-     * @param mixed   $row
-     * @param integer $iterateRow
-     * @param boolean $fixCase
+     *
+     * @param mixed $row            
+     * @param integer $iterateRow            
+     * @param boolean $fixCase            
      *
      * @return array
      */
     protected function fixRow($row, $iterateRow, $fixCase)
     {
-        if ( ! $row) {
+        if (! $row) {
             return $row;
         }
-
+        
         if ($fixCase) {
             $row = array_change_key_case($row, $this->case);
         }
-
+        
         if ($iterateRow) {
             foreach ($row as $k => $v) {
                 if (($this->portability & Connection::PORTABILITY_EMPTY_TO_NULL) && $v === '') {
@@ -208,30 +232,34 @@ class Statement implements \IteratorAggregate, \Doctrine\DBAL\Driver\Statement
                 }
             }
         }
-
+        
         return $row;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function fetchColumn($columnIndex = 0)
     {
         $value = $this->stmt->fetchColumn($columnIndex);
-
-        if ($this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL|Connection::PORTABILITY_RTRIM)) {
+        
+        if ($this->portability & (Connection::PORTABILITY_EMPTY_TO_NULL | Connection::PORTABILITY_RTRIM)) {
             if (($this->portability & Connection::PORTABILITY_EMPTY_TO_NULL) && $value === '') {
                 $value = null;
             } elseif (($this->portability & Connection::PORTABILITY_RTRIM) && is_string($value)) {
                 $value = rtrim($value);
             }
         }
-
+        
         return $value;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function rowCount()
     {

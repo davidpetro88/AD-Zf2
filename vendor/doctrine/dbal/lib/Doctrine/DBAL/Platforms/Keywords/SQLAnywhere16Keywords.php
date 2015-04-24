@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -26,8 +25,11 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class SQLAnywhere16Keywords extends SQLAnywhere12Keywords
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -35,22 +37,20 @@ class SQLAnywhere16Keywords extends SQLAnywhere12Keywords
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
      *
      * @link http://dcx.sybase.com/index.html#sa160/en/dbreference/alhakeywords.html
      */
     protected function getKeywords()
     {
-        return array_merge(
-            parent::getKeywords(),
-            array(
-                'ARRAY',
-                'JSON',
-                'ROW',
-                'ROWTYPE',
-                'UNNEST',
-                'VARRAY'
-            )
-        );
+        return array_merge(parent::getKeywords(), array(
+            'ARRAY',
+            'JSON',
+            'ROW',
+            'ROWTYPE',
+            'UNNEST',
+            'VARRAY'
+        ));
     }
 }

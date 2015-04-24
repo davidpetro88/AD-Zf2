@@ -3,8 +3,11 @@ echo '<h1>Create</h1>';
 // $form = $this->form;
 $form->prepare();
 // Assuming the "contact/process" route exists...
-$form->setAttribute('action', $this->url('auth-doctrine/default', array('controller' => 'admin', 'action' => 'create'))); //'contact/process'));
-// Set the method attribute for the form
+$form->setAttribute('action', $this->url('auth-doctrine/default', array(
+    'controller' => 'admin',
+    'action' => 'create'
+))); // 'contact/process'));
+                                                                                                                          // Set the method attribute for the form
 $form->setAttribute('method', 'post');
 
 echo $this->form()->openTag($form);

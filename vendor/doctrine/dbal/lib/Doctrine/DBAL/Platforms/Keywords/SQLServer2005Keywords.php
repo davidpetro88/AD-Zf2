@@ -16,21 +16,23 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * Microsoft SQL Server 2005 reserved keyword dictionary.
  *
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
- * @link    www.doctrine-project.com
- * @since   2.3
- * @author  Steve Müller <st.mueller@dzh-online.de>
+ * @link www.doctrine-project.com
+ * @since 2.3
+ * @author Steve Müller <st.mueller@dzh-online.de>
  */
 class SQLServer2005Keywords extends SQLServerKeywords
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -38,13 +40,16 @@ class SQLServer2005Keywords extends SQLServerKeywords
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
      *
      * @link http://msdn.microsoft.com/en-US/library/ms189822%28v=sql.90%29.aspx
      */
     protected function getKeywords()
     {
-        return array_merge(array_diff(parent::getKeywords(), array('DUMMY')), array(
+        return array_merge(array_diff(parent::getKeywords(), array(
+            'DUMMY'
+        )), array(
             'EXTERNAL',
             'PIVOT',
             'REVERT',

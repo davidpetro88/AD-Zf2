@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver;
 
 use PDO;
@@ -29,11 +28,13 @@ use PDO;
  */
 class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
 {
+
     /**
-     * @param string      $dsn
-     * @param string|null $user
-     * @param string|null $password
-     * @param array|null  $options
+     *
+     * @param string $dsn            
+     * @param string|null $user            
+     * @param string|null $password            
+     * @param array|null $options            
      *
      * @throws PDOException in case of an error.
      */
@@ -41,7 +42,10 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     {
         try {
             parent::__construct($dsn, $user, $password, $options);
-            $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('Doctrine\DBAL\Driver\PDOStatement', array()));
+            $this->setAttribute(PDO::ATTR_STATEMENT_CLASS, array(
+                'Doctrine\DBAL\Driver\PDOStatement',
+                array()
+            ));
             $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -49,7 +53,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function exec($statement)
     {
@@ -61,7 +67,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getServerVersion()
     {
@@ -69,7 +77,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function prepare($prepareString, $driverOptions = array())
     {
@@ -81,26 +91,28 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function query()
     {
         $args = func_get_args();
         $argsCount = count($args);
-
+        
         try {
             if ($argsCount == 4) {
                 return parent::query($args[0], $args[1], $args[2], $args[3]);
             }
-
+            
             if ($argsCount == 3) {
                 return parent::query($args[0], $args[1], $args[2]);
             }
-
+            
             if ($argsCount == 2) {
                 return parent::query($args[0], $args[1]);
             }
-
+            
             return parent::query($args[0]);
         } catch (\PDOException $exception) {
             throw new PDOException($exception);
@@ -108,7 +120,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function quote($input, $type = \PDO::PARAM_STR)
     {
@@ -116,7 +130,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function lastInsertId($name = null)
     {
@@ -124,7 +140,9 @@ class PDOConnection extends PDO implements Connection, ServerInfoAwareConnection
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function requiresQueryForServerVersion()
     {

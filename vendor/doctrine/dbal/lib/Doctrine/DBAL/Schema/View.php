@@ -16,26 +16,28 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 /**
  * Representation of a Database View.
  *
- * @link   www.doctrine-project.org
- * @since  1.0
+ * @link www.doctrine-project.org
+ * @since 1.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class View extends AbstractAsset
 {
+
     /**
+     *
      * @var string
      */
     private $_sql;
 
     /**
-     * @param string $name
-     * @param string $sql
+     *
+     * @param string $name            
+     * @param string $sql            
      */
     public function __construct($name, $sql)
     {
@@ -44,6 +46,7 @@ class View extends AbstractAsset
     }
 
     /**
+     *
      * @return string
      */
     public function getSql()

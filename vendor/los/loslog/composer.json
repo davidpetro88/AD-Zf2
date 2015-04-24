@@ -2,8 +2,11 @@
     "name" : "los/loslog",
     "description" : "LosLog provides some log utility your ZF2 application",
     "require" : {
-      "php" : ">=5.4.0",
-      "zendframework/zendframework" : "2.*"
+        "php" : ">=5.4.0",
+        "zendframework/zendframework" : ">=2.3.2,<3.0.0"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
     },
     "authors" : [ 
         {
@@ -13,11 +16,9 @@
         } 
     ],
     "keywords" : [ "los", "log", "module", "zf2" ],
-    "minimum-stability" : "alpha",
     "autoload" : {
         "psr-0" : {
-          "LosLog\\" : "src/",
-          "LosLogTest\\" : "tests/"
+          "LosLog\\" : "src/"
         },
         "classmap" : [ "./" ]
     },
@@ -25,7 +26,7 @@
         "doctrine/doctrine-module" : "doctrine-module if you want to use the SqlLogger",
         "doctrine/doctrine-orm-module" : "doctrine-orm-module if you want to use the EntityLogger"
     },
-    "license" : "BSD-3",
+    "license" : "BSD-3-Clause",
     "type" : "library",
     "homepage" : "http://github.com/Lansoweb/LosLog"
 }

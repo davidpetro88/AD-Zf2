@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOPgSql;
 
 use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
@@ -32,27 +31,21 @@ use PDO;
  */
 class Driver extends AbstractPostgreSQLDriver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         try {
-            $pdo = new PDOConnection(
-                $this->_constructPdoDsn($params),
-                $username,
-                $password,
-                $driverOptions
-            );
-
-            if (PHP_VERSION_ID >= 50600
-                && (! isset($driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES])
-                    || true === $driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES]
-                )
-            ) {
+            $pdo = new PDOConnection($this->_constructPdoDsn($params), $username, $password, $driverOptions);
+            
+            if (PHP_VERSION_ID >= 50600 && (! isset($driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES]) || true === $driverOptions[PDO::PGSQL_ATTR_DISABLE_PREPARES])) {
                 $pdo->setAttribute(PDO::PGSQL_ATTR_DISABLE_PREPARES, true);
             }
-
+            
             return $pdo;
         } catch (PDOException $e) {
             throw DBALException::driverException($this, $e);
@@ -62,39 +55,41 @@ class Driver extends AbstractPostgreSQLDriver
     /**
      * Constructs the Postgres PDO DSN.
      *
-     * @param array $params
+     * @param array $params            
      *
      * @return string The DSN.
      */
     private function _constructPdoDsn(array $params)
     {
         $dsn = 'pgsql:';
-
+        
         if (isset($params['host']) && $params['host'] != '') {
             $dsn .= 'host=' . $params['host'] . ' ';
         }
-
+        
         if (isset($params['port']) && $params['port'] != '') {
             $dsn .= 'port=' . $params['port'] . ' ';
         }
-
+        
         if (isset($params['dbname'])) {
             $dsn .= 'dbname=' . $params['dbname'] . ' ';
         }
-
+        
         if (isset($params['charset'])) {
             $dsn .= "options='--client_encoding=" . $params['charset'] . "'";
         }
-
+        
         if (isset($params['sslmode'])) {
             $dsn .= 'sslmode=' . $params['sslmode'] . ' ';
         }
-
+        
         return $dsn;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

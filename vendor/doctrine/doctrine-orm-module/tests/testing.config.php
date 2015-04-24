@@ -24,31 +24,30 @@ return array(
                 'cache' => 'array',
                 'paths' => array(
                     __DIR__ . '/DoctrineORMModuleTest/Assets/Entity'
-                ),
+                )
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'DoctrineORMModuleTest\Assets\Entity' => 'DoctrineORMModuleTest\Assets\Entity',
-                ),
-            ),
+                    'DoctrineORMModuleTest\Assets\Entity' => 'DoctrineORMModuleTest\Assets\Entity'
+                )
+            )
         ),
         'entity_resolver' => array(
             'orm_default' => array(
                 'resolvers' => array(
-                    'DoctrineORMModuleTest\Assets\Entity\TargetInterface'
-                        => 'DoctrineORMModuleTest\Assets\Entity\TargetEntity',
-                ),
-            ),
+                    'DoctrineORMModuleTest\Assets\Entity\TargetInterface' => 'DoctrineORMModuleTest\Assets\Entity\TargetEntity'
+                )
+            )
         ),
         'connection' => array(
             'orm_default' => array(
                 'configuration' => 'orm_default',
-                'eventmanager'  => 'orm_default',
-                'driverClass'   => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
+                'eventmanager' => 'orm_default',
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOSqlite\Driver',
                 'params' => array(
-                    'memory' => true,
-                ),
-            ),
-        ),
-    ),
+                    'memory' => true
+                )
+            )
+        )
+    )
 );

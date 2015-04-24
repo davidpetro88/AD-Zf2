@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -26,8 +25,11 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class SQLAnywhereKeywords extends KeywordList
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -35,7 +37,8 @@ class SQLAnywhereKeywords extends KeywordList
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
      *
      * @link http://infocenter.sybase.com/help/topic/com.sybase.dbrfen10/pdf/dbrfen10.pdf?noframes=true
      */

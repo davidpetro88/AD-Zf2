@@ -6,23 +6,25 @@ use Zend\InputFilter\InputFilter;
 
 class ForgottenPasswordFilter extends InputFilter
 {
-	public function __construct($sm)
-	{
+
+    public function __construct($sm)
+    {
         $this->add(array(
-            'name'       => 'email',
-            'required'   => true,
+            'name' => 'email',
+            'required' => true,
             'validators' => array(
                 array(
                     'name' => 'EmailAddress'
                 ),
-				array(
-					'name'		=> 'DoctrineModule\Validator\ObjectExists',
-					'options' => array(
-						'object_repository' => $sm->get('doctrine.entitymanager.orm_default')->getRepository('Usuario\Entity\Usuario'),
-						'fields'            => 'email'
-					),
-				),
-            ),
+                array(
+                    'name' => 'DoctrineModule\Validator\ObjectExists',
+                    'options' => array(
+                        'object_repository' => $sm->get('doctrine.entitymanager.orm_default')
+                            ->getRepository('Usuario\Entity\Usuario'),
+                        'fields' => 'email'
+                    )
+                )
+            )
         ));
-	}
+    }
 }

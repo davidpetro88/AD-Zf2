@@ -16,12 +16,10 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace DoctrineORMModuleTest\Assets\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use DoctrineORMModuleTest\Assets\Entity\Test as TestEntity;
 use DoctrineORMModuleTest\Assets\Entity\Category;
 use DoctrineORMModuleTest\Assets\Entity\Country;
@@ -31,6 +29,7 @@ use DoctrineORMModuleTest\Assets\Entity\Country;
  */
 class TestFixture extends AbstractFixture
 {
+
     /**
      * Number of instances to build when the fixture is loaded
      */
@@ -47,19 +46,19 @@ class TestFixture extends AbstractFixture
             $instance->setPassword('password');
             $manager->persist($instance);
         }
-
+        
         for ($i = 0; $i < self::INSTANCES_COUNT; $i += 1) {
             $instance = new Category();
             $instance->setName('category');
             $manager->persist($instance);
         }
-
+        
         for ($i = 0; $i < self::INSTANCES_COUNT; $i += 1) {
             $instance = new Country();
             $instance->setName('country');
             $manager->persist($instance);
         }
-
+        
         $manager->flush();
     }
 }

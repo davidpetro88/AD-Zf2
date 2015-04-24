@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -23,15 +22,20 @@ use Assetic\Factory\AssetFactory;
  */
 class StylusFilter extends BaseNodeFilter implements DependencyExtractorInterface
 {
+
     private $nodeBin;
+
     private $compress;
+
     private $useNib;
 
     /**
      * Constructs filter.
      *
-     * @param string $nodeBin   The path to the node binary
-     * @param array  $nodePaths An array of node paths
+     * @param string $nodeBin
+     *            The path to the node binary
+     * @param array $nodePaths
+     *            An array of node paths
      */
     public function __construct($nodeBin = '/usr/bin/node', array $nodePaths = array())
     {
@@ -42,7 +46,7 @@ class StylusFilter extends BaseNodeFilter implements DependencyExtractorInterfac
     /**
      * Enable output compression.
      *
-     * @param boolean $compress
+     * @param boolean $compress            
      */
     public function setCompress($compress)
     {
@@ -52,7 +56,7 @@ class StylusFilter extends BaseNodeFilter implements DependencyExtractorInterfac
     /**
      * Enable the use of Nib
      *
-     * @param boolean $useNib
+     * @param boolean $useNib            
      */
     public function setUseNib($useNib)
     {
@@ -60,7 +64,9 @@ class StylusFilter extends BaseNodeFilter implements DependencyExtractorInterfac
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function filterLoad(AssetInterface $asset)
     {
@@ -78,44 +84,43 @@ stylus(%s, %s)%s.render(function(e, css){
 });
 
 EOF;
-
+        
         // parser options
         $parserOptions = array();
         if ($dir = $asset->getSourceDirectory()) {
-            $parserOptions['paths'] = array($dir);
+            $parserOptions['paths'] = array(
+                $dir
+            );
             $parserOptions['filename'] = basename($asset->getSourcePath());
         }
-
+        
         if (null !== $this->compress) {
             $parserOptions['compress'] = $this->compress;
         }
-
+        
         $pb = $this->createProcessBuilder();
-
+        
         $pb->add($this->nodeBin)->add($input = tempnam(sys_get_temp_dir(), 'assetic_stylus'));
-        file_put_contents($input, sprintf($format,
-            json_encode($asset->getContent()),
-            json_encode($parserOptions),
-            $this->useNib ? '.use(require(\'nib\')())' : ''
-        ));
-
+        file_put_contents($input, sprintf($format, json_encode($asset->getContent()), json_encode($parserOptions), $this->useNib ? '.use(require(\'nib\')())' : ''));
+        
         $proc = $pb->getProcess();
         $code = $proc->run();
         unlink($input);
-
+        
         if (0 !== $code) {
             throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
-
+        
         $asset->setContent($proc->getOutput());
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function filterDump(AssetInterface $asset)
-    {
-    }
+    {}
 
     public function getChildren(AssetFactory $factory, $content, $loadPath = null)
     {

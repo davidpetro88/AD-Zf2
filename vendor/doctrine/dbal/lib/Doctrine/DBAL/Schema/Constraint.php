@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -24,19 +23,22 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 /**
  * Marker interface for contraints.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 interface Constraint
 {
+
     /**
+     *
      * @return string
      */
     public function getName();
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
      *
      * @return string
      */
@@ -58,8 +60,9 @@ interface Constraint
      * is a keyword reserved by the platform.
      * Otherwise the plain unquoted value as inserted is returned.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The platform to use for quotation.
-     *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     *            The platform to use for quotation.
+     *            
      * @return array
      */
     public function getQuotedColumns(AbstractPlatform $platform);

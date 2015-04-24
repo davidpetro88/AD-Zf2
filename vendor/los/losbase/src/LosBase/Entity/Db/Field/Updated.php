@@ -6,17 +6,19 @@ use Zend\Form\Annotation as Form;
 
 trait Updated
 {
-
     /**
      * Updated datetime
      *
      * @ORM\Column(type="datetime")
      * @Form\Exclude()
+     * @var \DateTime
      */
-    protected $updated = '';
+    protected $updated = null;
 
     /**
      * Getter for $updated
+     *
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -26,8 +28,8 @@ trait Updated
     /**
      * Setter for $updated
      *
-     * @param  DateTime                            $updated
-     * @return \LosBase\Entity\CreatedUpdatedTrait
+     * @param  \DateTime                      $updated
+     * @return \LosBase\Entity\AbstractEntity
      */
     public function setUpdated($updated)
     {

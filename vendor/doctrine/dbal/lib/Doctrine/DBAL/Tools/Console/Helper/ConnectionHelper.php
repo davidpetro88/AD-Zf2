@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Tools\Console\Helper;
 
 use Symfony\Component\Console\Helper\Helper;
@@ -25,8 +24,8 @@ use Doctrine\DBAL\Connection;
 /**
  * Doctrine CLI Connection Helper.
  *
- * @link   www.doctrine-project.org
- * @since  2.0
+ * @link www.doctrine-project.org
+ * @since 2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -34,6 +33,7 @@ use Doctrine\DBAL\Connection;
  */
 class ConnectionHelper extends Helper
 {
+
     /**
      * The Doctrine database Connection.
      *
@@ -44,7 +44,8 @@ class ConnectionHelper extends Helper
     /**
      * Constructor.
      *
-     * @param \Doctrine\DBAL\Connection $connection The Doctrine database Connection.
+     * @param \Doctrine\DBAL\Connection $connection
+     *            The Doctrine database Connection.
      */
     public function __construct(Connection $connection)
     {
@@ -62,7 +63,9 @@ class ConnectionHelper extends Helper
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

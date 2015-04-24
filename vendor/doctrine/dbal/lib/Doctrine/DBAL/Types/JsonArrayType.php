@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -24,13 +23,16 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 /**
  * Array Type which can be used to generate json arrays.
  *
- * @since  2.3
+ * @since 2.3
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class JsonArrayType extends Type
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -38,33 +40,39 @@ class JsonArrayType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (null === $value) {
             return null;
         }
-
+        
         return json_encode($value);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value === '') {
             return array();
         }
-
+        
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
-
+        
         return json_decode($value, true);
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {
@@ -72,7 +80,9 @@ class JsonArrayType extends Type
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

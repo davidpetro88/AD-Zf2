@@ -16,7 +16,6 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
-
 namespace Doctrine\DBAL\Driver\PDOSqlsrv;
 
 use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
@@ -28,51 +27,51 @@ use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
  */
 class Driver extends AbstractSQLServerDriver
 {
+
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        return new Connection(
-            $this->_constructPdoDsn($params),
-            $username,
-            $password,
-            $driverOptions
-        );
+        return new Connection($this->_constructPdoDsn($params), $username, $password, $driverOptions);
     }
 
     /**
      * Constructs the Sqlsrv PDO DSN.
      *
-     * @param array $params
+     * @param array $params            
      *
      * @return string The DSN.
      */
     private function _constructPdoDsn(array $params)
     {
         $dsn = 'sqlsrv:server=';
-
+        
         if (isset($params['host'])) {
             $dsn .= $params['host'];
         }
-
-        if (isset($params['port']) && !empty($params['port'])) {
+        
+        if (isset($params['port']) && ! empty($params['port'])) {
             $dsn .= ',' . $params['port'];
         }
-
+        
         if (isset($params['dbname'])) {
-            $dsn .= ';Database=' .  $params['dbname'];
+            $dsn .= ';Database=' . $params['dbname'];
         }
-
+        
         if (isset($params['MultipleActiveResultSets'])) {
             $dsn .= '; MultipleActiveResultSets=' . ($params['MultipleActiveResultSets'] ? 'true' : 'false');
         }
-
+        
         return $dsn;
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @ERROR!!!
+     *
      */
     public function getName()
     {

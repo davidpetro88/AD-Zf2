@@ -7,7 +7,7 @@
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 namespace LosBase\Service;
@@ -23,7 +23,7 @@ use LosBase\EventManager\EventProvider;
  * @author    Leandro Silva <leandro@leandrosilva.info>
  * @link      http://leandrosilva.info Development Blog
  * @link      http://github.com/LansoWeb/LosBase for the canonical source repository
- * @copyright Copyright (c) 2011-2015 Leandro Silva (http://leandrosilva.info)
+ * @copyright 2011-2015 Leandro Silva (http://leandrosilva.info)
  * @license   http://leandrosilva.info/licenca-bsd New BSD license
  */
 abstract class AbstractEntity extends EventProvider implements ServiceLocatorAwareInterface
@@ -32,15 +32,14 @@ abstract class AbstractEntity extends EventProvider implements ServiceLocatorAwa
 
     public function save($form, $entity)
     {
-
-        $this->getEventManager()->trigger(__FUNCTION__ . '.init', $this, [
+        $this->getEventManager()->trigger(__FUNCTION__.'.init', $this, [
             'entity' => $entity,
-            'form' => $form
+            'form' => $form,
         ]);
         if (! $form->isValid()) {
-            $this->getEventManager()->trigger(__FUNCTION__ . '.invalid', $this, [
+            $this->getEventManager()->trigger(__FUNCTION__.'.invalid', $this, [
                 'entity' => $entity,
-                'form' => $form
+                'form' => $form,
             ]);
 
             return false;
@@ -55,13 +54,13 @@ abstract class AbstractEntity extends EventProvider implements ServiceLocatorAwa
         }
         $this->getEventManager()->trigger(__FUNCTION__, $this, [
             'entity' => $entity,
-            'form' => $form
+            'form' => $form,
         ]);
         $em->persist($entity);
         $em->flush();
-        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, [
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, [
             'entity' => $entity,
-            'form' => $form
+            'form' => $form,
         ]);
 
         return $entity;
@@ -72,8 +71,8 @@ abstract class AbstractEntity extends EventProvider implements ServiceLocatorAwa
         if (! is_object($entity)) {
             throw new \InvalidArgumentException(sprintf("Entity argument must be an object, %s given.", \gettype($entity)));
         }
-        $this->getEventManager()->trigger(__FUNCTION__ . '.init', $this, [
-            'entity' => $entity
+        $this->getEventManager()->trigger(__FUNCTION__.'.init', $this, [
+            'entity' => $entity,
         ]);
 
         $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
@@ -85,8 +84,8 @@ abstract class AbstractEntity extends EventProvider implements ServiceLocatorAwa
             $em->flush();
         }
 
-        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, [
-            'entityId' => $id
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, [
+            'entityId' => $id,
         ]);
 
         return $entity;

@@ -7,21 +7,20 @@ and open the template in the editor.
     Created on : 10/09/2014, 13:25:06
     Author     : darodrigues
 */
-
 .advertencia {
-    background : gold;
+	background: gold;
 }
 
 .alto {
-    background : yellow;
+	background: yellow;
 }
 
 .critico {
-    background : red;
-    color: white;
+	background: red;
+	color: white;
 }
 
 .inexistente2 {
-    background : blue;
-    color: white;
+	background: blue;
+	color: white;
 }

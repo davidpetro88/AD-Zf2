@@ -39,11 +39,16 @@ use Zend\View\Helper\HeadLink as ZfHeadLink;
  */
 class HeadLink extends ZfHeadLink
 {
-    const VERSION_BOOTSTRAP = "3.3.2";
+    const VERSION_BOOTSTRAP = "3.3.4";
 
     const VERSION_FONTAWESOME = "4.3.0";
 
-    private function callWithCdn($method, $matches, $basePath, $args)
+    /**
+     * @param array  $matches
+     * @param string $basePath
+     * @param array  $args
+     */
+    private function callWithCdn($matches, $basePath, $args)
     {
         $action = $matches['action'];
         $type = $matches['type'];
@@ -85,10 +90,15 @@ class HeadLink extends ZfHeadLink
                 }
         }
 
-        return parent::__call($method, $args);
+        return false;
     }
 
-    private function callWithoutCdn($method, $matches, $basePath, $args)
+    /**
+     * @param array  $matches
+     * @param string $basePath
+     * @param array  $args
+     */
+    private function callWithoutCdn($matches, $basePath, $args)
     {
         $action = $matches['action'];
         $type = $matches['type'];
@@ -106,9 +116,11 @@ class HeadLink extends ZfHeadLink
         switch ($type) {
             case 'Chosen':
                 return $this->$action(sprintf('%s/chosen/chosen.%scss', $basePath, $isMin ? 'min.' : ''));
+            case 'ChosenBootstrap':
+                return $this->$action(sprintf('%s/losui/chosenbs3.css', $basePath));
         }
 
-        return parent::__call($method, $args);
+        return false;
     }
 
     /**
@@ -117,7 +129,7 @@ class HeadLink extends ZfHeadLink
      * @param  mixed                            $method
      * @param  mixed                            $args
      * @throws Exception\BadMethodCallException
-     * @return void
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -126,12 +138,14 @@ class HeadLink extends ZfHeadLink
             $basePath = $this->view->plugin('basepath')->__invoke();
         }
 
+        $ret = false;
+
         if (preg_match('/^(?P<action>set|(ap|pre)pend)(?P<type>Bootstrap|FontAwesome)$/', $method, $matches)) {
-            return $this->callWithCdn($method, $matches, $basePath, $args);
-        } elseif (preg_match('/^(?P<action>set|(ap|pre)pend)(?P<type>Chosen)$/', $method, $matches)) {
-            return $this->callWithoutCdn($method, $matches, $basePath, $args);
+            $ret = $this->callWithCdn($matches, $basePath, $args);
+        } elseif (preg_match('/^(?P<action>set|(ap|pre)pend)(?P<type>Chosen|ChosenBootstrap)$/', $method, $matches)) {
+            $ret = $this->callWithoutCdn($matches, $basePath, $args);
         }
 
-        return parent::__call($method, $args);
+        return ($ret !== false) ? $ret : parent::__call($method, $args);
     }
 }
