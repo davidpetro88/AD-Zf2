@@ -1,0 +1,69 @@
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('registration', array(
+    'controller' => 'Registration',
+    'action' => 'index'
+)));
+$form->prepare();
+$this->placeholder('mostraFooter')->set('não');
+echo $this->form()->openTag($form)?>
+
+<div class="row">
+      <div id="page-logo">  </div>
+</div>
+<div class="row">
+    <div class="col-md-3"></div>
+	<div class="col-md-4 col-lg-5"
+		style="margin-left: auto; margin-right: auto;">
+		<div class="panel">
+			<div class="panel-heading">
+				<div class="panel-title">
+					<i class="fa fa-pencil"></i> Registration
+				</div>
+			</div>
+			<div class="panel-body">
+				<form method="get" id="altForm" class="cmxform"
+					novalidate="novalidate">
+					<div class="form-group">
+						<label for="name">
+					<?php echo $this->formLabel($form->get('nome')); ?>
+					</label>
+					<?php echo $this->formInput($form->get('nome')->setAttributes(array('placeholder'=>'Digite o nome do usuário')))?>
+                    <?php echo $this->losFormElementErrors($form->get('nome'), array('class' => 'help-block'))?>
+				</div>
+
+					<div class="form-group">
+						<label for="name">
+					<?php echo $this->formLabel($form->get('password')); ?>
+					</label>
+					<?php echo $this->formInput($form->get('password')->setAttributes(array('placeholder'=>'Digite a Senha')))?>
+					<?php echo $this->losFormElementErrors($form->get('password'), array('class' => 'help-block'))?>
+				</div>
+
+					<div class="form-group">
+						<label for="name">
+					<?php echo $this->formLabel($form->get('usrPasswordConfirm')); ?>
+					</label>
+					<?php echo $this->formInput($form->get('usrPasswordConfirm')->setAttributes(array('placeholder'=>'Confirme a Senha')))?>
+					<?php echo $this->losFormElementErrors($form->get('usrPasswordConfirm'), array('class' => 'help-block'))?>
+				</div>
+
+					<hr class="short">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-envelope-o"></i>
+							</span>
+					    <?php echo $this->formInput($form->get('email')->setAttributes(array('placeholder'=>'Digite o Email')))?>	
+					</div>
+										    <?php echo $this->losFormElementErrors($form->get('email'), array('class' => 'help-block'))?>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Submit" class="submit btn btn-blue">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php echo $this->form()->closeTag();?>

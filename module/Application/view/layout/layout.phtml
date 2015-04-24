@@ -1,0 +1,696 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+<head>
+
+<link rel="stylesheet" type="text/css"
+	href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+
+<meta charset="utf-8">
+<?php echo $this->headTitle('Zf2 tutorial')->setSeparator(' - ')->setAutoEscape(false);?>
+<?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0')->appendHttpEquiv('X-UA-Compatible', 'IE=edge');?>
+<?php
+
+echo $this->losHeadLink(array(
+    'rel' => 'shortcut icon',
+    'type' => 'image/vnd.microsoft.icon',
+    'href' => $this->basePath() . '/img/favicon.ico'
+))
+    ->appendStylesheet($this->basePath() . '/css/customizer.css')
+    ->appendStylesheet($this->basePath() . '/css/theme.css')
+    ->appendStylesheet($this->basePath() . '/css/css.css')
+    ->appendStylesheet($this->basePath() . '/css/demo.css')
+    ->prependBootstrap()
+    ->appendFontAwesome();
+?>
+<?php echo $this->losHeadScript()->prependBootstrap()->prependJquery(); ?>
+<?php echo $this->headStyle();?>
+
+   </head>
+<body>
+	<?php if ($this->ZfcUserIdentity()): ?>
+	<?php $user = $this->identity();?>
+    	<nav class="navbar navbar-fixed-top navbar-inverse"
+		role="navigation">
+		<div class="container">
+			<div class="navbar-header" id="header_nav_layout">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Zf2 tutorial') ?></a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav" id="ul_nav_layout">
+			    <?php echo $this->losNavigation()->menu('Navigation')?>
+    		    </ul>
+
+				<ul class="nav navbar-nav" id="ul_nav_layout">    			    
+			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
+    		    </ul>
+				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
+					<li style="min-width:100px;"></li>
+				</ul>
+
+				<div class="pull-right header-btns">
+					<div class="messages-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-animate"
+							type="button">
+							<span class="glyphicon glyphicon-comment" style=""></span> <b>4</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Messages <span
+								class="pull-right glyphicons glyphicons-comment"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/2.jpg">
+										</div>
+										<div class="item-message">
+											<b>Maggie</b> - <small class="text-muted">12 minutes ago</small><br>
+											Great work Yesterday!
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/3.jpg">
+										</div>
+										<div class="item-message">
+											<b>Robert</b> - <small class="text-muted">3 hours ago</small><br>
+											Is the Titan Project still on?
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/1.jpg">
+										</div>
+										<div class="item-message">
+											<b>Cynthia</b> - <small class="text-muted">14 hours ago</small><br>
+											Don't forget about the staff meeting tomorrow
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/4.jpg">
+										</div>
+										<div class="item-message">
+											<b>Matt</b> - <small class="text-muted">2 days ago</small><br>
+											Thor Project cancelled, Sorry.
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="messages.html">View All
+									Messages <i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="alerts-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-bell"></span> <b>3</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Alerts <span
+								class="pull-right glyphicons glyphicons-bell"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-facebook" style="color: #0066ad;"></i>
+										</div>
+										<div class="item-message">
+											<a href="#">Facebook likes reached <b>8,200</b></a>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-check" style="color: #5cb85c;"></i>
+										</div>
+										<div class="item-message">
+											<a href="#">Robert <b>completed task</b> - Client SEO Revamp
+											</a>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-user" style="color: #f0ad4e"></i>
+										</div>
+										<div class="item-message">
+											<a href="#"><b>Marko</b> logged 12 hours</a>
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="#">View All Alerts <i
+									class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="tasks-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-tag"></span> <b>7</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu dropdown-checklist checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Tasks <span
+								class="pull-right glyphicons glyphicons-tag"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-pencil"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Try Clicking me!</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-danger">Urgent</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-phone"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Contact Client and request Approval</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-info">Normal</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-flask"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Find new Python Developer </a>
+										</div>
+										<div class="item-label">
+											<span class="label label-success">Completed</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-facebook"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Update Facebook Page with Halloween Pictures</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-primary">In Progress</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-group"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Organize next Staff Meeting</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-success">Completed</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-plane"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Interview new applicant</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-warning">Moderate</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="#">View All Tasks <i
+									class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="btn-group user-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-user"></span> <b> <?php echo $this->escapeHtml($user->getNome()); ?>  </b>
+						</button>
+						<button data-toggle="dropdown"
+							class="btn btn-sm dropdown-toggle padding-none" type="button">
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Seja Bem vindo <span
+								class="pull-right glyphicons glyphicons-user"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-sign-in"></i>
+										</div> <a href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>" class="item-message">Sair</a>
+									</li>
+									<li class="border-bottom-none">
+										<div class="item-icon">
+											<i class="fa fa-cog"></i>
+										</div> <a href="<?php echo $this->url('usuario/edit', array('controller' => 'usuario', 'action' => 'edit', 'id' => $user->getId()));?>" class="item-message">Editar Perfil</a>
+									</li>
+									<li class="padding-none">
+										<div class="dropdown-lockout">
+ 											<i class="fa fa-lock"></i> 
+                                                <!--<a href="screen-lock.html">Screen Lock</a> -->
+										</div>
+										<div class="dropdown-signout">
+ 											<i class="fa fa-sign-out"></i> 
+ 											    <a href="<?php echo $this->url('index/logout', array('controller' => 'index', 'action' => 'logout')); ?>"><?php echo $this->translate('Sair'); ?></a>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				
+				
+				
+				
+				
+			</div>
+			<!--/.nav-collapse -->
+
+		</div>
+	</nav>
+	<?php else:; ?>
+    	<nav class="navbar navbar-fixed-top navbar-inverse"
+		role="navigation">
+		<div class="container">
+
+			<div class="navbar-header" id="header_nav_layout">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Zf2 tutorial') ?></a>
+			</div>
+
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav" id="ul_nav_layout">    			    
+			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
+    		    </ul>
+				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
+					<li style="min-width:100px;"></li>
+				</ul>
+
+				<div class="pull-right header-btns">
+					<div class="messages-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-animate"
+							type="button">
+							<span class="glyphicon glyphicon-comment" style=""></span> <b>4</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Messages <span
+								class="pull-right glyphicons glyphicons-comment"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/2.jpg">
+										</div>
+										<div class="item-message">
+											<b>Maggie</b> - <small class="text-muted">12 minutes ago</small><br>
+											Great work Yesterday!
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/3.jpg">
+										</div>
+										<div class="item-message">
+											<b>Robert</b> - <small class="text-muted">3 hours ago</small><br>
+											Is the Titan Project still on?
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/1.jpg">
+										</div>
+										<div class="item-message">
+											<b>Cynthia</b> - <small class="text-muted">14 hours ago</small><br>
+											Don't forget about the staff meeting tomorrow
+										</div>
+									</li>
+									<li>
+										<div class="item-avatar">
+											<img alt="avatar" class="img-responsive"
+												src="img/avatars/header/4.jpg">
+										</div>
+										<div class="item-message">
+											<b>Matt</b> - <small class="text-muted">2 days ago</small><br>
+											Thor Project cancelled, Sorry.
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="messages.html">View All
+									Messages <i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="alerts-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-bell"></span> <b>3</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Alerts <span
+								class="pull-right glyphicons glyphicons-bell"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-facebook" style="color: #0066ad;"></i>
+										</div>
+										<div class="item-message">
+											<a href="#">Facebook likes reached <b>8,200</b></a>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-check" style="color: #5cb85c;"></i>
+										</div>
+										<div class="item-message">
+											<a href="#">Robert <b>completed task</b> - Client SEO Revamp
+											</a>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-user" style="color: #f0ad4e"></i>
+										</div>
+										<div class="item-message">
+											<a href="#"><b>Marko</b> logged 12 hours</a>
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="#">View All Alerts <i
+									class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="tasks-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-tag"></span> <b>7</b>
+						</button>
+						<ul role="menu"
+							class="dropdown-menu dropdown-checklist checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Recent Tasks <span
+								class="pull-right glyphicons glyphicons-tag"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-pencil"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Try Clicking me!</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-danger">Urgent</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-phone"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Contact Client and request Approval</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-info">Normal</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-flask"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Find new Python Developer </a>
+										</div>
+										<div class="item-label">
+											<span class="label label-success">Completed</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-facebook"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Update Facebook Page with Halloween Pictures</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-primary">In Progress</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-group"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Organize next Staff Meeting</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-success">Completed</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-plane"></i>
+										</div>
+										<div class="item-message text-slash">
+											<a>Interview new applicant</a>
+										</div>
+										<div class="item-label">
+											<span class="label label-warning">Moderate</span>
+										</div>
+										<div class="item-checkbox">
+											<div class="checker">
+												<span><input type="checkbox" class="checkbox row-checkbox"></span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown-footer"><a href="#">View All Tasks <i
+									class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</div>
+					<div class="btn-group user-menu">
+						<button data-toggle="dropdown" class="btn btn-sm dropdown-toggle"
+							type="button">
+							<span class="glyphicons glyphicons-user"></span> <b>Visitante</b>
+						</button>
+						<button data-toggle="dropdown"
+							class="btn btn-sm dropdown-toggle padding-none" type="button">
+						</button>
+						<ul role="menu"
+							class="dropdown-menu checkbox-persist animated-short">
+							<li class="menu-arrow">
+								<div class="menu-arrow-up"></div>
+							</li>
+							<li class="dropdown-header">Seja Bem vindo <span
+								class="pull-right glyphicons glyphicons-user"></span></li>
+							<li>
+								<ul class="dropdown-items">
+									<li>
+										<div class="item-icon">
+											<i class="fa fa-sign-in"></i>
+										</div> <a href="<?php echo $this->url('index/auth') ?>" class="item-message">Logar</a>
+									</li>
+									<li class="border-bottom-none">
+										<div class="item-icon">
+											<i class="fa fa-cog"></i>
+										</div> <a href="<?php echo $this->url('registration', array('controller' => 'registration', 'action' => 'index'));?>" class="item-message">Cadastrar</a>
+									</li>
+									<li class="padding-none">
+										<div class="dropdown-lockout">
+ 											<i class="fa fa-lock"></i> 
+                                                <!--<a href="screen-lock.html">Screen Lock</a> -->
+										</div>
+										<div class="dropdown-signout">
+ 											<i class="fa fa-sign-out"></i> 
+ 											    <!-- <a href="login.html">Sign Out</a> -->
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+			</div>
+			<!--/.nav-collapse -->
+
+		</div>
+	</nav>
+
+	<?php endif; ?>
+
+
+	<!-- Start: Content -->
+	<section id="content">
+		<div id="topbar">
+			<ol class="breadcrumb">
+		    <?php echo $this->losNavigation()->breadcrumbs('Navigation')?>		
+			</ol>
+		</div>
+		<style>
+.content {
+	margin-left: 0px !important;
+}
+
+#header_nav_layout button:hover {
+	color: black !important;
+}
+
+#header_nav_layout a:hover {
+	color: black !important;
+}
+
+#ul_nav_layout a:hover {
+	color: black !important;
+}
+
+#ul_nav
+_layout a:active {
+	background: gray !important;
+}
+
+li a:active {
+	background: gray;
+}
+
+a:active {
+	background-color: gray !important;
+}
+</style>
+	    <?php
+    ?>
+	    <div class="container">
+            <?php echo $this->losNavigation()->breadcrumbs('Navigation')?>
+            <?php echo $this->losflashmessenger()->renderAll()?>
+            <div style="clear: both;"></div>
+		    <?php echo $this->content; ?>
+		</div>
+	</section>
+	<nav class="navbar navbar-fixed-bottom" role="navigation">
+		<div class="container">
+			<p class="help-block">&copy; <?php echo date('Y') ?> <a
+					href="mailto://abel@abellopes.com.br" target="_blank">Abel Lopes</a>. <?php echo $this->translate('All rights reserved.') ?></p>
+		</div>
+	</nav>
+
+	<?php echo $this->inlineScript()?>
+
+    </body>
+</html>
