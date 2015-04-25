@@ -16,13 +16,14 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Logging;
 
 /**
  * A SQL logger that logs to the standard output using echo/var_dump.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -30,30 +31,26 @@ namespace Doctrine\DBAL\Logging;
  */
 class EchoSQLLogger implements SQLLogger
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function startQuery($sql, array $params = null, array $types = null)
     {
         echo $sql . PHP_EOL;
-        
+
         if ($params) {
             var_dump($params);
         }
-        
+
         if ($types) {
             var_dump($types);
         }
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function stopQuery()
-    {}
+    {
+    }
 }

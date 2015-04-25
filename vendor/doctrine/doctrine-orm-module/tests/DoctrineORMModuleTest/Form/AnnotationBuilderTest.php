@@ -1,4 +1,5 @@
 <?php
+
 namespace DoctrineORMModuleTest\Form;
 
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder;
@@ -7,9 +8,7 @@ use DoctrineORMModuleTest\Framework\TestCase;
 
 class AnnotationBuilderTest extends TestCase
 {
-
     /**
-     *
      * @var AnnotationBuilder
      */
     protected $builder;
@@ -21,14 +20,13 @@ class AnnotationBuilderTest extends TestCase
 
     /**
      * @covers \DoctrineORMModule\Form\Annotation\AnnotationBuilder::getFormSpecification
-     * 
-     * @link https://github.com/doctrine/DoctrineORMModule/issues/237
+     * @link   https://github.com/doctrine/DoctrineORMModule/issues/237
      */
     public function testIssue237()
     {
         $entity = new Issue237();
-        $spec = $this->builder->getFormSpecification($entity);
-        
+        $spec   = $this->builder->getFormSpecification($entity);
+
         $this->assertCount(0, $spec['elements']);
     }
 
@@ -38,7 +36,7 @@ class AnnotationBuilderTest extends TestCase
     public function testAnnotationBuilderSupportsClassNames()
     {
         $spec = $this->builder->getFormSpecification('DoctrineORMModuleTest\\Assets\\Entity\\Issue237');
-        
+
         $this->assertCount(0, $spec['elements'], 'Annotation builder allows also class names');
     }
 }

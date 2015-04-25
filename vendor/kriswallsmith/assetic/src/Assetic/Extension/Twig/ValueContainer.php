@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Extension\Twig;
 
 use Assetic\ValueSupplierInterface;
@@ -19,9 +20,7 @@ use Assetic\ValueSupplierInterface;
  */
 class ValueContainer implements \ArrayAccess, \IteratorAggregate, \Countable
 {
-
     private $values;
-
     private $valueSupplier;
 
     public function __construct(ValueSupplierInterface $valueSupplier)
@@ -32,18 +31,18 @@ class ValueContainer implements \ArrayAccess, \IteratorAggregate, \Countable
     public function offsetExists($offset)
     {
         $this->initialize();
-        
+
         return array_key_exists($offset, $this->values);
     }
 
     public function offsetGet($offset)
     {
         $this->initialize();
-        
-        if (! array_key_exists($offset, $this->values)) {
+
+        if (!array_key_exists($offset, $this->values)) {
             throw new \OutOfRangeException(sprintf('The variable "%s" does not exist.', $offset));
         }
-        
+
         return $this->values[$offset];
     }
 
@@ -60,14 +59,14 @@ class ValueContainer implements \ArrayAccess, \IteratorAggregate, \Countable
     public function getIterator()
     {
         $this->initialize();
-        
+
         return new \ArrayIterator($this->values);
     }
 
     public function count()
     {
         $this->initialize();
-        
+
         return count($this->values);
     }
 

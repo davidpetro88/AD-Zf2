@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
 use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
@@ -25,23 +26,20 @@ use Doctrine\DBAL\Driver\AbstractSQLServerDriver;
  */
 class Driver extends AbstractSQLServerDriver
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        if (! isset($params['host'])) {
+        if (!isset($params['host'])) {
             throw new SQLSrvException("Missing 'host' in configuration for sqlsrv driver.");
         }
-        
+
         $serverName = $params['host'];
         if (isset($params['port'])) {
             $serverName .= ', ' . $params['port'];
         }
-        
+
         if (isset($params['dbname'])) {
             $driverOptions['Database'] = $params['dbname'];
         }
@@ -49,21 +47,19 @@ class Driver extends AbstractSQLServerDriver
         if (isset($params['charset'])) {
             $driverOptions['CharacterSet'] = $params['charset'];
         }
-        
+
         $driverOptions['UID'] = $username;
         $driverOptions['PWD'] = $password;
-        
-        if (! isset($driverOptions['ReturnDatesAsStrings'])) {
+
+        if (!isset($driverOptions['ReturnDatesAsStrings'])) {
             $driverOptions['ReturnDatesAsStrings'] = 1;
         }
-        
+
         return new SQLSrvConnection($serverName, $driverOptions);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {

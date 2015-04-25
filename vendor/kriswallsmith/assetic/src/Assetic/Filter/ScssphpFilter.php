@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -21,25 +22,20 @@ use Leafo\ScssPhp\Compiler;
  * Scss files are mostly compatible, but there are slight differences.
  *
  * @link http://leafo.net/scssphp/
- *      
+ *
  * @author Bart van den Burg <bart@samson-it.nl>
  */
 class ScssphpFilter implements DependencyExtractorInterface
 {
-
     private $compass = false;
-
     private $importPaths = array();
-
     private $customFunctions = array();
-
     private $formatter;
-
     private $variables = array();
 
     public function enableCompass($enable = true)
     {
-        $this->compass = (boolean) $enable;
+        $this->compass = (Boolean) $enable;
     }
 
     public function isCompassEnabled()
@@ -72,7 +68,7 @@ class ScssphpFilter implements DependencyExtractorInterface
         $this->importPaths[] = $path;
     }
 
-    public function registerFunction($name, $callable)
+    public function registerFunction($name,$callable)
     {
         $this->customFunctions[$name] = $callable;
     }
@@ -80,36 +76,37 @@ class ScssphpFilter implements DependencyExtractorInterface
     public function filterLoad(AssetInterface $asset)
     {
         $sc = new Compiler();
-        
+
         if ($this->compass) {
             new \scss_compass($sc);
         }
-        
+
         if ($dir = $asset->getSourceDirectory()) {
             $sc->addImportPath($dir);
         }
-        
+
         foreach ($this->importPaths as $path) {
             $sc->addImportPath($path);
         }
-        
+
         foreach ($this->customFunctions as $name => $callable) {
             $sc->registerFunction($name, $callable);
         }
-        
+
         if ($this->formatter) {
             $sc->setFormatter($this->formatter);
         }
-        
-        if (! empty($this->variables)) {
+
+        if (!empty($this->variables)) {
             $sc->setVariables($this->variables);
         }
-        
+
         $asset->setContent($sc->compile($asset->getContent()));
     }
 
     public function filterDump(AssetInterface $asset)
-    {}
+    {
+    }
 
     public function getChildren(AssetFactory $factory, $content, $loadPath = null)
     {
@@ -118,19 +115,17 @@ class ScssphpFilter implements DependencyExtractorInterface
         foreach ($this->importPaths as $path) {
             $sc->addImportPath($path);
         }
-        
+
         $children = array();
         foreach (CssUtils::extractImports($content) as $match) {
             $file = $sc->findImport($match);
             if ($file) {
-                $children[] = $child = $factory->createAsset($file, array(), array(
-                    'root' => $loadPath
-                ));
+                $children[] = $child = $factory->createAsset($file, array(), array('root' => $loadPath));
                 $child->load();
                 $children = array_merge($children, $this->getChildren($factory, $child->getContent(), $loadPath));
             }
         }
-        
+
         return $children;
     }
 }

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Id;
 
 use Doctrine\DBAL\Schema\Table;
@@ -27,16 +28,13 @@ use Doctrine\DBAL\Schema\Index;
 
 class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visitor
 {
-
     /**
-     *
      * @var string
      */
     private $generatorTableName;
 
     /**
-     *
-     * @param string $generatorTableName            
+     * @param string $generatorTableName
      */
     public function __construct($generatorTableName = 'sequences')
     {
@@ -44,59 +42,48 @@ class TableGeneratorSchemaVisitor implements \Doctrine\DBAL\Schema\Visitor\Visit
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptSchema(Schema $schema)
     {
         $table = $schema->createTable($this->generatorTableName);
         $table->addColumn('sequence_name', 'string');
-        $table->addColumn('sequence_value', 'integer', array(
-            'default' => 1
-        ));
-        $table->addColumn('sequence_increment_by', 'integer', array(
-            'default' => 1
-        ));
+        $table->addColumn('sequence_value', 'integer', array('default' => 1));
+        $table->addColumn('sequence_increment_by', 'integer', array('default' => 1));
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptTable(Table $table)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptColumn(Table $table, Column $column)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptIndex(Table $table, Index $index)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptSequence(Sequence $sequence)
-    {}
+    {
+    }
 }

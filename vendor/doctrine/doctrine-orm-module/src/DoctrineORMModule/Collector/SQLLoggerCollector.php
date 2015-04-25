@@ -16,44 +16,43 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Collector;
 
 use ZendDeveloperTools\Collector\CollectorInterface;
 use ZendDeveloperTools\Collector\AutoHideInterface;
+
 use Zend\Mvc\MvcEvent;
+
 use Doctrine\DBAL\Logging\DebugStack;
 
 /**
  * Collector to be used in ZendDeveloperTools to record and display SQL queries
  *
  * @license MIT
- * @link www.doctrine-project.org
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    www.doctrine-project.org
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class SQLLoggerCollector implements CollectorInterface, AutoHideInterface
 {
-
     /**
      * Collector priority
      */
     const PRIORITY = 10;
 
     /**
-     *
      * @var DebugStack
      */
     protected $sqlLogger;
 
     /**
-     *
      * @var string
      */
     protected $name;
 
     /**
-     *
-     * @param DebugStack $sqlLogger            
-     * @param string $name            
+     * @param DebugStack $sqlLogger
+     * @param string     $name
      */
     public function __construct(DebugStack $sqlLogger, $name)
     {
@@ -81,7 +80,8 @@ class SQLLoggerCollector implements CollectorInterface, AutoHideInterface
      * {@inheritDoc}
      */
     public function collect(MvcEvent $mvcEvent)
-    {}
+    {
+    }
 
     /**
      * {@inheritDoc}
@@ -92,7 +92,6 @@ class SQLLoggerCollector implements CollectorInterface, AutoHideInterface
     }
 
     /**
-     *
      * @return int
      */
     public function getQueryCount()
@@ -101,7 +100,6 @@ class SQLLoggerCollector implements CollectorInterface, AutoHideInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getQueries()
@@ -110,17 +108,16 @@ class SQLLoggerCollector implements CollectorInterface, AutoHideInterface
     }
 
     /**
-     *
      * @return float
      */
     public function getQueryTime()
     {
         $time = 0.0;
-        
+
         foreach ($this->sqlLogger->queries as $query) {
             $time += $query['executionMS'];
         }
-        
+
         return $time;
     }
 }

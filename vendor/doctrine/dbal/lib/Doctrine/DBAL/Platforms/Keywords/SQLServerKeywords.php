@@ -16,25 +16,23 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * Microsoft SQL Server 2000 reserved keyword dictionary.
  *
  * @license BSD http://www.opensource.org/licenses/bsd-license.php
- * @link www.doctrine-project.com
- * @since 2.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @author David Coallier <davidc@php.net>
- * @author Steve Müller <st.mueller@dzh-online.de>
+ * @link    www.doctrine-project.com
+ * @since   2.0
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
+ * @author  David Coallier <davidc@php.net>
+ * @author  Steve Müller <st.mueller@dzh-online.de>
  */
 class SQLServerKeywords extends KeywordList
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -42,8 +40,7 @@ class SQLServerKeywords extends KeywordList
     }
 
     /**
-     *
-     * @ERROR!!!
+     * {@inheritdoc}
      *
      * @link http://msdn.microsoft.com/en-us/library/aa238507%28v=sql.80%29.aspx
      */

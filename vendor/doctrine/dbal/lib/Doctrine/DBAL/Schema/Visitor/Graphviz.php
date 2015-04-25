@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema\Visitor;
 
 use Doctrine\DBAL\Schema\Table;
@@ -27,58 +28,56 @@ use Doctrine\DBAL\Schema\ForeignKeyConstraint;
  */
 class Graphviz extends AbstractVisitor
 {
-
     /**
-     *
      * @var string
      */
     private $output = '';
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
-        $this->output .= $this->createNodeRelation($fkConstraint->getLocalTableName() . ":col" . current($fkConstraint->getLocalColumns()) . ":se", $fkConstraint->getForeignTableName() . ":col" . current($fkConstraint->getForeignColumns()) . ":se", array(
-            'dir' => 'back',
-            'arrowtail' => 'dot',
-            'arrowhead' => 'normal'
-        ));
+        $this->output .= $this->createNodeRelation(
+            $fkConstraint->getLocalTableName() . ":col" . current($fkConstraint->getLocalColumns()).":se",
+            $fkConstraint->getForeignTableName() . ":col" . current($fkConstraint->getForeignColumns()).":se",
+            array(
+                'dir'       => 'back',
+                'arrowtail' => 'dot',
+                'arrowhead' => 'normal',
+            )
+        );
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptSchema(Schema $schema)
     {
-        $this->output = 'digraph "' . sha1(mt_rand()) . '" {' . "\n";
+        $this->output  = 'digraph "' . sha1(mt_rand()) . '" {' . "\n";
         $this->output .= 'splines = true;' . "\n";
         $this->output .= 'overlap = false;' . "\n";
-        $this->output .= 'outputorder=edgesfirst;' . "\n";
+        $this->output .= 'outputorder=edgesfirst;'."\n";
         $this->output .= 'mindist = 0.6;' . "\n";
         $this->output .= 'sep = .2;' . "\n";
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptTable(Table $table)
     {
-        $this->output .= $this->createNode($table->getName(), array(
-            'label' => $this->createTableLabel($table),
-            'shape' => 'plaintext'
-        ));
+        $this->output .= $this->createNode(
+            $table->getName(),
+            array(
+                'label' => $this->createTableLabel($table),
+                'shape' => 'plaintext',
+            )
+        );
     }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table            
+     * @param \Doctrine\DBAL\Schema\Table $table
      *
      * @return string
      */
@@ -86,35 +85,34 @@ class Graphviz extends AbstractVisitor
     {
         // Start the table
         $label = '<<TABLE CELLSPACING="0" BORDER="1" ALIGN="LEFT">';
-        
+
         // The title
         $label .= '<TR><TD BORDER="1" COLSPAN="3" ALIGN="CENTER" BGCOLOR="#fcaf3e"><FONT COLOR="#2e3436" FACE="Helvetica" POINT-SIZE="12">' . $table->getName() . '</FONT></TD></TR>';
-        
+
         // The attributes block
         foreach ($table->getColumns() as $column) {
             $columnLabel = $column->getName();
-            
+
             $label .= '<TR>';
             $label .= '<TD BORDER="0" ALIGN="LEFT" BGCOLOR="#eeeeec">';
             $label .= '<FONT COLOR="#2e3436" FACE="Helvetica" POINT-SIZE="12">' . $columnLabel . '</FONT>';
             $label .= '</TD><TD BORDER="0" ALIGN="LEFT" BGCOLOR="#eeeeec"><FONT COLOR="#2e3436" FACE="Helvetica" POINT-SIZE="10">' . strtolower($column->getType()) . '</FONT></TD>';
-            $label .= '<TD BORDER="0" ALIGN="RIGHT" BGCOLOR="#eeeeec" PORT="col' . $column->getName() . '">';
+            $label .= '<TD BORDER="0" ALIGN="RIGHT" BGCOLOR="#eeeeec" PORT="col'.$column->getName().'">';
             if ($table->hasPrimaryKey() && in_array($column->getName(), $table->getPrimaryKey()->getColumns())) {
                 $label .= "\xe2\x9c\xb7";
             }
             $label .= '</TD></TR>';
         }
-        
+
         // End the table
         $label .= '</TABLE>>';
-        
+
         return $label;
     }
 
     /**
-     *
-     * @param string $name            
-     * @param array $options            
+     * @param string $name
+     * @param array  $options
      *
      * @return string
      */
@@ -125,15 +123,14 @@ class Graphviz extends AbstractVisitor
             $node .= $key . '=' . $value . ' ';
         }
         $node .= "]\n";
-        
+
         return $node;
     }
 
     /**
-     *
-     * @param string $node1            
-     * @param string $node2            
-     * @param array $options            
+     * @param string $node1
+     * @param string $node2
+     * @param array  $options
      *
      * @return string
      */
@@ -144,7 +141,7 @@ class Graphviz extends AbstractVisitor
             $relation .= $key . '=' . $value . ' ';
         }
         $relation .= "]\n";
-        
+
         return $relation;
     }
 
@@ -159,15 +156,14 @@ class Graphviz extends AbstractVisitor
     }
 
     /**
-     * Writes dot language output to a file.
-     * This should usually be a *.dot file.
+     * Writes dot language output to a file. This should usually be a *.dot file.
      *
      * You have to convert the output into a viewable format. For example use "neato" on linux systems
      * and execute:
      *
-     * neato -Tpng -o er.png er.dot
+     *  neato -Tpng -o er.png er.dot
      *
-     * @param string $filename            
+     * @param string $filename
      *
      * @return void
      */

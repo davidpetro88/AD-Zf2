@@ -52,6 +52,7 @@ class RegistrationController extends AbstractActionController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 
+                $user->setPermissao('usuario');
                 $user->setUsrEmailConfirmed($user->getEmail());
                 $this->prepareData($user);
                 $this->sendConfirmationEmail($user);

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Service;
 
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
@@ -26,23 +27,22 @@ use Zend\ServiceManager\FactoryInterface;
  * Factory for {@see ObjectMultiCheckbox}
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Daniel Gimenes <daniel@danielgimenes.com.br>
+ * @link    http://www.doctrine-project.org/
+ * @author  Daniel Gimenes <daniel@danielgimenes.com.br>
  */
 class ObjectMultiCheckboxFactory implements FactoryInterface
 {
-
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $pluginManager)
     {
-        $services = $pluginManager->getServiceLocator();
+        $services      = $pluginManager->getServiceLocator();
         $entityManager = $services->get('Doctrine\ORM\EntityManager');
-        $element = new ObjectMultiCheckbox();
-        
+        $element       = new ObjectMultiCheckbox;
+
         $element->getProxy()->setObjectManager($entityManager);
-        
+
         return $element;
     }
 }

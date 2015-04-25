@@ -16,19 +16,17 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 use DoctrineORMModuleTest\Util\ServiceManagerFactory;
 
 ini_set('error_reporting', E_ALL);
 
-$files = array(
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php'
-);
+$files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php');
 
 foreach ($files as $file) {
     if (file_exists($file)) {
         $loader = require $file;
-        
+
         break;
     }
 }

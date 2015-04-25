@@ -16,10 +16,10 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Form\Element;
 
 /**
- *
  * @deprecated This is deprecated, please use EntitySelect instead
  */
 class DoctrineEntity extends EntitySelect

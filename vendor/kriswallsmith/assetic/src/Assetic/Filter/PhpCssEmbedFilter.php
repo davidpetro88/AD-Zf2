@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -22,7 +23,6 @@ use CssEmbed\CssEmbed;
  */
 class PhpCssEmbedFilter implements DependencyExtractorInterface
 {
-
     private $presets = array();
 
     public function setPresets(array $presets)
@@ -36,12 +36,13 @@ class PhpCssEmbedFilter implements DependencyExtractorInterface
         if ($dir = $asset->getSourceDirectory()) {
             $pce->setRootDir($dir);
         }
-        
+
         $asset->setContent($pce->embedString($asset->getContent()));
     }
 
     public function filterDump(AssetInterface $asset)
-    {}
+    {
+    }
 
     public function getChildren(AssetFactory $factory, $content, $loadPath = null)
     {

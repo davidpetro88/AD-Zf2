@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Assets\GraphEntity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -25,45 +26,45 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Part of the test assets used to produce a demo of graphs in the ZDT integration
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
- *        
- *         @ORM\Entity()
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
+ *
+ * @ORM\Entity()
  */
 class User
 {
-
     /**
-     *
-     * @var int @ORM\Id()
-     *      @ORM\GeneratedValue(strategy="AUTO")
-     *      @ORM\Column(type="integer")
+     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
-     *
-     * @var \Doctrine\Common\Collections\Collection|UserGroup[] @ORM\ManyToMany(targetEntity="UserGroup", mappedBy="users")
+     * @var \Doctrine\Common\Collections\Collection|UserGroup[]
+     * @ORM\ManyToMany(targetEntity="UserGroup", mappedBy="users")
      */
     protected $groups;
 
     /**
-     *
-     * @var \Doctrine\Common\Collections\Collection|Session[] @ORM\OneToMany(targetEntity="Session", mappedBy="user")
+     * @var \Doctrine\Common\Collections\Collection|Session[]
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="user")
      */
     protected $sessions;
 
     /**
-     *
-     * @var Address @ORM\OneToOne(targetEntity="Address")
+     * @var Address
+     * @ORM\OneToOne(targetEntity="Address")
      */
     protected $address;
 
     /**
+     *
      */
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
+        $this->groups   = new ArrayCollection();
         $this->sessions = new ArrayCollection();
     }
 }

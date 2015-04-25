@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Service;
 
 use Doctrine\DBAL\DriverManager;
@@ -26,45 +27,41 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * DBAL Connection ServiceManager factory
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Kyle Spraggs <theman@spiffyjr.me>
+ * @link    http://www.doctrine-project.org/
+ * @author  Kyle Spraggs <theman@spiffyjr.me>
  */
 class DBALConnectionFactory extends AbstractFactory
 {
-
     /**
      * {@inheritDoc}
-     * 
      * @return \Doctrine\DBAL\Connection
      */
     public function createService(ServiceLocatorInterface $sl)
     {
-        /**
-         * @var $options \DoctrineORMModule\Options\DBALConnection
-         */
+        /** @var $options \DoctrineORMModule\Options\DBALConnection */
         $options = $this->getOptions($sl, 'connection');
-        $pdo = $options->getPdo();
-        
+        $pdo     = $options->getPdo();
+
         if (is_string($pdo)) {
             $pdo = $sl->get($pdo);
         }
-        
+
         $params = array(
-            'driverClass' => $options->getDriverClass(),
+            'driverClass'  => $options->getDriverClass(),
             'wrapperClass' => $options->getWrapperClass(),
-            'pdo' => $pdo
+            'pdo'          => $pdo,
         );
         $params = array_merge($params, $options->getParams());
-        
+
         $configuration = $sl->get($options->getConfiguration());
-        $eventManager = $sl->get($options->getEventManager());
-        
+        $eventManager  = $sl->get($options->getEventManager());
+
         $connection = DriverManager::getConnection($params, $configuration, $eventManager);
         $platform = $connection->getDatabasePlatform();
         foreach ($options->getDoctrineTypeMappings() as $dbType => $doctrineType) {
             $platform->registerDoctrineTypeMapping($dbType, $doctrineType);
         }
-        
+
         return $connection;
     }
 

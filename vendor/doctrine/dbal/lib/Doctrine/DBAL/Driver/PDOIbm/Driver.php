@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\PDOIbm;
 
 use Doctrine\DBAL\Driver\AbstractDB2Driver;
@@ -24,8 +25,8 @@ use Doctrine\DBAL\Driver\PDOConnection;
 /**
  * Driver for the PDO IBM extension.
  *
- * @link www.doctrine-project.org
- * @since 1.0
+ * @link   www.doctrine-project.org
+ * @since  1.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -33,23 +34,25 @@ use Doctrine\DBAL\Driver\PDOConnection;
  */
 class Driver extends AbstractDB2Driver
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        $conn = new PDOConnection($this->_constructPdoDsn($params), $username, $password, $driverOptions);
-        
+        $conn = new PDOConnection(
+            $this->_constructPdoDsn($params),
+            $username,
+            $password,
+            $driverOptions
+        );
+
         return $conn;
     }
 
     /**
      * Constructs the IBM PDO DSN.
      *
-     * @param array $params            
+     * @param array $params
      *
      * @return string The DSN.
      */
@@ -66,14 +69,12 @@ class Driver extends AbstractDB2Driver
         if (isset($params['dbname'])) {
             $dsn .= 'DATABASE=' . $params['dbname'] . ';';
         }
-        
+
         return $dsn;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {

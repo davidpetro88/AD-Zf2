@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter\Sass;
 
 /**
@@ -18,11 +19,10 @@ namespace Assetic\Filter\Sass;
  */
 class ScssFilter extends SassFilter
 {
-
     public function __construct($sassPath = '/usr/bin/sass', $rubyPath = null)
     {
         parent::__construct($sassPath, $rubyPath);
-        
+
         $this->setScss(true);
     }
 }

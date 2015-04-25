@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Cache;
 
 /**
@@ -17,11 +18,9 @@ namespace Assetic\Cache;
  */
 class ArrayCache implements CacheInterface
 {
-
     private $cache = array();
 
     /**
-     *
      * @see CacheInterface::has()
      */
     public function has($key)
@@ -30,20 +29,18 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     *
      * @see CacheInterface::get()
      */
     public function get($key)
     {
-        if (! $this->has($key)) {
-            throw new \RuntimeException('There is no cached value for ' . $key);
+        if (!$this->has($key)) {
+            throw new \RuntimeException('There is no cached value for '.$key);
         }
-        
+
         return $this->cache[$key];
     }
 
     /**
-     *
      * @see CacheInterface::set()
      */
     public function set($key, $value)
@@ -52,7 +49,6 @@ class ArrayCache implements CacheInterface
     }
 
     /**
-     *
      * @see CacheInterface::remove()
      */
     public function remove($key)

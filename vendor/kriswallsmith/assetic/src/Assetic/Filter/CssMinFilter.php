@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -20,9 +21,7 @@ use Assetic\Asset\AssetInterface;
  */
 class CssMinFilter implements FilterInterface
 {
-
     private $filters;
-
     private $plugins;
 
     public function __construct()
@@ -52,23 +51,22 @@ class CssMinFilter implements FilterInterface
     }
 
     public function filterLoad(AssetInterface $asset)
-    {}
+    {
+    }
 
     public function filterDump(AssetInterface $asset)
     {
         $filters = $this->filters;
         $plugins = $this->plugins;
-        
+
         if (isset($filters['ImportImports']) && true === $filters['ImportImports']) {
             if ($dir = $asset->getSourceDirectory()) {
-                $filters['ImportImports'] = array(
-                    'BasePath' => $dir
-                );
+                $filters['ImportImports'] = array('BasePath' => $dir);
             } else {
                 unset($filters['ImportImports']);
             }
         }
-        
+
         $asset->setContent(\CssMin::minify($asset->getContent(), $filters, $plugins));
     }
 }

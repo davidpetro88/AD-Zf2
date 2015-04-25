@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL;
 
 /**
@@ -27,19 +28,17 @@ namespace Doctrine\DBAL;
  * distinction.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 interface VersionAwarePlatformDriver
 {
-
     /**
      * Factory method for creating the appropriate platform instance for the given version.
      *
-     * @param string $version
-     *            The platform/server version string to evaluate. This should be given in the notation
-     *            the underlying database vendor uses.
-     *            
+     * @param string $version The platform/server version string to evaluate. This should be given in the notation
+     *                        the underlying database vendor uses.
+     *
      * @return \Doctrine\DBAL\Platforms\AbstractPlatform
      *
      * @throws DBALException if the given version string could not be evaluated.

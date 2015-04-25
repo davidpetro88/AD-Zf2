@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\Schema\Index;
@@ -26,36 +27,33 @@ use Doctrine\DBAL\Schema\Sequence;
  * SAP Sybase SQL Anywhere 12 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class SQLAnywhere12Platform extends SQLAnywhere11Platform
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreateSequenceSQL(Sequence $sequence)
     {
-        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) . ' INCREMENT BY ' . $sequence->getAllocationSize() . ' START WITH ' . $sequence->getInitialValue() . ' MINVALUE ' . $sequence->getInitialValue();
+        return 'CREATE SEQUENCE ' . $sequence->getQuotedName($this) .
+            ' INCREMENT BY ' . $sequence->getAllocationSize() .
+            ' START WITH ' . $sequence->getInitialValue() .
+            ' MINVALUE ' . $sequence->getInitialValue();
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getAlterSequenceSQL(Sequence $sequence)
     {
-        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) . ' INCREMENT BY ' . $sequence->getAllocationSize();
+        return 'ALTER SEQUENCE ' . $sequence->getQuotedName($this) .
+            ' INCREMENT BY ' . $sequence->getAllocationSize();
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTimeTzFormatString()
     {
@@ -63,9 +61,7 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTimeTzTypeDeclarationSQL(array $fieldDeclaration)
     {
@@ -73,23 +69,19 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDropSequenceSQL($sequence)
     {
         if ($sequence instanceof Sequence) {
             $sequence = $sequence->getQuotedName($this);
         }
-        
+
         return 'DROP SEQUENCE ' . $sequence;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListSequencesSQL($database)
     {
@@ -97,9 +89,7 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSequenceNextValSQL($sequenceName)
     {
@@ -107,9 +97,7 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function supportsSequences()
     {
@@ -117,23 +105,19 @@ class SQLAnywhere12Platform extends SQLAnywhere11Platform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getAdvancedIndexOptionsSQL(Index $index)
     {
-        if (! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_not_distinct')) {
+        if ( ! $index->isPrimary() && $index->isUnique() && $index->hasFlag('with_nulls_not_distinct')) {
             return ' WITH NULLS NOT DISTINCT' . parent::getAdvancedIndexOptionsSQL($index);
         }
-        
+
         return parent::getAdvancedIndexOptionsSQL($index);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getReservedKeywordsClass()
     {

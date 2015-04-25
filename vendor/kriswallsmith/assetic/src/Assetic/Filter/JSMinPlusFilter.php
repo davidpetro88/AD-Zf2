@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -22,9 +23,9 @@ use Assetic\Asset\AssetInterface;
  */
 class JSMinPlusFilter implements FilterInterface
 {
-
     public function filterLoad(AssetInterface $asset)
-    {}
+    {
+    }
 
     public function filterDump(AssetInterface $asset)
     {

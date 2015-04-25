@@ -18,23 +18,23 @@
  */
 
 /**
- * Code coverage checker.
- * Analyzes a given `clover.xml` report produced
+ * Code coverage checker. Analyzes a given `clover.xml` report produced
  * by PHPUnit and checks if coverage fits expected ratio
  *
  * Usage:
- * php coverage-checker <path-to-clover> <pass-percentage>
+ *     php coverage-checker <path-to-clover> <pass-percentage>
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */
+
 $inputFile = $argv[1];
 $percentage = min(100, max(0, (int) $argv[2]));
 
-if (! file_exists($inputFile)) {
+if (!file_exists($inputFile)) {
     throw new InvalidArgumentException('Invalid input file provided');
 }
 
-if (! $percentage) {
+if (!$percentage) {
     throw new InvalidArgumentException('An integer checked percentage must be given as second parameter');
 }
 
@@ -46,7 +46,7 @@ $totalElements = 0;
 $checkedElements = 0;
 
 foreach ($metrics as $metric) {
-    $totalElements += (int) $metric['elements'];
+    $totalElements   += (int) $metric['elements'];
     $checkedElements += (int) $metric['coveredelements'];
 }
 

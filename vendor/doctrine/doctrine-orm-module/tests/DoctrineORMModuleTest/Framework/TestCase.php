@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Framework;
 
 use PHPUnit_Framework_TestCase;
@@ -29,15 +30,12 @@ use DoctrineORMModuleTest\Util\ServiceManagerFactory;
  */
 class TestCase extends PHPUnit_Framework_TestCase
 {
-
     /**
-     *
      * @var boolean
      */
     protected $hasDb = false;
 
     /**
-     *
      * @var EntityManager
      */
     private $entityManager;
@@ -50,11 +48,10 @@ class TestCase extends PHPUnit_Framework_TestCase
         if ($this->hasDb) {
             return;
         }
-        
-        $em = $this->getEntityManager();
+
+        $em   = $this->getEntityManager();
         $tool = new SchemaTool($em);
-        $tool->updateSchema($em->getMetadataFactory()
-            ->getAllMetadata());
+        $tool->updateSchema($em->getMetadataFactory()->getAllMetadata());
         $this->hasDb = true;
     }
 
@@ -63,12 +60,11 @@ class TestCase extends PHPUnit_Framework_TestCase
      */
     public function dropDb()
     {
-        $em = $this->getEntityManager();
+        $em   = $this->getEntityManager();
         $tool = new SchemaTool($em);
-        $tool->dropSchema($em->getMetadataFactory()
-            ->getAllMetadata());
+        $tool->dropSchema($em->getMetadataFactory()->getAllMetadata());
         $em->clear();
-        
+
         $this->hasDb = false;
     }
 
@@ -82,11 +78,11 @@ class TestCase extends PHPUnit_Framework_TestCase
         if ($this->entityManager) {
             return $this->entityManager;
         }
-        
+
         $serviceManager = ServiceManagerFactory::getServiceManager();
         $serviceManager->get('doctrine.entity_resolver.orm_default');
         $this->entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
-        
+
         return $this->entityManager;
     }
 }

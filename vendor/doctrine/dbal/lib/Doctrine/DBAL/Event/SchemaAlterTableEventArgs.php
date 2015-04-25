@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Event;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -24,44 +25,38 @@ use Doctrine\DBAL\Schema\TableDiff;
 /**
  * Event Arguments used when SQL queries for creating tables are generated inside Doctrine\DBAL\Platform\*Platform.
  *
- * @link www.doctrine-project.org
- * @since 2.2
+ * @link   www.doctrine-project.org
+ * @since  2.2
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaAlterTableEventArgs extends SchemaEventArgs
 {
-
     /**
-     *
      * @var \Doctrine\DBAL\Schema\TableDiff
      */
     private $_tableDiff;
 
     /**
-     *
      * @var \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     private $_platform;
 
     /**
-     *
      * @var array
      */
     private $_sql = array();
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\TableDiff $tableDiff            
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Schema\TableDiff           $tableDiff
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function __construct(TableDiff $tableDiff, AbstractPlatform $platform)
     {
         $this->_tableDiff = $tableDiff;
-        $this->_platform = $platform;
+        $this->_platform  = $platform;
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Schema\TableDiff
      */
     public function getTableDiff()
@@ -70,7 +65,6 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     public function getPlatform()
@@ -79,8 +73,7 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
     }
 
     /**
-     *
-     * @param string|array $sql            
+     * @param string|array $sql
      *
      * @return \Doctrine\DBAL\Event\SchemaAlterTableEventArgs
      */
@@ -91,12 +84,11 @@ class SchemaAlterTableEventArgs extends SchemaEventArgs
         } else {
             $this->_sql[] = $sql;
         }
-        
+
         return $this;
     }
 
     /**
-     *
      * @return array
      */
     public function getSql()

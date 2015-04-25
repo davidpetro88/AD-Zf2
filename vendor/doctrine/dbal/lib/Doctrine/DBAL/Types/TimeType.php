@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -27,11 +28,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class TimeType extends Type
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -39,9 +37,7 @@ class TimeType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -49,31 +45,28 @@ class TimeType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        return ($value !== null) ? $value->format($platform->getTimeFormatString()) : null;
+        return ($value !== null)
+            ? $value->format($platform->getTimeFormatString()) : null;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
-        
+
         $val = \DateTime::createFromFormat('!' . $platform->getTimeFormatString(), $value);
-        if (! $val) {
+        if ( ! $val) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getTimeFormatString());
         }
-        
+
         return $val;
     }
 }

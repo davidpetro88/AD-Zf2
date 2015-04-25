@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Asset;
 
 use Assetic\Filter\FilterCollection;
@@ -23,35 +24,23 @@ use Assetic\Filter\FilterInterface;
  */
 abstract class BaseAsset implements AssetInterface
 {
-
     private $filters;
-
     private $sourceRoot;
-
     private $sourcePath;
-
     private $sourceDir;
-
     private $targetPath;
-
     private $content;
-
     private $loaded;
-
     private $vars;
-
     private $values;
 
     /**
      * Constructor.
      *
-     * @param array $filters
-     *            Filters for the asset
-     * @param string $sourceRoot
-     *            The root directory
-     * @param string $sourcePath
-     *            The asset path
-     * @param array $vars            
+     * @param array  $filters    Filters for the asset
+     * @param string $sourceRoot The root directory
+     * @param string $sourcePath The asset path
+     * @param array  $vars
      */
     public function __construct($filters = array(), $sourceRoot = null, $sourcePath = null, array $vars = array())
     {
@@ -89,10 +78,8 @@ abstract class BaseAsset implements AssetInterface
     /**
      * Encapsulates asset loading logic.
      *
-     * @param string $content
-     *            The asset content
-     * @param FilterInterface $additionalFilter
-     *            An additional filter
+     * @param string          $content          The asset content
+     * @param FilterInterface $additionalFilter An additional filter
      */
     protected function doLoad($content, FilterInterface $additionalFilter = null)
     {
@@ -100,30 +87,30 @@ abstract class BaseAsset implements AssetInterface
         if ($additionalFilter) {
             $filter->ensure($additionalFilter);
         }
-        
+
         $asset = clone $this;
         $asset->setContent($content);
-        
+
         $filter->filterLoad($asset);
         $this->content = $asset->getContent();
-        
+
         $this->loaded = true;
     }
 
     public function dump(FilterInterface $additionalFilter = null)
     {
-        if (! $this->loaded) {
+        if (!$this->loaded) {
             $this->load();
         }
-        
+
         $filter = clone $this->filters;
         if ($additionalFilter) {
             $filter->ensure($additionalFilter);
         }
-        
+
         $asset = clone $this;
         $filter->filterDump($asset);
-        
+
         return $asset->getContent();
     }
 
@@ -166,7 +153,7 @@ abstract class BaseAsset implements AssetInterface
                 }
             }
         }
-        
+
         $this->targetPath = $targetPath;
     }
 
@@ -178,11 +165,11 @@ abstract class BaseAsset implements AssetInterface
     public function setValues(array $values)
     {
         foreach ($values as $var => $v) {
-            if (! in_array($var, $this->vars, true)) {
+            if (!in_array($var, $this->vars, true)) {
                 throw new \InvalidArgumentException(sprintf('The asset with source path "%s" has no variable named "%s".', $this->sourcePath, $var));
             }
         }
-        
+
         $this->values = $values;
         $this->loaded = false;
     }

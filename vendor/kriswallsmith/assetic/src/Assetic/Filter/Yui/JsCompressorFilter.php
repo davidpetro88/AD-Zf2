@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter\Yui;
 
 use Assetic\Asset\AssetInterface;
@@ -20,11 +21,8 @@ use Assetic\Asset\AssetInterface;
  */
 class JsCompressorFilter extends BaseCompressorFilter
 {
-
     private $nomunge;
-
     private $preserveSemi;
-
     private $disableOptimizations;
 
     public function setNomunge($nomunge = true)
@@ -45,19 +43,19 @@ class JsCompressorFilter extends BaseCompressorFilter
     public function filterDump(AssetInterface $asset)
     {
         $options = array();
-        
+
         if ($this->nomunge) {
             $options[] = '--nomunge';
         }
-        
+
         if ($this->preserveSemi) {
             $options[] = '--preserve-semi';
         }
-        
+
         if ($this->disableOptimizations) {
             $options[] = '--disable-optimizations';
         }
-        
+
         $asset->setContent($this->compress($asset->getContent(), 'js', $options));
     }
 }

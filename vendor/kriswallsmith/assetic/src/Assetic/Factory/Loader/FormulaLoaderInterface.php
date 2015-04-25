@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Factory\Loader;
 
 use Assetic\Factory\Resource\ResourceInterface;
@@ -19,16 +20,14 @@ use Assetic\Factory\Resource\ResourceInterface;
  */
 interface FormulaLoaderInterface
 {
-
     /**
      * Loads formulae from a resource.
      *
      * Formulae should be loaded the same regardless of the current debug
      * mode. Debug considerations should happen downstream.
      *
-     * @param ResourceInterface $resource
-     *            A resource
-     *            
+     * @param ResourceInterface $resource A resource
+     *
      * @return array An array of formulae
      */
     public function load(ResourceInterface $resource);

@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -19,20 +20,17 @@ use Assetic\Asset\AssetInterface;
  */
 interface FilterInterface
 {
-
     /**
      * Filters an asset after it has been loaded.
      *
-     * @param AssetInterface $asset
-     *            An asset
+     * @param AssetInterface $asset An asset
      */
     public function filterLoad(AssetInterface $asset);
 
     /**
      * Filters an asset just before it's dumped.
      *
-     * @param AssetInterface $asset
-     *            An asset
+     * @param AssetInterface $asset An asset
      */
     public function filterDump(AssetInterface $asset);
 }

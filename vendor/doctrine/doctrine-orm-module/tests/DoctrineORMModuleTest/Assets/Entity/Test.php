@@ -1,4 +1,5 @@
 <?php
+
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Test
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -28,7 +28,6 @@ class Test
     protected $password;
 
     /**
-     *
      * @return int|null
      */
     public function getId()
@@ -37,8 +36,7 @@ class Test
     }
 
     /**
-     *
-     * @param string $password            
+     * @param string $password
      */
     public function setPassword($password)
     {
@@ -46,7 +44,6 @@ class Test
     }
 
     /**
-     *
      * @return string|null
      */
     public function getPassword()
@@ -55,8 +52,7 @@ class Test
     }
 
     /**
-     *
-     * @param string $username            
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -64,7 +60,6 @@ class Test
     }
 
     /**
-     *
      * @return string|null
      */
     public function getUsername()

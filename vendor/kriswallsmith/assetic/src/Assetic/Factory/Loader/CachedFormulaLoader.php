@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Factory\Loader;
 
 use Assetic\Cache\ConfigCache;
@@ -23,11 +24,8 @@ use Assetic\Factory\Resource\ResourceInterface;
  */
 class CachedFormulaLoader implements FormulaLoaderInterface
 {
-
     private $loader;
-
     private $configCache;
-
     private $debug;
 
     /**
@@ -36,12 +34,9 @@ class CachedFormulaLoader implements FormulaLoaderInterface
      * When the loader is in debug mode it will ensure the cached formulae
      * are fresh before returning them.
      *
-     * @param FormulaLoaderInterface $loader
-     *            A formula loader
-     * @param ConfigCache $configCache
-     *            A config cache
-     * @param Boolean $debug
-     *            The debug mode
+     * @param FormulaLoaderInterface $loader      A formula loader
+     * @param ConfigCache            $configCache A config cache
+     * @param Boolean                $debug       The debug mode
      */
     public function __construct(FormulaLoaderInterface $loader, ConfigCache $configCache, $debug = false)
     {
@@ -52,24 +47,22 @@ class CachedFormulaLoader implements FormulaLoaderInterface
 
     public function load(ResourceInterface $resources)
     {
-        if (! $resources instanceof IteratorResourceInterface) {
-            $resources = array(
-                $resources
-            );
+        if (!$resources instanceof IteratorResourceInterface) {
+            $resources = array($resources);
         }
-        
+
         $formulae = array();
-        
+
         foreach ($resources as $resource) {
             $id = (string) $resource;
-            if (! $this->configCache->has($id) || ($this->debug && ! $resource->isFresh($this->configCache->getTimestamp($id)))) {
+            if (!$this->configCache->has($id) || ($this->debug && !$resource->isFresh($this->configCache->getTimestamp($id)))) {
                 $formulae += $this->loader->load($resource);
                 $this->configCache->set($id, $formulae);
             } else {
                 $formulae += $this->configCache->get($id);
             }
         }
-        
+
         return $formulae;
     }
 }

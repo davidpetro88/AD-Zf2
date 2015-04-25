@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Service;
 
 use Doctrine\ORM\Events;
@@ -25,25 +26,24 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EntityResolverFactory extends AbstractFactory
 {
-
     /**
      * {@inheritDoc}
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /* @var $options \DoctrineORMModule\Options\EntityResolver */
-        $options = $this->getOptions($serviceLocator, 'entity_resolver');
+        $options      = $this->getOptions($serviceLocator, 'entity_resolver');
         $eventManager = $serviceLocator->get($options->getEventManager());
-        $resolvers = $options->getResolvers();
-        
+        $resolvers    = $options->getResolvers();
+
         $targetEntityListener = new ResolveTargetEntityListener();
-        
+
         foreach ($resolvers as $oldEntity => $newEntity) {
             $targetEntityListener->addResolveTargetEntity($oldEntity, $newEntity, array());
         }
-        
+
         $eventManager->addEventListener(Events::loadClassMetadata, $targetEntityListener);
-        
+
         return $eventManager;
     }
 

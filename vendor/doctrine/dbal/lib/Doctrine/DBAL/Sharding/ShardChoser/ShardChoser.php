@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Sharding\ShardChoser;
 
 use Doctrine\DBAL\Sharding\PoolingShardConnection;
@@ -28,12 +29,11 @@ use Doctrine\DBAL\Sharding\PoolingShardConnection;
  */
 interface ShardChoser
 {
-
     /**
      * Picks a shard for the given distribution value.
      *
-     * @param string $distributionValue            
-     * @param \Doctrine\DBAL\Sharding\PoolingShardConnection $conn            
+     * @param string                                         $distributionValue
+     * @param \Doctrine\DBAL\Sharding\PoolingShardConnection $conn
      *
      * @return integer
      */

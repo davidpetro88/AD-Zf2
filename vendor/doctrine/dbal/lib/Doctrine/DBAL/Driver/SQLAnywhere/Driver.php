@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\SQLAnywhere;
 
 use Doctrine\DBAL\DBALException;
@@ -25,40 +26,47 @@ use Doctrine\DBAL\Driver\AbstractSQLAnywhereDriver;
  * A Doctrine DBAL driver for the SAP Sybase SQL Anywhere PHP extension.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class Driver extends AbstractSQLAnywhereDriver
 {
-
     /**
-     *
-     * @ERROR!!!
+     * {@inheritdoc}
      *
      * @throws \Doctrine\DBAL\DBALException if there was a problem establishing the connection.
-     * @throws SQLAnywhereException if a mandatory connection parameter is missing.
+     * @throws SQLAnywhereException         if a mandatory connection parameter is missing.
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
-        if (! isset($params['host'])) {
+        if ( ! isset($params['host'])) {
             throw new SQLAnywhereException("Missing 'host' in configuration for sqlanywhere driver.");
         }
-        
-        if (! isset($params['server'])) {
+
+        if ( ! isset($params['server'])) {
             throw new SQLAnywhereException("Missing 'server' in configuration for sqlanywhere driver.");
         }
-        
+
         try {
-            return new SQLAnywhereConnection($this->buildDsn($params['host'], isset($params['port']) ? $params['port'] : null, $params['server'], isset($params['dbname']) ? $params['dbname'] : null, $username, $password, $driverOptions), isset($params['persistent']) ? $params['persistent'] : false);
+            return new SQLAnywhereConnection(
+                $this->buildDsn(
+                    $params['host'],
+                    isset($params['port']) ? $params['port'] : null,
+                    $params['server'],
+                    isset($params['dbname']) ? $params['dbname'] : null,
+                    $username,
+                    $password,
+                    $driverOptions
+                ),
+                isset($params['persistent']) ? $params['persistent'] : false
+            );
         } catch (SQLAnywhereException $e) {
             throw DBALException::driverException($this, $e);
         }
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -68,31 +76,33 @@ class Driver extends AbstractSQLAnywhereDriver
     /**
      * Build the connection string for given connection parameters and driver options.
      *
-     * @param string $host
-     *            Host address to connect to.
-     * @param integer $port
-     *            Port to use for the connection (default to SQL Anywhere standard port 2638).
-     * @param string $server
-     *            Database server name on the host to connect to.
-     *            SQL Anywhere allows multiple database server instances on the same host,
-     *            therefore specifying the server instance name to use is mandatory.
-     * @param string $dbname
-     *            Name of the database on the server instance to connect to.
-     * @param string $username
-     *            User name to use for connection authentication.
-     * @param string $password
-     *            Password to use for connection authentication.
-     * @param array $driverOptions
-     *            Additional parameters to use for the connection.
-     *            
+     * @param string  $host          Host address to connect to.
+     * @param integer $port          Port to use for the connection (default to SQL Anywhere standard port 2638).
+     * @param string  $server        Database server name on the host to connect to.
+     *                               SQL Anywhere allows multiple database server instances on the same host,
+     *                               therefore specifying the server instance name to use is mandatory.
+     * @param string  $dbname        Name of the database on the server instance to connect to.
+     * @param string  $username      User name to use for connection authentication.
+     * @param string  $password      Password to use for connection authentication.
+     * @param array   $driverOptions Additional parameters to use for the connection.
+     *
      * @return string
      */
     private function buildDsn($host, $port, $server, $dbname, $username = null, $password = null, array $driverOptions = array())
     {
-        $port = $port ?  : 2638;
-        
-        return 'LINKS=tcpip(HOST=' . $host . ';PORT=' . $port . ';DoBroadcast=Direct)' . ';ServerName=' . $server . ';DBN=' . $dbname . ';UID=' . $username . ';PWD=' . $password . ';' . implode(';', array_map(function ($key, $value) {
-            return $key . '=' . $value;
-        }, array_keys($driverOptions), $driverOptions));
+        $port = $port ?: 2638;
+
+        return
+            'LINKS=tcpip(HOST=' . $host . ';PORT=' . $port . ';DoBroadcast=Direct)' .
+            ';ServerName=' . $server .
+            ';DBN=' . $dbname .
+            ';UID=' . $username .
+            ';PWD=' . $password .
+            ';' . implode(
+                ';',
+                array_map(function ($key, $value) {
+                    return $key . '=' . $value;
+                }, array_keys($driverOptions), $driverOptions)
+            );
     }
 }

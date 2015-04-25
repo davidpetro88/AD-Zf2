@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms;
 
 /**
@@ -23,16 +24,13 @@ namespace Doctrine\DBAL\Platforms;
  * SAP Sybase SQL Anywhere 11 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class SQLAnywhere11Platform extends SQLAnywherePlatform
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getRegexpExpression()
     {
@@ -40,9 +38,7 @@ class SQLAnywhere11Platform extends SQLAnywherePlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getReservedKeywordsClass()
     {

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Event;
 
 use Doctrine\Common\EventArgs;
@@ -23,32 +24,28 @@ use Doctrine\Common\EventArgs;
 /**
  * Base class for schema related events.
  *
- * @link www.doctrine-project.org
- * @since 2.2
+ * @link   www.doctrine-project.org
+ * @since  2.2
  * @author Jan Sorgalla <jsorgalla@googlemail.com>
  */
 class SchemaEventArgs extends EventArgs
 {
-
     /**
-     *
      * @var boolean
      */
     private $_preventDefault = false;
 
     /**
-     *
      * @return \Doctrine\DBAL\Event\SchemaEventArgs
      */
     public function preventDefault()
     {
         $this->_preventDefault = true;
-        
+
         return $this;
     }
 
     /**
-     *
      * @return boolean
      */
     public function isDefaultPrevented()

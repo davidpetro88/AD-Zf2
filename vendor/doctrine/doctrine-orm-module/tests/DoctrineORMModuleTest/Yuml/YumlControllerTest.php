@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Yuml;
 
 use DoctrineORMModule\Yuml\YumlController;
@@ -24,26 +25,22 @@ use DoctrineORMModule\Yuml\YumlController;
  * Tests for Yuml redirector controller
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class YumlControllerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     *
      * @var YumlController
      */
     protected $controller;
 
     /**
-     *
      * @var \Zend\Http\Client|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $httpClient;
 
     /**
-     *
      * @var \Zend\Mvc\Controller\PluginManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $pluginManager;
@@ -55,9 +52,9 @@ class YumlControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->httpClient = $this->getMock('Zend\\Http\\Client');
-        $this->controller = new YumlController($this->httpClient);
-        $this->pluginManager = $this->getMock('Zend\\Mvc\\Controller\\PluginManager');
+        $this->httpClient     = $this->getMock('Zend\\Http\\Client');
+        $this->controller     = new YumlController($this->httpClient);
+        $this->pluginManager  = $this->getMock('Zend\\Mvc\\Controller\\PluginManager');
         $this->controller->setPluginManager($this->pluginManager);
     }
 
@@ -69,24 +66,20 @@ class YumlControllerTest extends \PHPUnit_Framework_TestCase
         $response = $this->getMock('Zend\\Http\\Response');
         $controllerResponse = $this->getMock('Zend\\Http\\Response');
         $redirect = $this->getMock('Zend\\Mvc\\Controller\\Plugin\\Redirect');
-        $this->httpClient->expects($this->any())
-            ->method('send')
-            ->will($this->returnValue($response));
-        $response->expects($this->any())
-            ->method('isSuccess')
-            ->will($this->returnValue(true));
-        $response->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue('short-url'));
-        $this->pluginManager->expects($this->any())
-            ->method('get')
-            ->with('redirect')
+        $this->httpClient->expects($this->any())->method('send')->will($this->returnValue($response));
+        $response->expects($this->any())->method('isSuccess')->will($this->returnValue(true));
+        $response->expects($this->any())->method('getBody')->will($this->returnValue('short-url'));
+        $this
+            ->pluginManager
+            ->expects($this->any())
+            ->method('get')->with('redirect')
             ->will($this->returnValue($redirect));
-        $redirect->expects($this->any())
+        $redirect
+            ->expects($this->any())
             ->method('toUrl')
             ->with('http://yuml.me/short-url')
             ->will($this->returnValue($controllerResponse));
-        
+
         $this->assertSame($controllerResponse, $this->controller->indexAction());
     }
 
@@ -96,13 +89,9 @@ class YumlControllerTest extends \PHPUnit_Framework_TestCase
     public function testIndexActionWillFailOnMalformedResponse()
     {
         $response = $this->getMock('Zend\\Http\\Response');
-        $this->httpClient->expects($this->any())
-            ->method('send')
-            ->will($this->returnValue($response));
-        $response->expects($this->any())
-            ->method('isSuccess')
-            ->will($this->returnValue(false));
-        
+        $this->httpClient->expects($this->any())->method('send')->will($this->returnValue($response));
+        $response->expects($this->any())->method('isSuccess')->will($this->returnValue(false));
+
         $this->setExpectedException('UnexpectedValueException');
         $this->controller->indexAction();
     }

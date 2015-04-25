@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
 
 use \Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -23,17 +24,15 @@ use \Doctrine\DBAL\Platforms\AbstractPlatform;
 /**
  * Schema Diff.
  *
- * @link www.doctrine-project.org
+ * @link      www.doctrine-project.org
  * @copyright Copyright (C) 2005-2009 eZ Systems AS. All rights reserved.
- * @license http://ez.no/licenses/new_bsd New BSD License
- * @since 2.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @license   http://ez.no/licenses/new_bsd New BSD License
+ * @since     2.0
+ * @author    Benjamin Eberlei <kontakt@beberlei.de>
  */
 class SchemaDiff
 {
-
     /**
-     *
      * @var \Doctrine\DBAL\Schema\Schema
      */
     public $fromSchema;
@@ -74,25 +73,21 @@ class SchemaDiff
     public $removedTables = array();
 
     /**
-     *
      * @var \Doctrine\DBAL\Schema\Sequence[]
      */
     public $newSequences = array();
 
     /**
-     *
      * @var \Doctrine\DBAL\Schema\Sequence[]
      */
     public $changedSequences = array();
 
     /**
-     *
      * @var \Doctrine\DBAL\Schema\Sequence[]
      */
     public $removedSequences = array();
 
     /**
-     *
      * @var \Doctrine\DBAL\Schema\ForeignKeyConstraint[]
      */
     public $orphanedForeignKeys = array();
@@ -100,17 +95,17 @@ class SchemaDiff
     /**
      * Constructs an SchemaDiff object.
      *
-     * @param \Doctrine\DBAL\Schema\Table[] $newTables            
-     * @param \Doctrine\DBAL\Schema\TableDiff[] $changedTables            
-     * @param \Doctrine\DBAL\Schema\Table[] $removedTables            
-     * @param \Doctrine\DBAL\Schema\Schema|null $fromSchema            
+     * @param \Doctrine\DBAL\Schema\Table[]     $newTables
+     * @param \Doctrine\DBAL\Schema\TableDiff[] $changedTables
+     * @param \Doctrine\DBAL\Schema\Table[]     $removedTables
+     * @param \Doctrine\DBAL\Schema\Schema|null $fromSchema
      */
     public function __construct($newTables = array(), $changedTables = array(), $removedTables = array(), Schema $fromSchema = null)
     {
-        $this->newTables = $newTables;
+        $this->newTables     = $newTables;
         $this->changedTables = $changedTables;
         $this->removedTables = $removedTables;
-        $this->fromSchema = $fromSchema;
+        $this->fromSchema    = $fromSchema;
     }
 
     /**
@@ -122,7 +117,7 @@ class SchemaDiff
      *
      * This way it is ensured that assets are deleted which might not be relevant to the metadata schema at all.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return array
      */
@@ -132,8 +127,7 @@ class SchemaDiff
     }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return array
      */
@@ -143,48 +137,50 @@ class SchemaDiff
     }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
-     * @param boolean $saveMode            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param boolean                                   $saveMode
      *
      * @return array
      */
     protected function _toSql(AbstractPlatform $platform, $saveMode = false)
     {
         $sql = array();
-        
+
         if ($platform->supportsSchemas()) {
             foreach ($this->newNamespaces as $newNamespace) {
                 $sql[] = $platform->getCreateSchemaSQL($newNamespace);
             }
         }
-        
+
         if ($platform->supportsForeignKeyConstraints() && $saveMode == false) {
             foreach ($this->orphanedForeignKeys as $orphanedForeignKey) {
                 $sql[] = $platform->getDropForeignKeySQL($orphanedForeignKey, $orphanedForeignKey->getLocalTableName());
             }
         }
-        
+
         if ($platform->supportsSequences() == true) {
             foreach ($this->changedSequences as $sequence) {
                 $sql[] = $platform->getAlterSequenceSQL($sequence);
             }
-            
+
             if ($saveMode === false) {
                 foreach ($this->removedSequences as $sequence) {
                     $sql[] = $platform->getDropSequenceSQL($sequence);
                 }
             }
-            
+
             foreach ($this->newSequences as $sequence) {
                 $sql[] = $platform->getCreateSequenceSQL($sequence);
             }
         }
-        
+
         $foreignKeySql = array();
         foreach ($this->newTables as $table) {
-            $sql = array_merge($sql, $platform->getCreateTableSQL($table, AbstractPlatform::CREATE_INDEXES));
-            
+            $sql = array_merge(
+                $sql,
+                $platform->getCreateTableSQL($table, AbstractPlatform::CREATE_INDEXES)
+            );
+
             if ($platform->supportsForeignKeyConstraints()) {
                 foreach ($table->getForeignKeys() as $foreignKey) {
                     $foreignKeySql[] = $platform->getCreateForeignKeySQL($foreignKey, $table);
@@ -192,17 +188,17 @@ class SchemaDiff
             }
         }
         $sql = array_merge($sql, $foreignKeySql);
-        
+
         if ($saveMode === false) {
             foreach ($this->removedTables as $table) {
                 $sql[] = $platform->getDropTableSQL($table);
             }
         }
-        
+
         foreach ($this->changedTables as $tableDiff) {
             $sql = array_merge($sql, $platform->getAlterTableSQL($tableDiff));
         }
-        
+
         return $sql;
     }
 }

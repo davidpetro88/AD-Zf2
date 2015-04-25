@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Exception;
 
 use Doctrine\DBAL\DBALException;
@@ -24,12 +25,11 @@ use Doctrine\DBAL\DBALException;
  * Base class for all errors detected in the driver.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class DriverException extends DBALException
 {
-
     /**
      * The previous DBAL driver exception.
      *
@@ -40,21 +40,19 @@ class DriverException extends DBALException
     /**
      * Constructor.
      *
-     * @param string $message
-     *            The exception message.
-     * @param \Doctrine\DBAL\Driver\DriverException $driverException
-     *            The DBAL driver exception to chain.
+     * @param string                                $message         The exception message.
+     * @param \Doctrine\DBAL\Driver\DriverException $driverException The DBAL driver exception to chain.
      */
     public function __construct($message, \Doctrine\DBAL\Driver\DriverException $driverException)
     {
         $exception = null;
-        
+
         if ($driverException instanceof \Exception) {
             $exception = $driverException;
         }
-        
+
         parent::__construct($message, 0, $exception);
-        
+
         $this->driverException = $driverException;
     }
 

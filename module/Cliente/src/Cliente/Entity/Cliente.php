@@ -3,7 +3,11 @@ namespace Cliente\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation as Form;
+use ZfcUser\Entity\UserInterface as ZfcUserInterface;
+use ZfcRbac\Identity\IdentityInterface;
 use LosBase\Entity\AbstractEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -16,39 +20,133 @@ class Cliente extends AbstractEntity
 {
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=60)
+     * @Form\Options({"label":"Nome"})
+     * @Form\Type("text")
      */
     protected $nome;
 
     /**
-     * @ORM\Column(type="brprice")
+     * @ORM\Column(type="string", length=256)
+     * @Form\Options({"label":"E-mail"})
+     * @Form\Type("text")
      */
-    protected $credito;
+    protected $email;
 
+    /**
+     * @ORM\Column(type="string", length=12)
+     * @Form\Options({"label":"Celular"})
+     * @Form\Type("text")
+     */
+    protected $celular;
+
+    /**
+     * @ORM\Column(type="string", length=12)
+     * @Form\Options({"label":"Telefone"})
+     * @Form\Type("text")
+     */
+    protected $telefone;
+
+    /**
+     * @ORM\Column(type="string", length=14)
+     * @Form\Options({"label":"CPF"})
+     * @Form\Type("text")
+     */
+    protected $cpf;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime('now');
+        $this->updated = new \DateTime('now');
+    }
+
+    /**
+     *
+     * @return the $nome
+     */
     public function getNome()
     {
         return $this->nome;
     }
 
+    /**
+     *
+     * @return the $email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     *
+     * @return the $celular
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     *
+     * @return the $telefone
+     */
+    public function getTelefone()
+    {
+        return $this->telefone;
+    }
+
+    /**
+     *
+     * @return the $cpf
+     */
+    public function getCpf()
+    {
+        return $this->cpf;
+    }
+
+    /**
+     *
+     * @param field_type $nome            
+     */
     public function setNome($nome)
     {
         $this->nome = $nome;
-        return $this;
     }
 
-    public function getCredito()
+    /**
+     *
+     * @param field_type $email            
+     */
+    public function setEmail($email)
     {
-        return $this->credito;
+        $this->email = $email;
     }
 
-    public function setCredito($credito)
+    /**
+     *
+     * @param field_type $celular            
+     */
+    public function setCelular($celular)
     {
-        $this->credito = $credito;
-        return $this;
+        $this->celular = $celular;
     }
 
-    public function __toString()
+    /**
+     *
+     * @param field_type $telefone            
+     */
+    public function setTelefone($telefone)
     {
-        return $this->nome;
+        $this->telefone = $telefone;
+    }
+
+    /**
+     *
+     * @param field_type $cpf            
+     */
+    public function setCpf($cpf)
+    {
+        $this->cpf = $cpf;
     }
 }

@@ -16,16 +16,17 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace TravisDoctrineMigrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration, Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Migrations\AbstractMigration,
+    Doctrine\DBAL\Schema\Schema;
 
 /**
  * Empty test migration used for testing
  */
 class Version20120714005702 extends AbstractMigration
 {
-
     /**
      * {@inheritDoc}
      */
@@ -38,5 +39,6 @@ class Version20120714005702 extends AbstractMigration
      * {@inheritDoc}
      */
     public function down(Schema $schema)
-    {}
+    {
+    }
 }

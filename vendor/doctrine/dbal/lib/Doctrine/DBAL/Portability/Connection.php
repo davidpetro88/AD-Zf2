@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Portability;
 
 use Doctrine\DBAL\Cache\QueryCacheProfile;
@@ -23,55 +24,39 @@ use Doctrine\DBAL\Cache\QueryCacheProfile;
 /**
  * Portability wrapper for a Connection.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class Connection extends \Doctrine\DBAL\Connection
 {
+    const PORTABILITY_ALL               = 255;
+    const PORTABILITY_NONE              = 0;
+    const PORTABILITY_RTRIM             = 1;
+    const PORTABILITY_EMPTY_TO_NULL     = 4;
+    const PORTABILITY_FIX_CASE          = 8;
 
-    const PORTABILITY_ALL = 255;
-
-    const PORTABILITY_NONE = 0;
-
-    const PORTABILITY_RTRIM = 1;
-
-    const PORTABILITY_EMPTY_TO_NULL = 4;
-
-    const PORTABILITY_FIX_CASE = 8;
-
-    const PORTABILITY_DB2 = 13;
-
-    const PORTABILITY_ORACLE = 9;
-
-    const PORTABILITY_POSTGRESQL = 13;
-
-    const PORTABILITY_SQLITE = 13;
-
-    const PORTABILITY_OTHERVENDORS = 12;
-
-    const PORTABILITY_DRIZZLE = 13;
-
-    const PORTABILITY_SQLANYWHERE = 13;
-
-    const PORTABILITY_SQLSRV = 13;
+    const PORTABILITY_DB2               = 13;
+    const PORTABILITY_ORACLE            = 9;
+    const PORTABILITY_POSTGRESQL        = 13;
+    const PORTABILITY_SQLITE            = 13;
+    const PORTABILITY_OTHERVENDORS      = 12;
+    const PORTABILITY_DRIZZLE           = 13;
+    const PORTABILITY_SQLANYWHERE       = 13;
+    const PORTABILITY_SQLSRV            = 13;
 
     /**
-     *
      * @var integer
      */
     private $portability = self::PORTABILITY_NONE;
 
     /**
-     *
      * @var integer
      */
     private $case;
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function connect()
     {
@@ -107,12 +92,11 @@ class Connection extends \Doctrine\DBAL\Connection
                 }
             }
         }
-        
+
         return $ret;
     }
 
     /**
-     *
      * @return integer
      */
     public function getPortability()
@@ -121,7 +105,6 @@ class Connection extends \Doctrine\DBAL\Connection
     }
 
     /**
-     *
      * @return integer
      */
     public function getFetchCase()
@@ -130,47 +113,38 @@ class Connection extends \Doctrine\DBAL\Connection
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function executeQuery($query, array $params = array(), $types = array(), QueryCacheProfile $qcp = null)
     {
         $stmt = new Statement(parent::executeQuery($query, $params, $types, $qcp), $this);
         $stmt->setFetchMode($this->defaultFetchMode);
-        
+
         return $stmt;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function prepare($statement)
     {
         $stmt = new Statement(parent::prepare($statement), $this);
         $stmt->setFetchMode($this->defaultFetchMode);
-        
+
         return $stmt;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function query()
     {
         $this->connect();
-        
-        $stmt = call_user_func_array(array(
-            $this->_conn,
-            'query'
-        ), func_get_args());
+
+        $stmt = call_user_func_array(array($this->_conn, 'query'), func_get_args());
         $stmt = new Statement($stmt, $this);
         $stmt->setFetchMode($this->defaultFetchMode);
-        
+
         return $stmt;
     }
 }

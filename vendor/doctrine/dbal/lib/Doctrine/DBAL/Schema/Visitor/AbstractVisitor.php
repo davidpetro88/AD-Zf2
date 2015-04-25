@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema\Visitor;
 
 use Doctrine\DBAL\Schema\Table;
@@ -30,57 +31,55 @@ use Doctrine\DBAL\Schema\Index;
  */
 class AbstractVisitor implements Visitor, NamespaceVisitor
 {
-
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Schema $schema            
+     * @param \Doctrine\DBAL\Schema\Schema $schema
      */
     public function acceptSchema(Schema $schema)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptNamespace($namespaceName)
-    {}
+    {
+    }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table            
+     * @param \Doctrine\DBAL\Schema\Table $table
      */
     public function acceptTable(Table $table)
-    {}
+    {
+    }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table            
-     * @param \Doctrine\DBAL\Schema\Column $column            
+     * @param \Doctrine\DBAL\Schema\Table  $table
+     * @param \Doctrine\DBAL\Schema\Column $column
      */
     public function acceptColumn(Table $table, Column $column)
-    {}
+    {
+    }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $localTable            
-     * @param \Doctrine\DBAL\Schema\ForeignKeyConstraint $fkConstraint            
+     * @param \Doctrine\DBAL\Schema\Table                $localTable
+     * @param \Doctrine\DBAL\Schema\ForeignKeyConstraint $fkConstraint
      */
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
-    {}
+    {
+    }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table            
-     * @param \Doctrine\DBAL\Schema\Index $index            
+     * @param \Doctrine\DBAL\Schema\Table $table
+     * @param \Doctrine\DBAL\Schema\Index $index
      */
     public function acceptIndex(Table $table, Index $index)
-    {}
+    {
+    }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Sequence $sequence            
+     * @param \Doctrine\DBAL\Schema\Sequence $sequence
      */
     public function acceptSequence(Sequence $sequence)
-    {}
+    {
+    }
 }

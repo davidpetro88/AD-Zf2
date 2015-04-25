@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Cache;
 
 /**
@@ -17,9 +18,7 @@ namespace Assetic\Cache;
  */
 class ExpiringCache implements CacheInterface
 {
-
     private $cache;
-
     private $lifetime;
 
     public function __construct(CacheInterface $cache, $lifetime)
@@ -31,14 +30,14 @@ class ExpiringCache implements CacheInterface
     public function has($key)
     {
         if ($this->cache->has($key)) {
-            if (time() < $this->cache->get($key . '.expires')) {
+            if (time() < $this->cache->get($key.'.expires')) {
                 return true;
             }
-            
-            $this->cache->remove($key . '.expires');
+
+            $this->cache->remove($key.'.expires');
             $this->cache->remove($key);
         }
-        
+
         return false;
     }
 
@@ -49,13 +48,13 @@ class ExpiringCache implements CacheInterface
 
     public function set($key, $value)
     {
-        $this->cache->set($key . '.expires', time() + $this->lifetime);
+        $this->cache->set($key.'.expires', time() + $this->lifetime);
         $this->cache->set($key, $value);
     }
 
     public function remove($key)
     {
-        $this->cache->remove($key . '.expires');
+        $this->cache->remove($key.'.expires');
         $this->cache->remove($key);
     }
 }

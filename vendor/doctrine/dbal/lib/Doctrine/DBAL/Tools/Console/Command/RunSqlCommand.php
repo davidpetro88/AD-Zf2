@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Tools\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -28,8 +29,8 @@ use Symfony\Component\Console\Input\InputOption;
  * Task for executing arbitrary SQL that can come from a file or directly from
  * the command line.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -37,55 +38,51 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class RunSqlCommand extends Command
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('dbal:run-sql')
-            ->setDescription('Executes arbitrary SQL directly from the command line.')
-            ->setDefinition(array(
+        $this
+        ->setName('dbal:run-sql')
+        ->setDescription('Executes arbitrary SQL directly from the command line.')
+        ->setDefinition(array(
             new InputArgument('sql', InputArgument::REQUIRED, 'The SQL statement to execute.'),
             new InputOption('depth', null, InputOption::VALUE_REQUIRED, 'Dumping depth of result set.', 7)
         ))
-            ->setHelp(<<<EOT
+        ->setHelp(<<<EOT
 Executes arbitrary SQL directly from the command line.
 EOT
-);
+        );
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $conn = $this->getHelper('db')->getConnection();
-        
+
         if (($sql = $input->getArgument('sql')) === null) {
             throw new \RuntimeException("Argument 'SQL' is required in order to execute this command correctly.");
         }
-        
+
         $depth = $input->getOption('depth');
-        
-        if (! is_numeric($depth)) {
+
+        if ( ! is_numeric($depth)) {
             throw new \LogicException("Option 'depth' must contains an integer value");
         }
-        
+
         if (stripos($sql, 'select') === 0) {
             $resultSet = $conn->fetchAll($sql);
         } else {
             $resultSet = $conn->executeUpdate($sql);
         }
-        
+
         ob_start();
         \Doctrine\Common\Util\Debug::dump($resultSet, (int) $depth);
         $message = ob_get_clean();
-        
+
         $output->write($message);
     }
 }

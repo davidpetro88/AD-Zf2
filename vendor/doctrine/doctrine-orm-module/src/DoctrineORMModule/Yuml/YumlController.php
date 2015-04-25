@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Yuml;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -26,21 +27,18 @@ use Zend\Http\Request;
  * Utility to generate Yuml compatible strings from metadata graphs
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class YumlController extends AbstractActionController
 {
-
     /**
-     *
      * @var Client
      */
     protected $httpClient;
 
     /**
-     *
-     * @param Client $httpClient            
+     * @param Client $httpClient
      */
     public function __construct(Client $httpClient)
     {
@@ -59,18 +57,16 @@ class YumlController extends AbstractActionController
         /* @var $request \Zend\Http\Request */
         $request = $this->getRequest();
         $this->httpClient->setMethod(Request::METHOD_POST);
-        $this->httpClient->setParameterPost(array(
-            'dsl_text' => $request->getPost('dsl_text')
-        ));
+        $this->httpClient->setParameterPost(array('dsl_text' => $request->getPost('dsl_text')));
         $response = $this->httpClient->send();
-        
-        if (! $response->isSuccess()) {
+
+        if (!$response->isSuccess()) {
             throw new \UnexpectedValueException('HTTP Request failed');
         }
-        
+
         /* @var $redirect \Zend\Mvc\Controller\Plugin\Redirect */
         $redirect = $this->plugin('redirect');
-        
+
         return $redirect->toUrl('http://yuml.me/' . $response->getBody());
     }
 }

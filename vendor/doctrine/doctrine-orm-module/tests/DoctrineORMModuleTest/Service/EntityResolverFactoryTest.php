@@ -16,19 +16,19 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Service;
 
 use DoctrineORMModuleTest\Framework\TestCase as TestCase;
 
 class EntityResolverFactoryTest extends TestCase
 {
-
     public function testCanResolveTargetEntity()
     {
-        $em = $this->getEntityManager();
+        $em            = $this->getEntityManager();
         $classMetadata = $em->getClassMetadata('DoctrineORMModuleTest\Assets\Entity\ResolveTarget');
-        $meta = $classMetadata->associationMappings;
-        
+        $meta          = $classMetadata->associationMappings;
+
         $this->assertSame('DoctrineORMModuleTest\Assets\Entity\TargetEntity', $meta['target']['targetEntity']);
     }
 }

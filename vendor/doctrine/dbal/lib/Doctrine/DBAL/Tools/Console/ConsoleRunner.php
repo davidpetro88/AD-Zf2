@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Tools\Console;
 
 use Doctrine\DBAL\Connection;
@@ -32,11 +33,10 @@ use Doctrine\DBAL\Version;
  */
 class ConsoleRunner
 {
-
     /**
      * Create a Symfony Console HelperSet
      *
-     * @param Connection $connection            
+     * @param Connection $connection
      *
      * @return HelperSet
      */
@@ -50,27 +50,26 @@ class ConsoleRunner
     /**
      * Runs console with the given helperset.
      *
-     * @param \Symfony\Component\Console\Helper\HelperSet $helperSet            
-     * @param \Symfony\Component\Console\Command\Command[] $commands            
+     * @param \Symfony\Component\Console\Helper\HelperSet  $helperSet
+     * @param \Symfony\Component\Console\Command\Command[] $commands
      *
      * @return void
      */
     static public function run(HelperSet $helperSet, $commands = array())
     {
         $cli = new Application('Doctrine Command Line Interface', Version::VERSION);
-        
+
         $cli->setCatchExceptions(true);
         $cli->setHelperSet($helperSet);
-        
+
         self::addCommands($cli);
-        
+
         $cli->addCommands($commands);
         $cli->run();
     }
 
     /**
-     *
-     * @param Application $cli            
+     * @param Application $cli
      *
      * @return void
      */
@@ -79,7 +78,7 @@ class ConsoleRunner
         $cli->addCommands(array(
             new RunSqlCommand(),
             new ImportCommand(),
-            new ReservedWordsCommand()
+            new ReservedWordsCommand(),
         ));
     }
 

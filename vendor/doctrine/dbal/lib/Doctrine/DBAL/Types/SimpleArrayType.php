@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -25,16 +26,13 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  *
  * Only use this type if you are sure that your values cannot contain a ",".
  *
- * @since 2.3
+ * @since  2.3
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class SimpleArrayType extends Type
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -42,39 +40,33 @@ class SimpleArrayType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if (! $value) {
+        if (!$value) {
             return null;
         }
-        
+
         return implode(',', $value);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return array();
         }
-        
+
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
-        
+
         return explode(',', $value);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -82,9 +74,7 @@ class SimpleArrayType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

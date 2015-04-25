@@ -16,20 +16,19 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * Abstract interface for a SQL reserved keyword dictionary.
  *
- * @link www.doctrine-project.org
- * @since 2.0
- * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @link    www.doctrine-project.org
+ * @since   2.0
+ * @author  Benjamin Eberlei <kontakt@beberlei.de>
  */
 abstract class KeywordList
 {
-
     /**
-     *
      * @var array|null
      */
     private $keywords = null;
@@ -37,7 +36,7 @@ abstract class KeywordList
     /**
      * Checks if the given word is a keyword of this dialect/vendor platform.
      *
-     * @param string $word            
+     * @param string $word
      *
      * @return boolean
      */
@@ -46,12 +45,11 @@ abstract class KeywordList
         if ($this->keywords === null) {
             $this->initializeKeywords();
         }
-        
+
         return isset($this->keywords[strtoupper($word)]);
     }
 
     /**
-     *
      * @return void
      */
     protected function initializeKeywords()

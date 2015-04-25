@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
 
 /**
@@ -25,17 +26,15 @@ namespace Doctrine\DBAL\Schema;
  * in an abstract class for proper quotation capabilities.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.4
+ * @link   www.doctrine-project.org
+ * @since  2.4
  */
 class Identifier extends AbstractAsset
 {
-
     /**
      * Constructor.
      *
-     * @param string $identifier
-     *            Identifier name to wrap.
+     * @param string $identifier Identifier name to wrap.
      */
     public function __construct($identifier)
     {

@@ -15,6 +15,7 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
+
 namespace DoctrineORMModule\Service;
 
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
@@ -23,7 +24,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class DoctrineObjectHydratorFactory implements FactoryInterface
 {
-
     /**
      * {@inheritDoc}
      */

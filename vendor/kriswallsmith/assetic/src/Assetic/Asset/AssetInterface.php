@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Asset;
 
 use Assetic\Filter\FilterInterface;
@@ -19,12 +20,10 @@ use Assetic\Filter\FilterInterface;
  */
 interface AssetInterface
 {
-
     /**
      * Ensures the current asset includes the supplied filter.
      *
-     * @param FilterInterface $filter
-     *            A filter
+     * @param FilterInterface $filter A filter
      */
     public function ensureFilter(FilterInterface $filter);
 
@@ -45,8 +44,7 @@ interface AssetInterface
      *
      * You may provide an additional filter to apply during load.
      *
-     * @param FilterInterface $additionalFilter
-     *            An additional filter
+     * @param FilterInterface $additionalFilter An additional filter
      */
     public function load(FilterInterface $additionalFilter = null);
 
@@ -60,9 +58,8 @@ interface AssetInterface
      * If the current asset has not been loaded yet, it should be
      * automatically loaded at this time.
      *
-     * @param FilterInterface $additionalFilter
-     *            An additional filter
-     *            
+     * @param FilterInterface $additionalFilter An additional filter
+     *
      * @return string The filtered content of the current asset
      */
     public function dump(FilterInterface $additionalFilter = null);
@@ -79,8 +76,7 @@ interface AssetInterface
      *
      * Filters can use this method to change the content of the asset.
      *
-     * @param string $content
-     *            The asset content
+     * @param string $content The asset content
      */
     public function setContent($content);
 
@@ -92,9 +88,9 @@ interface AssetInterface
      *
      * For example:
      *
-     * * '/path/to/web'
-     * * 'http://example.com'
-     * * null
+     *  * '/path/to/web'
+     *  * 'http://example.com'
+     *  * null
      *
      * @return string|null The asset's root
      */
@@ -108,9 +104,9 @@ interface AssetInterface
      *
      * For example:
      *
-     * * 'js/main.js'
-     * * 'main.js'
-     * * null
+     *  * 'js/main.js'
+     *  * 'main.js'
+     *  * null
      *
      * @return string|null The source asset path
      */
@@ -136,8 +132,7 @@ interface AssetInterface
     /**
      * Sets the URL for the current asset.
      *
-     * @param string $targetPath
-     *            A web URL where the asset will be dumped
+     * @param string $targetPath A web URL where the asset will be dumped
      */
     public function setTargetPath($targetPath);
 
@@ -158,7 +153,7 @@ interface AssetInterface
     /**
      * Sets the values for the asset's variables.
      *
-     * @param array $values            
+     * @param array $values
      */
     public function setValues(array $values);
 

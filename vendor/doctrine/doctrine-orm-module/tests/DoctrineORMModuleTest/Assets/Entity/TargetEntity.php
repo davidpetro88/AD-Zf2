@@ -1,4 +1,5 @@
 <?php
+
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TargetEntity implements TargetInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

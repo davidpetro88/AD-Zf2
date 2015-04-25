@@ -16,18 +16,16 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Cache;
 
 /**
- *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @since 2.2
  */
 class CacheException extends \Doctrine\DBAL\DBALException
 {
-
     /**
-     *
      * @return \Doctrine\DBAL\Cache\CacheException
      */
     static public function noCacheKey()
@@ -36,7 +34,6 @@ class CacheException extends \Doctrine\DBAL\DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Cache\CacheException
      */
     static public function noResultDriverConfigured()

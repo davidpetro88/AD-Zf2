@@ -16,23 +16,21 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * PostgreSQL Keywordlist.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Marcelo Santos Araujo <msaraujo@php.net>
  */
 class PostgreSQLKeywords extends KeywordList
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -40,9 +38,7 @@ class PostgreSQLKeywords extends KeywordList
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getKeywords()
     {

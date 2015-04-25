@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -21,27 +22,18 @@ use Assetic\Exception\FilterException;
  */
 class UglifyJsFilter extends BaseNodeFilter
 {
-
     private $uglifyjsBin;
-
     private $nodeBin;
 
     private $noCopyright;
-
     private $beautify;
-
     private $unsafe;
-
     private $mangle;
-
     private $defines;
 
     /**
-     *
-     * @param string $uglifyjsBin
-     *            Absolute path to the uglifyjs executable
-     * @param string $nodeBin
-     *            Absolute path to the folder containg node.js executable
+     * @param string $uglifyjsBin Absolute path to the uglifyjs executable
+     * @param string $nodeBin     Absolute path to the folder containg node.js executable
      */
     public function __construct($uglifyjsBin = '/usr/bin/uglifyjs', $nodeBin = null)
     {
@@ -51,9 +43,7 @@ class UglifyJsFilter extends BaseNodeFilter
 
     /**
      * Removes the first block of comments as well
-     * 
-     * @param bool $noCopyright
-     *            True to enable
+     * @param bool $noCopyright True to enable
      */
     public function setNoCopyright($noCopyright)
     {
@@ -62,9 +52,7 @@ class UglifyJsFilter extends BaseNodeFilter
 
     /**
      * Output indented code
-     * 
-     * @param bool $beautify
-     *            True to enable
+     * @param bool $beautify True to enable
      */
     public function setBeautify($beautify)
     {
@@ -73,9 +61,7 @@ class UglifyJsFilter extends BaseNodeFilter
 
     /**
      * Enable additional optimizations that are known to be unsafe in some situations.
-     * 
-     * @param bool $unsafe
-     *            True to enable
+     * @param bool $unsafe True to enable
      */
     public function setUnsafe($unsafe)
     {
@@ -84,9 +70,7 @@ class UglifyJsFilter extends BaseNodeFilter
 
     /**
      * Safely mangle variable and function names for greater file compress.
-     * 
-     * @param bool $mangle
-     *            True to enable
+     * @param bool $mangle True to enable
      */
     public function setMangle($mangle)
     {
@@ -99,11 +83,11 @@ class UglifyJsFilter extends BaseNodeFilter
     }
 
     /**
-     *
      * @see Assetic\Filter\FilterInterface::filterLoad()
      */
     public function filterLoad(AssetInterface $asset)
-    {}
+    {
+    }
 
     /**
      * Run the asset through UglifyJs
@@ -112,67 +96,64 @@ class UglifyJsFilter extends BaseNodeFilter
      */
     public function filterDump(AssetInterface $asset)
     {
-        $pb = $this->createProcessBuilder($this->nodeBin ? array(
-            $this->nodeBin,
-            $this->uglifyjsBin
-        ) : array(
-            $this->uglifyjsBin
-        ));
-        
+        $pb = $this->createProcessBuilder(
+            $this->nodeBin
+            ? array($this->nodeBin, $this->uglifyjsBin)
+            : array($this->uglifyjsBin)
+        );
+
         if ($this->noCopyright) {
             $pb->add('--no-copyright');
         }
-        
+
         if ($this->beautify) {
             $pb->add('--beautify');
         }
-        
+
         if ($this->unsafe) {
             $pb->add('--unsafe');
         }
-        
+
         if (false === $this->mangle) {
             $pb->add('--no-mangle');
         }
-        
+
         if ($this->defines) {
             foreach ($this->defines as $define) {
                 $pb->add('-d')->add($define);
             }
         }
-        
+
         // input and output files
         $input = tempnam(sys_get_temp_dir(), 'input');
         $output = tempnam(sys_get_temp_dir(), 'output');
-        
+
         file_put_contents($input, $asset->getContent());
-        $pb->add('-o')
-            ->add($output)
-            ->add($input);
-        
+        $pb->add('-o')->add($output)->add($input);
+
         $proc = $pb->getProcess();
         $code = $proc->run();
         unlink($input);
-        
+
         if (0 !== $code) {
             if (file_exists($output)) {
                 unlink($output);
             }
-            
+
             if (127 === $code) {
                 throw new \RuntimeException('Path to node executable could not be resolved.');
             }
-            
+
             throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
-        
-        if (! file_exists($output)) {
+
+        if (!file_exists($output)) {
             throw new \RuntimeException('Error creating output file.');
         }
-        
+
         $uglifiedJs = file_get_contents($output);
         unlink($output);
-        
+
         $asset->setContent($uglifiedJs);
     }
 }

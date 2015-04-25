@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter\Sass;
 
 use Assetic\Asset\AssetInterface;
@@ -21,35 +22,21 @@ use Assetic\Exception\FilterException;
  */
 class SassFilter extends BaseSassFilter
 {
-
-    const STYLE_NESTED = 'nested';
-
-    const STYLE_EXPANDED = 'expanded';
-
-    const STYLE_COMPACT = 'compact';
-
+    const STYLE_NESTED     = 'nested';
+    const STYLE_EXPANDED   = 'expanded';
+    const STYLE_COMPACT    = 'compact';
     const STYLE_COMPRESSED = 'compressed';
 
     private $sassPath;
-
     private $rubyPath;
-
     private $unixNewlines;
-
     private $scss;
-
     private $style;
-
     private $quiet;
-
     private $debugInfo;
-
     private $lineNumbers;
-
     private $cacheLocation;
-
     private $noCache;
-
     private $compass;
 
     public function __construct($sassPath = '/usr/bin/sass', $rubyPath = null)
@@ -106,74 +93,73 @@ class SassFilter extends BaseSassFilter
 
     public function filterLoad(AssetInterface $asset)
     {
-        $sassProcessArgs = array(
-            $this->sassPath
-        );
+        $sassProcessArgs = array($this->sassPath);
         if (null !== $this->rubyPath) {
             $sassProcessArgs = array_merge(explode(' ', $this->rubyPath), $sassProcessArgs);
         }
-        
+
         $pb = $this->createProcessBuilder($sassProcessArgs);
-        
+
         if ($dir = $asset->getSourceDirectory()) {
             $pb->add('--load-path')->add($dir);
         }
-        
+
         if ($this->unixNewlines) {
             $pb->add('--unix-newlines');
         }
-        
+
         if (true === $this->scss || (null === $this->scss && 'scss' == pathinfo($asset->getSourcePath(), PATHINFO_EXTENSION))) {
             $pb->add('--scss');
         }
-        
+
         if ($this->style) {
             $pb->add('--style')->add($this->style);
         }
-        
+
         if ($this->quiet) {
             $pb->add('--quiet');
         }
-        
+
         if ($this->debugInfo) {
             $pb->add('--debug-info');
         }
-        
+
         if ($this->lineNumbers) {
             $pb->add('--line-numbers');
         }
-        
+
         foreach ($this->loadPaths as $loadPath) {
             $pb->add('--load-path')->add($loadPath);
         }
-        
+
         if ($this->cacheLocation) {
             $pb->add('--cache-location')->add($this->cacheLocation);
         }
-        
+
         if ($this->noCache) {
             $pb->add('--no-cache');
         }
-        
+
         if ($this->compass) {
             $pb->add('--compass');
         }
-        
+
         // input
         $pb->add($input = tempnam(sys_get_temp_dir(), 'assetic_sass'));
         file_put_contents($input, $asset->getContent());
-        
+
         $proc = $pb->getProcess();
         $code = $proc->run();
         unlink($input);
-        
+
         if (0 !== $code) {
             throw FilterException::fromProcess($proc)->setInput($asset->getContent());
         }
-        
+
         $asset->setContent($proc->getOutput());
     }
 
     public function filterDump(AssetInterface $asset)
-    {}
+    {
+    }
 }

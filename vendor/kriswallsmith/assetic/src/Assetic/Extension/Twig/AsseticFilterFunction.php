@@ -8,17 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Extension\Twig;
 
 class AsseticFilterFunction extends \Twig_Function
 {
-
     private $filter;
 
     public function __construct($filter, $options = array())
     {
         $this->filter = $filter;
-        
+
         parent::__construct($options);
     }
 

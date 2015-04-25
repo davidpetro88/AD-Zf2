@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -20,18 +21,14 @@ use Assetic\Factory\AssetFactory;
  */
 class CallablesFilter implements FilterInterface, DependencyExtractorInterface
 {
-
     private $loader;
-
     private $dumper;
-
     private $extractor;
 
     /**
-     *
-     * @param callable|null $loader            
-     * @param callable|null $dumper            
-     * @param callable|null $extractor            
+     * @param callable|null $loader
+     * @param callable|null $dumper
+     * @param callable|null $extractor
      */
     public function __construct($loader = null, $dumper = null, $extractor = null)
     {
@@ -59,7 +56,7 @@ class CallablesFilter implements FilterInterface, DependencyExtractorInterface
         if (null !== $callable = $this->extractor) {
             return $callable($factory, $content, $loadPath);
         }
-        
+
         return array();
     }
 }

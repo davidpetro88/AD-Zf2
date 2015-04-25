@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -23,16 +24,13 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class PostgreSQL91Keywords extends PostgreSQLKeywords
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -40,8 +38,7 @@ class PostgreSQL91Keywords extends PostgreSQLKeywords
     }
 
     /**
-     *
-     * @ERROR!!!
+     * {@inheritdoc}
      *
      * @link http://www.postgresql.org/docs/9.1/static/sql-keywords-appendix.html
      */
@@ -145,7 +142,7 @@ class PostgreSQL91Keywords extends PostgreSQLKeywords
             'WHEN',
             'WHERE',
             'WINDOW',
-            'WITH'
+            'WITH',
         );
     }
 }

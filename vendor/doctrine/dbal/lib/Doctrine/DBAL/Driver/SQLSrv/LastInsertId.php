@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
 /**
@@ -26,16 +27,13 @@ namespace Doctrine\DBAL\Driver\SQLSrv;
  */
 class LastInsertId
 {
-
     /**
-     *
      * @var integer
      */
     private $id;
 
     /**
-     *
-     * @param integer $id            
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -43,7 +41,6 @@ class LastInsertId
     }
 
     /**
-     *
      * @return integer
      */
     public function getId()

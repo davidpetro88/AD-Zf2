@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Options;
 
 use PHPUnit_Framework_TestCase;
@@ -30,15 +31,14 @@ use DoctrineORMModule\Options\EntityManager;
  */
 class EntityManagerTest extends PHPUnit_Framework_TestCase
 {
-
     public function testSetGetResolver()
     {
         $options = new EntityManager();
-        
+
         $this->assertSame('doctrine.entity_resolver.orm_default', $options->getEntityResolver());
-        
+
         $options->setEntityResolver('foo');
-        
+
         $this->assertSame('doctrine.entity_resolver.foo', $options->getEntityResolver());
     }
 }

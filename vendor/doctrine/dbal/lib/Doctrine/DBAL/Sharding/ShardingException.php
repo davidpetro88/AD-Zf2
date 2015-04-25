@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Sharding;
 
 use Doctrine\DBAL\DBALException;
@@ -27,9 +28,7 @@ use Doctrine\DBAL\DBALException;
  */
 class ShardingException extends DBALException
 {
-
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function notImplemented()
@@ -38,7 +37,6 @@ class ShardingException extends DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function missingDefaultFederationName()
@@ -47,7 +45,6 @@ class ShardingException extends DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function missingDefaultDistributionKey()
@@ -56,7 +53,6 @@ class ShardingException extends DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function activeTransaction()
@@ -65,7 +61,6 @@ class ShardingException extends DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function noShardDistributionValue()
@@ -74,7 +69,6 @@ class ShardingException extends DBALException
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Sharding\ShardingException
      */
     static public function missingDistributionType()

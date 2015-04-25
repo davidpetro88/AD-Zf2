@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\PDOMySql;
 
 use Doctrine\DBAL\DBALException;
@@ -30,27 +31,29 @@ use PDOException;
  */
 class Driver extends AbstractMySQLDriver
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
         try {
-            $conn = new PDOConnection($this->constructPdoDsn($params), $username, $password, $driverOptions);
+            $conn = new PDOConnection(
+                $this->constructPdoDsn($params),
+                $username,
+                $password,
+                $driverOptions
+            );
         } catch (PDOException $e) {
             throw DBALException::driverException($this, $e);
         }
-        
+
         return $conn;
     }
 
     /**
      * Constructs the MySql PDO DSN.
      *
-     * @param array $params            
+     * @param array $params
      *
      * @return string The DSN.
      */
@@ -72,14 +75,12 @@ class Driver extends AbstractMySQLDriver
         if (isset($params['charset'])) {
             $dsn .= 'charset=' . $params['charset'] . ';';
         }
-        
+
         return $dsn;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {

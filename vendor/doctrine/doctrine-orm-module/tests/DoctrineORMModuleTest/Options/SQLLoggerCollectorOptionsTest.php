@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Options;
 
 use PHPUnit_Framework_TestCase as TestCase;
@@ -23,7 +24,6 @@ use DoctrineORMModule\Options\SQLLoggerCollectorOptions;
 
 class SQLLoggerCollectorOptionsTest extends TestCase
 {
-
     public function testSetGetSQLLogger()
     {
         $options = new SQLLoggerCollectorOptions();

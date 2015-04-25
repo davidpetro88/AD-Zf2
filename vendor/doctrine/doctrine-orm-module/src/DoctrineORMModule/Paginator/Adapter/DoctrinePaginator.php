@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Paginator\Adapter;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -25,15 +26,13 @@ use Zend\Paginator\Adapter\AdapterInterface;
  * Paginator adapter for the Zend\Paginator component
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @since 0.1.0
- * @author Tõnis Tobre <tobre@bitweb.ee>
+ * @link    http://www.doctrine-project.org/
+ * @since   0.1.0
+ * @author  Tõnis Tobre <tobre@bitweb.ee>
  */
 class DoctrinePaginator implements AdapterInterface
 {
-
     /**
-     *
      * @var Paginator
      */
     protected $paginator;
@@ -41,7 +40,7 @@ class DoctrinePaginator implements AdapterInterface
     /**
      * Constructor
      *
-     * @param Paginator $paginator            
+     * @param Paginator $paginator
      */
     public function __construct(Paginator $paginator)
     {
@@ -49,8 +48,7 @@ class DoctrinePaginator implements AdapterInterface
     }
 
     /**
-     *
-     * @param Paginator $paginator            
+     * @param  Paginator $paginator
      * @return self
      */
     public function setPaginator(Paginator $paginator)
@@ -59,7 +57,6 @@ class DoctrinePaginator implements AdapterInterface
     }
 
     /**
-     *
      * @return Paginator
      */
     public function getPaginator()
@@ -72,10 +69,11 @@ class DoctrinePaginator implements AdapterInterface
      */
     public function getItems($offset, $itemCountPerPage)
     {
-        $this->paginator->getQuery()
-            ->setFirstResult($offset)
-            ->setMaxResults($itemCountPerPage);
-        
+        $this->paginator
+             ->getQuery()
+             ->setFirstResult($offset)
+             ->setMaxResults($itemCountPerPage);
+
         return $this->paginator->getIterator();
     }
 

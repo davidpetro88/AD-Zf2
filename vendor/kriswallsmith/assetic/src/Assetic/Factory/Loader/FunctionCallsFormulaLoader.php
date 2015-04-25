@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Factory\Loader;
 
 /**
@@ -17,19 +18,12 @@ namespace Assetic\Factory\Loader;
  */
 class FunctionCallsFormulaLoader extends BasePhpFormulaLoader
 {
-
     protected function registerPrototypes()
     {
         return array(
-            'assetic_javascripts(*)' => array(
-                'output' => 'js/*.js'
-            ),
-            'assetic_stylesheets(*)' => array(
-                'output' => 'css/*.css'
-            ),
-            'assetic_image(*)' => array(
-                'output' => 'images/*'
-            )
+            'assetic_javascripts(*)' => array('output' => 'js/*.js'),
+            'assetic_stylesheets(*)' => array('output' => 'css/*.css'),
+            'assetic_image(*)'       => array('output' => 'images/*'),
         );
     }
 

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\Driver\SQLSrv\SQLSrvException;
@@ -25,19 +26,16 @@ use Doctrine\DBAL\Types\Type;
  * SQL Server Schema Manager.
  *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @author Konsta Vesterinen <kvesteri@cc.hut.fi>
- * @author Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
- * @author Juozas Kaziukenas <juozas@juokaz.com>
- * @author Steve Müller <st.mueller@dzh-online.de>
- * @since 2.0
+ * @author  Konsta Vesterinen <kvesteri@cc.hut.fi>
+ * @author  Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
+ * @author  Juozas Kaziukenas <juozas@juokaz.com>
+ * @author  Steve Müller <st.mueller@dzh-online.de>
+ * @since   2.0
  */
 class SQLServerSchemaManager extends AbstractSchemaManager
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableSequenceDefinition($sequence)
     {
@@ -45,9 +43,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
@@ -55,19 +51,19 @@ class SQLServerSchemaManager extends AbstractSchemaManager
         $fixed = null;
         $length = (int) $tableColumn['length'];
         $default = $tableColumn['default'];
-        
-        if (! isset($tableColumn['name'])) {
+
+        if (!isset($tableColumn['name'])) {
             $tableColumn['name'] = '';
         }
-        
+
         while ($default != ($default2 = preg_replace("/^\((.*)\)$/", '$1', $default))) {
             $default = trim($default2, "'");
-            
+
             if ($default == 'getdate()') {
                 $default = $this->_platform->getCurrentTimestampSQL();
             }
         }
-        
+
         switch ($dbType) {
             case 'nchar':
             case 'nvarchar':
@@ -77,63 +73,54 @@ class SQLServerSchemaManager extends AbstractSchemaManager
                 break;
             case 'varchar':
                 // TEXT type is returned as VARCHAR(MAX) with a length of -1
-                if ($length == - 1) {
+                if ($length == -1) {
                     $dbType = 'text';
                 }
                 break;
         }
-        
+
         if ('char' === $dbType || 'nchar' === $dbType || 'binary' === $dbType) {
             $fixed = true;
         }
-        
-        $type = $this->_platform->getDoctrineTypeMapping($dbType);
-        $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
+
+        $type                   = $this->_platform->getDoctrineTypeMapping($dbType);
+        $type                   = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
         $tableColumn['comment'] = $this->removeDoctrineTypeFromComment($tableColumn['comment'], $type);
-        
+
         $options = array(
-            'length' => ($length == 0 || ! in_array($type, array(
-                'text',
-                'string'
-            ))) ? null : $length,
-            'unsigned' => false,
-            'fixed' => (bool) $fixed,
-            'default' => $default !== 'NULL' ? $default : null,
-            'notnull' => (bool) $tableColumn['notnull'],
-            'scale' => $tableColumn['scale'],
-            'precision' => $tableColumn['precision'],
+            'length'        => ($length == 0 || !in_array($type, array('text', 'string'))) ? null : $length,
+            'unsigned'      => false,
+            'fixed'         => (bool) $fixed,
+            'default'       => $default !== 'NULL' ? $default : null,
+            'notnull'       => (bool) $tableColumn['notnull'],
+            'scale'         => $tableColumn['scale'],
+            'precision'     => $tableColumn['precision'],
             'autoincrement' => (bool) $tableColumn['autoincrement'],
-            'comment' => $tableColumn['comment'] !== '' ? $tableColumn['comment'] : null
+            'comment'       => $tableColumn['comment'] !== '' ? $tableColumn['comment'] : null,
         );
-        
+
         $column = new Column($tableColumn['name'], Type::getType($type), $options);
-        
+
         if (isset($tableColumn['collation']) && $tableColumn['collation'] !== 'NULL') {
             $column->setPlatformOption('collation', $tableColumn['collation']);
         }
-        
+
         return $column;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
         $foreignKeys = array();
-        
+
         foreach ($tableForeignKeys as $tableForeignKey) {
-            if (! isset($foreignKeys[$tableForeignKey['ForeignKey']])) {
+            if ( ! isset($foreignKeys[$tableForeignKey['ForeignKey']])) {
                 $foreignKeys[$tableForeignKey['ForeignKey']] = array(
-                    'local_columns' => array(
-                        $tableForeignKey['ColumnName']
-                    ),
+                    'local_columns' => array($tableForeignKey['ColumnName']),
                     'foreign_table' => $tableForeignKey['ReferenceTableName'],
-                    'foreign_columns' => array(
-                        $tableForeignKey['ReferenceColumnName']
-                    ),
+                    'foreign_columns' => array($tableForeignKey['ReferenceColumnName']),
                     'name' => $tableForeignKey['ForeignKey'],
                     'options' => array(
                         'onUpdate' => str_replace('_', ' ', $tableForeignKey['update_referential_action_desc']),
@@ -145,42 +132,40 @@ class SQLServerSchemaManager extends AbstractSchemaManager
                 $foreignKeys[$tableForeignKey['ForeignKey']]['foreign_columns'][] = $tableForeignKey['ReferenceColumnName'];
             }
         }
-        
+
         return parent::_getPortableTableForeignKeysList($foreignKeys);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
-    protected function _getPortableTableIndexesList($tableIndexRows, $tableName = null)
+    protected function _getPortableTableIndexesList($tableIndexRows, $tableName=null)
     {
         foreach ($tableIndexRows as &$tableIndex) {
             $tableIndex['non_unique'] = (boolean) $tableIndex['non_unique'];
             $tableIndex['primary'] = (boolean) $tableIndex['primary'];
-            $tableIndex['flags'] = $tableIndex['flags'] ? array(
-                $tableIndex['flags']
-            ) : null;
+            $tableIndex['flags'] = $tableIndex['flags'] ? array($tableIndex['flags']) : null;
         }
-        
+
         return parent::_getPortableTableIndexesList($tableIndexRows, $tableName);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
-        return new ForeignKeyConstraint($tableForeignKey['local_columns'], $tableForeignKey['foreign_table'], $tableForeignKey['foreign_columns'], $tableForeignKey['name'], $tableForeignKey['options']);
+        return new ForeignKeyConstraint(
+            $tableForeignKey['local_columns'],
+            $tableForeignKey['foreign_table'],
+            $tableForeignKey['foreign_columns'],
+            $tableForeignKey['name'],
+            $tableForeignKey['options']
+        );
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableDefinition($table)
     {
@@ -188,9 +173,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableDatabaseDefinition($database)
     {
@@ -198,9 +181,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getPortableNamespaceDefinition(array $namespace)
     {
@@ -208,9 +189,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableViewDefinition($view)
     {
@@ -219,14 +198,12 @@ class SQLServerSchemaManager extends AbstractSchemaManager
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function listTableIndexes($table)
     {
         $sql = $this->_platform->getListTableIndexesSQL($table, $this->_conn->getDatabase());
-        
+
         try {
             $tableIndexes = $this->_conn->fetchAll($sql);
         } catch (\PDOException $e) {
@@ -242,14 +219,12 @@ class SQLServerSchemaManager extends AbstractSchemaManager
                 throw $e;
             }
         }
-        
+
         return $this->_getPortableTableIndexesList($tableIndexes, $table);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function alterTable(TableDiff $tableDiff)
     {
@@ -261,15 +236,15 @@ class SQLServerSchemaManager extends AbstractSchemaManager
                 }
             }
         }
-        
+
         parent::alterTable($tableDiff);
     }
 
     /**
      * Returns the SQL to retrieve the constraints for a given column.
      *
-     * @param string $table            
-     * @param string $column            
+     * @param string $table
+     * @param string $column
      *
      * @return string
      */
@@ -280,7 +255,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
             ON Tab.[ID] = Sysobjects.[Parent_Obj]
             INNER JOIN sys.default_constraints DefCons ON DefCons.[object_id] = Sysobjects.[ID]
             INNER JOIN SysColumns Col ON Col.[ColID] = DefCons.[parent_column_id] AND Col.[ID] = Tab.[ID]
-            WHERE Col.[Name] = " . $this->_conn->quote($column) . " AND Tab.[Name] = " . $this->_conn->quote($table) . "
+            WHERE Col.[Name] = " . $this->_conn->quote($column) ." AND Tab.[Name] = " . $this->_conn->quote($table) . "
             ORDER BY Col.[Name]";
     }
 }

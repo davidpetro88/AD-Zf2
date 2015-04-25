@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Assets\GraphEntity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -25,23 +26,23 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Part of the test assets used to produce a demo of graphs in the ZDT integration
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
- *        
- *         @ORM\Entity()
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
+ *
+ * @ORM\Entity()
  */
 class Address
 {
-
     /**
-     *
-     * @var int @ORM\Id()
-     *      @ORM\GeneratedValue(strategy="AUTO")
-     *      @ORM\Column(type="integer")
+     * @var int
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
+     *
      */
     public function __construct()
     {

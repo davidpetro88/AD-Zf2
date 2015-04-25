@@ -8,11 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 abstract class BaseNodeFilter extends BaseProcessFilter
 {
-
     private $nodePaths = array();
 
     public function getNodePaths()
@@ -33,12 +33,12 @@ abstract class BaseNodeFilter extends BaseProcessFilter
     protected function createProcessBuilder(array $arguments = array())
     {
         $pb = parent::createProcessBuilder($arguments);
-        
+
         if ($this->nodePaths) {
             $this->mergeEnv($pb);
             $pb->setEnv('NODE_PATH', implode(PATH_SEPARATOR, $this->nodePaths));
         }
-        
+
         return $pb;
     }
 }

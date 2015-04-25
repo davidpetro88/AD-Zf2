@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -28,52 +29,32 @@ use Doctrine\DBAL\DBALException;
  *
  * @author Roman Borschel <roman@code-factory.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @since 2.0
+ * @since  2.0
  */
 abstract class Type
 {
-
     const TARRAY = 'array';
-
     const SIMPLE_ARRAY = 'simple_array';
-
     const JSON_ARRAY = 'json_array';
-
     const BIGINT = 'bigint';
-
     const BOOLEAN = 'boolean';
-
     const DATETIME = 'datetime';
-
     const DATETIMETZ = 'datetimetz';
-
     const DATE = 'date';
-
     const TIME = 'time';
-
     const DECIMAL = 'decimal';
-
     const INTEGER = 'integer';
-
     const OBJECT = 'object';
-
     const SMALLINT = 'smallint';
-
     const STRING = 'string';
-
     const TEXT = 'text';
-
     const BINARY = 'binary';
-
     const BLOB = 'blob';
-
     const FLOAT = 'float';
-
     const GUID = 'guid';
 
     /**
-     * Map of already instantiated type objects.
-     * One instance per type (flyweight).
+     * Map of already instantiated type objects. One instance per type (flyweight).
      *
      * @var array
      */
@@ -103,24 +84,23 @@ abstract class Type
         self::FLOAT => 'Doctrine\DBAL\Types\FloatType',
         self::BINARY => 'Doctrine\DBAL\Types\BinaryType',
         self::BLOB => 'Doctrine\DBAL\Types\BlobType',
-        self::GUID => 'Doctrine\DBAL\Types\GuidType'
+        self::GUID => 'Doctrine\DBAL\Types\GuidType',
     );
 
     /**
      * Prevents instantiation and forces use of the factory method.
      */
     final private function __construct()
-    {}
+    {
+    }
 
     /**
      * Converts a value from its PHP representation to its database representation
      * of this type.
      *
-     * @param mixed $value
-     *            The value to convert.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *            The currently used database platform.
-     *            
+     * @param mixed                                     $value    The value to convert.
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
+     *
      * @return mixed The database representation of the value.
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -132,11 +112,9 @@ abstract class Type
      * Converts a value from its database representation to its PHP representation
      * of this type.
      *
-     * @param mixed $value
-     *            The value to convert.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *            The currently used database platform.
-     *            
+     * @param mixed                                     $value    The value to convert.
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
+     *
      * @return mixed The PHP representation of the value.
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -147,7 +125,7 @@ abstract class Type
     /**
      * Gets the default length of this type.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return integer|null
      *
@@ -161,11 +139,9 @@ abstract class Type
     /**
      * Gets the SQL declaration snippet for a field of this type.
      *
-     * @param array $fieldDeclaration
-     *            The field declaration.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
-     *            The currently used database platform.
-     *            
+     * @param array                                     $fieldDeclaration The field declaration.
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         The currently used database platform.
+     *
      * @return string
      */
     abstract public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform);
@@ -183,33 +159,30 @@ abstract class Type
      * Factory method to create type instances.
      * Type instances are implemented as flyweights.
      *
-     * @param string $name
-     *            The name of the type (as returned by getName()).
-     *            
+     * @param string $name The name of the type (as returned by getName()).
+     *
      * @return \Doctrine\DBAL\Types\Type
      *
      * @throws \Doctrine\DBAL\DBALException
      */
     public static function getType($name)
     {
-        if (! isset(self::$_typeObjects[$name])) {
-            if (! isset(self::$_typesMap[$name])) {
+        if ( ! isset(self::$_typeObjects[$name])) {
+            if ( ! isset(self::$_typesMap[$name])) {
                 throw DBALException::unknownColumnType($name);
             }
             self::$_typeObjects[$name] = new self::$_typesMap[$name]();
         }
-        
+
         return self::$_typeObjects[$name];
     }
 
     /**
      * Adds a custom type to the type map.
      *
-     * @param string $name
-     *            The name of the type. This should correspond to what getName() returns.
-     * @param string $className
-     *            The class name of the custom type.
-     *            
+     * @param string $name      The name of the type. This should correspond to what getName() returns.
+     * @param string $className The class name of the custom type.
+     *
      * @return void
      *
      * @throws \Doctrine\DBAL\DBALException
@@ -219,16 +192,15 @@ abstract class Type
         if (isset(self::$_typesMap[$name])) {
             throw DBALException::typeExists($name);
         }
-        
+
         self::$_typesMap[$name] = $className;
     }
 
     /**
      * Checks if exists support for a type.
      *
-     * @param string $name
-     *            The name of the type.
-     *            
+     * @param string $name The name of the type.
+     *
      * @return boolean TRUE if type is supported; FALSE otherwise.
      */
     public static function hasType($name)
@@ -239,8 +211,8 @@ abstract class Type
     /**
      * Overrides an already defined type to use a different implementation.
      *
-     * @param string $name            
-     * @param string $className            
+     * @param string $name
+     * @param string $className
      *
      * @return void
      *
@@ -248,14 +220,14 @@ abstract class Type
      */
     public static function overrideType($name, $className)
     {
-        if (! isset(self::$_typesMap[$name])) {
+        if ( ! isset(self::$_typesMap[$name])) {
             throw DBALException::typeNotFound($name);
         }
-        
+
         if (isset(self::$_typeObjects[$name])) {
             unset(self::$_typeObjects[$name]);
         }
-        
+
         self::$_typesMap[$name] = $className;
     }
 
@@ -290,13 +262,12 @@ abstract class Type
     }
 
     /**
-     *
      * @return string
      */
     public function __toString()
     {
         $e = explode('\\', get_class($this));
-        
+
         return str_replace('Type', '', end($e));
     }
 
@@ -318,8 +289,8 @@ abstract class Type
     /**
      * Modifies the SQL expression (identifier, parameter) to convert to a database value.
      *
-     * @param string $sqlExpr            
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param string                                    $sqlExpr
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return string
      */
@@ -331,8 +302,8 @@ abstract class Type
     /**
      * Modifies the SQL expression (identifier, parameter) to convert to a PHP value.
      *
-     * @param string $sqlExpr            
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param string                                    $sqlExpr
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return string
      */
@@ -344,7 +315,7 @@ abstract class Type
     /**
      * Gets an array of database types that map to this Doctrine type.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return array
      */
@@ -355,12 +326,11 @@ abstract class Type
 
     /**
      * If this Doctrine Type maps to an already mapped database type,
-     * reverse schema engineering can't take them apart.
-     * You need to mark
+     * reverse schema engineering can't take them apart. You need to mark
      * one of those types as commented, which will have Doctrine use an SQL
      * comment to typehint the actual Doctrine Type.
      *
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform            
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      *
      * @return boolean
      */

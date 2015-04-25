@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver;
 
 /**
@@ -25,12 +26,11 @@ namespace Doctrine\DBAL\Driver;
  * and the driver specific error code at the time the error occurred.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 interface DriverException
 {
-
     /**
      * Returns the driver specific error code if available.
      *

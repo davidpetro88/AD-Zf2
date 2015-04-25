@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Options;
 
 use Zend\Stdlib\AbstractOptions;
@@ -24,33 +25,28 @@ use Zend\Stdlib\AbstractOptions;
  * Configuration options for an collector
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class SQLLoggerCollectorOptions extends AbstractOptions
 {
-
     /**
-     *
      * @var string name to be assigned to the collector
      */
     protected $name = 'orm_default';
 
     /**
-     *
      * @var string|null service name of the configuration where the logger has to be put
      */
     protected $configuration;
 
     /**
-     *
      * @var string|null service name of the SQLLogger to be used
      */
     protected $sqlLogger;
 
     /**
-     *
-     * @param string $name            
+     * @param string $name
      */
     public function setName($name)
     {
@@ -68,8 +64,7 @@ class SQLLoggerCollectorOptions extends AbstractOptions
     }
 
     /**
-     *
-     * @param string|null $configuration            
+     * @param string|null $configuration
      */
     public function setConfiguration($configuration)
     {
@@ -87,8 +82,7 @@ class SQLLoggerCollectorOptions extends AbstractOptions
     }
 
     /**
-     *
-     * @param string|null $sqlLogger            
+     * @param string|null $sqlLogger
      */
     public function setSqlLogger($sqlLogger)
     {

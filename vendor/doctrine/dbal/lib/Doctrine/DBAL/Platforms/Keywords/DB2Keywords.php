@@ -16,22 +16,20 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
  * DB2 Keywords.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class DB2Keywords extends KeywordList
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -39,9 +37,7 @@ class DB2Keywords extends KeywordList
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getKeywords()
     {
@@ -439,7 +435,7 @@ class DB2Keywords extends KeywordList
             'YEAR',
             'LOCATORS',
             'ROLLBACK',
-            'YEARS'
+            'YEARS',
         );
     }
 }

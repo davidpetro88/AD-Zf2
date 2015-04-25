@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Asset\Iterator;
 
 /**
@@ -20,25 +21,20 @@ namespace Assetic\Asset\Iterator;
  */
 class AssetCollectionFilterIterator extends \RecursiveFilterIterator
 {
-
     private $visited;
-
     private $sources;
 
     /**
      * Constructor.
      *
-     * @param AssetCollectionIterator $iterator
-     *            The inner iterator
-     * @param array $visited
-     *            An array of visited asset objects
-     * @param array $sources
-     *            An array of visited source strings
+     * @param AssetCollectionIterator $iterator The inner iterator
+     * @param array                   $visited  An array of visited asset objects
+     * @param array                   $sources  An array of visited source strings
      */
     public function __construct(AssetCollectionIterator $iterator, array $visited = array(), array $sources = array())
     {
         parent::__construct($iterator);
-        
+
         $this->visited = $visited;
         $this->sources = $sources;
     }
@@ -55,27 +51,27 @@ class AssetCollectionFilterIterator extends \RecursiveFilterIterator
     {
         $asset = $this->getInnerIterator()->current(true);
         $duplicate = false;
-        
+
         // check strict equality
         if (in_array($asset, $this->visited, true)) {
             $duplicate = true;
         } else {
             $this->visited[] = $asset;
         }
-        
+
         // check source
         $sourceRoot = $asset->getSourceRoot();
         $sourcePath = $asset->getSourcePath();
         if ($sourceRoot && $sourcePath) {
-            $source = $sourceRoot . '/' . $sourcePath;
+            $source = $sourceRoot.'/'.$sourcePath;
             if (in_array($source, $this->sources)) {
                 $duplicate = true;
             } else {
                 $this->sources[] = $source;
             }
         }
-        
-        return ! $duplicate;
+
+        return !$duplicate;
     }
 
     /**

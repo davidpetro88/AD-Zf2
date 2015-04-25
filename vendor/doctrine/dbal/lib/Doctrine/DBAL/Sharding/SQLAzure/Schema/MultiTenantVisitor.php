@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Sharding\SQLAzure\Schema;
 
 use Doctrine\DBAL\Schema\Visitor\Visitor;
@@ -31,39 +32,35 @@ use Doctrine\DBAL\Schema\Index;
  * Federations under the following assumptions:
  *
  * - Every table is part of the multi-tenant application, only explicitly
- * excluded tables are non-federated. The behavior of the tables being in
- * global or federated database is undefined. It depends on you selecting a
- * federation before DDL statements or not.
+ *   excluded tables are non-federated. The behavior of the tables being in
+ *   global or federated database is undefined. It depends on you selecting a
+ *   federation before DDL statements or not.
  * - Every Primary key of a federated table is extended by another column
- * 'tenant_id' with a default value of the SQLAzure function
- * `federation_filtering_value('tenant_id')`.
+ *   'tenant_id' with a default value of the SQLAzure function
+ *   `federation_filtering_value('tenant_id')`.
  * - You always have to work with `filtering=On` when using federations with this
- * multi-tenant approach.
+ *   multi-tenant approach.
  * - Primary keys are either using globally unique ids (GUID, Table Generator)
- * or you explicitly add the tenent_id in every UPDATE or DELETE statement
- * (otherwise they will affect the same-id rows from other tenents as well).
- * SQLAzure throws errors when you try to create IDENTIY columns on federated
- * tables.
+ *   or you explicitly add the tenent_id in every UPDATE or DELETE statement
+ *   (otherwise they will affect the same-id rows from other tenents as well).
+ *   SQLAzure throws errors when you try to create IDENTIY columns on federated
+ *   tables.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class MultiTenantVisitor implements Visitor
 {
-
     /**
-     *
      * @var array
      */
     private $excludedTables = array();
 
     /**
-     *
      * @var string
      */
     private $tenantColumnName;
 
     /**
-     *
      * @var string
      */
     private $tenantColumnType = 'integer';
@@ -77,52 +74,47 @@ class MultiTenantVisitor implements Visitor
     private $distributionName;
 
     /**
-     *
-     * @param array $excludedTables            
-     * @param string $tenantColumnName            
-     * @param string|null $distributionName            
+     * @param array       $excludedTables
+     * @param string      $tenantColumnName
+     * @param string|null $distributionName
      */
     public function __construct(array $excludedTables = array(), $tenantColumnName = 'tenant_id', $distributionName = null)
     {
         $this->excludedTables = $excludedTables;
         $this->tenantColumnName = $tenantColumnName;
-        $this->distributionName = $distributionName ?  : $tenantColumnName;
+        $this->distributionName = $distributionName ?: $tenantColumnName;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptTable(Table $table)
     {
         if (in_array($table->getName(), $this->excludedTables)) {
             return;
         }
-        
+
         $table->addColumn($this->tenantColumnName, $this->tenantColumnType, array(
-            'default' => "federation_filtering_value('" . $this->distributionName . "')"
+            'default' => "federation_filtering_value('". $this->distributionName ."')",
         ));
-        
+
         $clusteredIndex = $this->getClusteredIndex($table);
-        
+
         $indexColumns = $clusteredIndex->getColumns();
         $indexColumns[] = $this->tenantColumnName;
-        
+
         if ($clusteredIndex->isPrimary()) {
             $table->dropPrimaryKey();
             $table->setPrimaryKey($indexColumns);
         } else {
             $table->dropIndex($clusteredIndex->getName());
             $table->addIndex($indexColumns, $clusteredIndex->getName());
-            $table->getIndex($clusteredIndex->getName())
-                ->addFlag('clustered');
+            $table->getIndex($clusteredIndex->getName())->addFlag('clustered');
         }
     }
 
     /**
-     *
-     * @param \Doctrine\DBAL\Schema\Table $table            
+     * @param \Doctrine\DBAL\Schema\Table $table
      *
      * @return \Doctrine\DBAL\Schema\Index
      *
@@ -141,42 +133,37 @@ class MultiTenantVisitor implements Visitor
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptSchema(Schema $schema)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptColumn(Table $table, Column $column)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptIndex(Table $table, Index $index)
-    {}
+    {
+    }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function acceptSequence(Sequence $sequence)
-    {}
+    {
+    }
 }

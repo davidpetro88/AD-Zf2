@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms;
 
 use Doctrine\DBAL\Connection;
@@ -35,198 +36,190 @@ use Doctrine\DBAL\Schema\TableDiff;
  * SAP Sybase SQL Anywhere 10 database platform.
  *
  * @author Steve Müller <st.mueller@dzh-online.de>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class SQLAnywherePlatform extends AbstractPlatform
 {
-
     /**
-     *
      * @var integer
      */
     const FOREIGN_KEY_MATCH_SIMPLE = 1;
-
     /**
-     *
      * @var integer
      */
     const FOREIGN_KEY_MATCH_FULL = 2;
-
     /**
-     *
      * @var integer
      */
     const FOREIGN_KEY_MATCH_SIMPLE_UNIQUE = 129;
-
     /**
-     *
      * @var integer
      */
     const FOREIGN_KEY_MATCH_FULL_UNIQUE = 130;
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function appendLockHint($fromClause, $lockMode)
     {
         switch (true) {
             case $lockMode === LockMode::NONE:
                 return $fromClause . ' WITH (NOLOCK)';
-            
+
             case $lockMode === LockMode::PESSIMISTIC_READ:
                 return $fromClause . ' WITH (UPDLOCK)';
-            
+
             case $lockMode === LockMode::PESSIMISTIC_WRITE:
                 return $fromClause . ' WITH (XLOCK)';
-            
+
             default:
                 return $fromClause;
         }
     }
 
     /**
+     * {@inheritdoc}
      *
-     * @ERROR!!! SQL Anywhere supports a maximum length of 128 bytes for identifiers.
+     * SQL Anywhere supports a maximum length of 128 bytes for identifiers.
      */
     public function fixSchemaElementName($schemaElementName)
     {
         $maxIdentifierLength = $this->getMaxIdentifierLength();
-        
+
         if (strlen($schemaElementName) > $maxIdentifierLength) {
             return substr($schemaElementName, 0, $maxIdentifierLength);
         }
-        
+
         return $schemaElementName;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getAdvancedForeignKeyOptionsSQL(ForeignKeyConstraint $foreignKey)
     {
         $query = '';
-        
+
         if ($foreignKey->hasOption('match')) {
             $query = ' MATCH ' . $this->getForeignKeyMatchClauseSQL($foreignKey->getOption('match'));
         }
-        
+
         $query .= parent::getAdvancedForeignKeyOptionsSQL($foreignKey);
-        
+
         if ($foreignKey->hasOption('check_on_commit') && (boolean) $foreignKey->getOption('check_on_commit')) {
             $query .= ' CHECK ON COMMIT';
         }
-        
+
         if ($foreignKey->hasOption('clustered') && (boolean) $foreignKey->getOption('clustered')) {
             $query .= ' CLUSTERED';
         }
-        
+
         if ($foreignKey->hasOption('for_olap_workload') && (boolean) $foreignKey->getOption('for_olap_workload')) {
             $query .= ' FOR OLAP WORKLOAD';
         }
-        
+
         return $query;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getAlterTableSQL(TableDiff $diff)
     {
-        $sql = array();
-        $columnSql = array();
-        $commentsSQL = array();
-        $tableSql = array();
+        $sql          = array();
+        $columnSql    = array();
+        $commentsSQL  = array();
+        $tableSql     = array();
         $alterClauses = array();
-        
-        /**
-         * @var \Doctrine\DBAL\Schema\Column $column
-         */
+
+        /** @var \Doctrine\DBAL\Schema\Column $column */
         foreach ($diff->addedColumns as $column) {
             if ($this->onSchemaAlterTableAddColumn($column, $diff, $columnSql)) {
                 continue;
             }
-            
+
             $alterClauses[] = $this->getAlterTableAddColumnClause($column);
-            
+
             $comment = $this->getColumnComment($column);
-            
+
             if (null !== $comment && '' !== $comment) {
-                $commentsSQL[] = $this->getCommentOnColumnSQL($diff->getName($this)
-                    ->getQuotedName($this), $column->getQuotedName($this), $comment);
+                $commentsSQL[] = $this->getCommentOnColumnSQL(
+                    $diff->getName($this)->getQuotedName($this),
+                    $column->getQuotedName($this),
+                    $comment
+                );
             }
         }
-        
-        /**
-         * @var \Doctrine\DBAL\Schema\Column $column
-         */
+
+        /** @var \Doctrine\DBAL\Schema\Column $column */
         foreach ($diff->removedColumns as $column) {
             if ($this->onSchemaAlterTableRemoveColumn($column, $diff, $columnSql)) {
                 continue;
             }
-            
+
             $alterClauses[] = $this->getAlterTableRemoveColumnClause($column);
         }
-        
-        /**
-         * @var \Doctrine\DBAL\Schema\ColumnDiff $columnDiff
-         */
+
+        /** @var \Doctrine\DBAL\Schema\ColumnDiff $columnDiff */
         foreach ($diff->changedColumns as $columnDiff) {
             if ($this->onSchemaAlterTableChangeColumn($columnDiff, $diff, $columnSql)) {
                 continue;
             }
-            
+
             $alterClause = $this->getAlterTableChangeColumnClause($columnDiff);
-            
+
             if (null !== $alterClause) {
                 $alterClauses[] = $alterClause;
             }
-            
+
             if ($columnDiff->hasChanged('comment')) {
                 $column = $columnDiff->column;
-                
-                $commentsSQL[] = $this->getCommentOnColumnSQL($diff->getName($this)
-                    ->getQuotedName($this), $column->getQuotedName($this), $this->getColumnComment($column));
+
+                $commentsSQL[] = $this->getCommentOnColumnSQL(
+                    $diff->getName($this)->getQuotedName($this),
+                    $column->getQuotedName($this),
+                    $this->getColumnComment($column)
+                );
             }
         }
-        
+
         foreach ($diff->renamedColumns as $oldColumnName => $column) {
             if ($this->onSchemaAlterTableRenameColumn($oldColumnName, $column, $diff, $columnSql)) {
                 continue;
             }
-            
-            $sql[] = $this->getAlterTableClause($diff->getName($this)) . ' ' . $this->getAlterTableRenameColumnClause($oldColumnName, $column);
+
+            $sql[] = $this->getAlterTableClause($diff->getName($this)) . ' ' .
+                $this->getAlterTableRenameColumnClause($oldColumnName, $column);
         }
-        
-        if (! $this->onSchemaAlterTable($diff, $tableSql)) {
-            if (! empty($alterClauses)) {
+
+        if ( ! $this->onSchemaAlterTable($diff, $tableSql)) {
+            if ( ! empty($alterClauses)) {
                 $sql[] = $this->getAlterTableClause($diff->getName($this)) . ' ' . implode(", ", $alterClauses);
             }
-            
+
             $sql = array_merge($sql, $commentsSQL);
-            
+
             if ($diff->newName !== false) {
-                $sql[] = $this->getAlterTableClause($diff->getName($this)) . ' ' . $this->getAlterTableRenameTableClause($diff->getNewName());
+                $sql[] = $this->getAlterTableClause($diff->getName($this)) . ' ' .
+                    $this->getAlterTableRenameTableClause($diff->getNewName());
             }
-            
-            $sql = array_merge($this->getPreAlterTableIndexForeignKeySQL($diff), $sql, $this->getPostAlterTableIndexForeignKeySQL($diff));
+
+            $sql = array_merge(
+                $this->getPreAlterTableIndexForeignKeySQL($diff),
+                $sql,
+                $this->getPostAlterTableIndexForeignKeySQL($diff)
+            );
         }
-        
+
         return array_merge($sql, $tableSql, $columnSql);
     }
 
     /**
      * Returns the SQL clause for creating a column in a table alteration.
      *
-     * @param Column $column
-     *            The column to add.
-     *            
+     * @param Column $column The column to add.
+     *
      * @return string
      */
     protected function getAlterTableAddColumnClause(Column $column)
@@ -237,9 +230,8 @@ class SQLAnywherePlatform extends AbstractPlatform
     /**
      * Returns the SQL clause for altering a table.
      *
-     * @param Identifier $tableName
-     *            The quoted name of the table to alter.
-     *            
+     * @param Identifier $tableName The quoted name of the table to alter.
+     *
      * @return string
      */
     protected function getAlterTableClause(Identifier $tableName)
@@ -250,9 +242,8 @@ class SQLAnywherePlatform extends AbstractPlatform
     /**
      * Returns the SQL clause for dropping a column in a table alteration.
      *
-     * @param Column $column
-     *            The column to drop.
-     *            
+     * @param Column $column The column to drop.
+     *
      * @return string
      */
     protected function getAlterTableRemoveColumnClause(Column $column)
@@ -263,26 +254,23 @@ class SQLAnywherePlatform extends AbstractPlatform
     /**
      * Returns the SQL clause for renaming a column in a table alteration.
      *
-     * @param string $oldColumnName
-     *            The quoted name of the column to rename.
-     * @param Column $column
-     *            The column to rename to.
-     *            
+     * @param string $oldColumnName The quoted name of the column to rename.
+     * @param Column $column        The column to rename to.
+     *
      * @return string
      */
     protected function getAlterTableRenameColumnClause($oldColumnName, Column $column)
     {
         $oldColumnName = new Identifier($oldColumnName);
-        
-        return 'RENAME ' . $oldColumnName->getQuotedName($this) . ' TO ' . $column->getQuotedName($this);
+
+        return 'RENAME ' . $oldColumnName->getQuotedName($this) .' TO ' . $column->getQuotedName($this);
     }
 
     /**
      * Returns the SQL clause for renaming a table in a table alteration.
      *
-     * @param Identifier $newTableName
-     *            The quoted name of the table to rename to.
-     *            
+     * @param Identifier $newTableName The quoted name of the table to rename to.
+     *
      * @return string
      */
     protected function getAlterTableRenameTableClause(Identifier $newTableName)
@@ -296,43 +284,39 @@ class SQLAnywherePlatform extends AbstractPlatform
      * This method returns null in case that only the column comment has changed.
      * Changes in column comments have to be handled differently.
      *
-     * @param ColumnDiff $columnDiff
-     *            The diff of the column to alter.
-     *            
+     * @param ColumnDiff $columnDiff The diff of the column to alter.
+     *
      * @return string|null
      */
     protected function getAlterTableChangeColumnClause(ColumnDiff $columnDiff)
     {
         $column = $columnDiff->column;
-        
+
         // Do not return alter clause if only comment has changed.
-        if (! ($columnDiff->hasChanged('comment') && count($columnDiff->changedProperties) === 1)) {
-            $columnAlterationClause = 'ALTER ' . $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
-            
+        if ( ! ($columnDiff->hasChanged('comment') && count($columnDiff->changedProperties) === 1)) {
+            $columnAlterationClause = 'ALTER ' .
+                $this->getColumnDeclarationSQL($column->getQuotedName($this), $column->toArray());
+
             if ($columnDiff->hasChanged('default') && null === $column->getDefault()) {
                 $columnAlterationClause .= ', ALTER ' . $column->getQuotedName($this) . ' DROP DEFAULT';
             }
-            
+
             return $columnAlterationClause;
         }
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getBigIntTypeDeclarationSQL(array $columnDef)
     {
         $columnDef['integer_type'] = 'BIGINT';
-        
+
         return $this->_getCommonIntegerTypeDeclarationSQL($columnDef);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getBinaryDefaultLength()
     {
@@ -340,9 +324,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getBinaryMaxLength()
     {
@@ -350,9 +332,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getBlobTypeDeclarationSQL(array $field)
     {
@@ -360,23 +340,22 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
+     * {@inheritdoc}
      *
-     * @ERROR!!! BIT type columns require an explicit NULL declaration
-     *           in SQL Anywhere if they shall be nullable.
-     *           Otherwise by just omitting the NOT NULL clause,
-     *           SQL Anywhere will declare them NOT NULL nonetheless.
+     * BIT type columns require an explicit NULL declaration
+     * in SQL Anywhere if they shall be nullable.
+     * Otherwise by just omitting the NOT NULL clause,
+     * SQL Anywhere will declare them NOT NULL nonetheless.
      */
     public function getBooleanTypeDeclarationSQL(array $columnDef)
     {
         $nullClause = isset($columnDef['notnull']) && (boolean) $columnDef['notnull'] === false ? ' NULL' : '';
-        
+
         return 'BIT' . $nullClause;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getClobTypeDeclarationSQL(array $field)
     {
@@ -384,23 +363,20 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCommentOnColumnSQL($tableName, $columnName, $comment)
     {
         $tableName = new Identifier($tableName);
         $columnName = new Identifier($columnName);
         $comment = $comment === null ? 'NULL' : $this->quoteStringLiteral($comment);
-        
-        return "COMMENT ON COLUMN " . $tableName->getQuotedName($this) . '.' . $columnName->getQuotedName($this) . " IS $comment";
+
+        return "COMMENT ON COLUMN " . $tableName->getQuotedName($this) . '.' . $columnName->getQuotedName($this) .
+            " IS $comment";
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getConcatExpression()
     {
@@ -408,27 +384,24 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreateConstraintSQL(Constraint $constraint, $table)
     {
         if ($constraint instanceof ForeignKeyConstraint) {
             return $this->getCreateForeignKeySQL($constraint, $table);
         }
-        
+
         if ($table instanceof Table) {
             $table = $table->getQuotedName($this);
         }
-        
-        return 'ALTER TABLE ' . $table . ' ADD ' . $this->getTableConstraintDeclarationSQL($constraint, $constraint->getQuotedName($this));
+
+        return 'ALTER TABLE ' . $table .
+               ' ADD ' . $this->getTableConstraintDeclarationSQL($constraint, $constraint->getQuotedName($this));
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreateDatabaseSQL($database)
     {
@@ -436,32 +409,29 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
+     * {@inheritdoc}
      *
-     * @ERROR!!! Appends SQL Anywhere specific flags if given.
+     * Appends SQL Anywhere specific flags if given.
      */
     public function getCreateIndexSQL(Index $index, $table)
     {
-        return parent::getCreateIndexSQL($index, $table) . $this->getAdvancedIndexOptionsSQL($index);
+        return parent::getCreateIndexSQL($index, $table). $this->getAdvancedIndexOptionsSQL($index);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreatePrimaryKeySQL(Index $index, $table)
     {
         if ($table instanceof Table) {
             $table = $table->getQuotedName($this);
         }
-        
+
         return 'ALTER TABLE ' . $table . ' ADD ' . $this->getPrimaryKeyDeclarationSQL($index);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreateTemporaryTableSnippetSQL()
     {
@@ -469,9 +439,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCreateViewSQL($name, $sql)
     {
@@ -479,9 +447,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCurrentDateSQL()
     {
@@ -489,9 +455,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCurrentTimeSQL()
     {
@@ -499,9 +463,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getCurrentTimestampSQL()
     {
@@ -509,25 +471,21 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getDateArithmeticIntervalExpression($date, $operator, $interval, $unit)
     {
         $factorClause = '';
-        
+
         if ('-' === $operator) {
             $factorClause = '-1 * ';
         }
-        
+
         return 'DATEADD(' . $unit . ', ' . $factorClause . $interval . ', ' . $date . ')';
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateDiffExpression($date1, $date2)
     {
@@ -535,9 +493,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTimeFormatString()
     {
@@ -545,9 +501,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTimeTypeDeclarationSQL(array $fieldDeclaration)
     {
@@ -555,9 +509,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTimeTzFormatString()
     {
@@ -565,9 +517,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDateTypeDeclarationSQL(array $fieldDeclaration)
     {
@@ -575,9 +525,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDefaultTransactionIsolationLevel()
     {
@@ -585,9 +533,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDropDatabaseSQL($database)
     {
@@ -595,39 +541,41 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDropIndexSQL($index, $table = null)
     {
         if ($index instanceof Index) {
             $index = $index->getQuotedName($this);
         }
-        
-        if (! is_string($index)) {
-            throw new \InvalidArgumentException('SQLAnywherePlatform::getDropIndexSQL() expects $index parameter to be string or ' . '\Doctrine\DBAL\Schema\Index.');
+
+        if ( ! is_string($index)) {
+            throw new \InvalidArgumentException(
+                'SQLAnywherePlatform::getDropIndexSQL() expects $index parameter to be string or ' .
+                '\Doctrine\DBAL\Schema\Index.'
+            );
         }
-        
-        if (! isset($table)) {
+
+        if ( ! isset($table)) {
             return 'DROP INDEX ' . $index;
         }
-        
+
         if ($table instanceof Table) {
             $table = $table->getQuotedName($this);
         }
-        
-        if (! is_string($table)) {
-            throw new \InvalidArgumentException('SQLAnywherePlatform::getDropIndexSQL() expects $table parameter to be string or ' . '\Doctrine\DBAL\Schema\Table.');
+
+        if ( ! is_string($table)) {
+            throw new \InvalidArgumentException(
+                'SQLAnywherePlatform::getDropIndexSQL() expects $table parameter to be string or ' .
+                '\Doctrine\DBAL\Schema\Table.'
+            );
         }
-        
+
         return 'DROP INDEX ' . $table . '.' . $index;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getDropViewSQL($name)
     {
@@ -635,47 +583,47 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getForeignKeyBaseDeclarationSQL(ForeignKeyConstraint $foreignKey)
     {
-        $sql = '';
-        $foreignKeyName = $foreignKey->getName();
-        $localColumns = $foreignKey->getQuotedLocalColumns($this);
-        $foreignColumns = $foreignKey->getQuotedForeignColumns($this);
+        $sql              = '';
+        $foreignKeyName   = $foreignKey->getName();
+        $localColumns     = $foreignKey->getQuotedLocalColumns($this);
+        $foreignColumns   = $foreignKey->getQuotedForeignColumns($this);
         $foreignTableName = $foreignKey->getQuotedForeignTableName($this);
-        
-        if (! empty($foreignKeyName)) {
+
+        if ( ! empty($foreignKeyName)) {
             $sql .= 'CONSTRAINT ' . $foreignKey->getQuotedName($this) . ' ';
         }
-        
+
         if (empty($localColumns)) {
             throw new \InvalidArgumentException("Incomplete definition. 'local' required.");
         }
-        
+
         if (empty($foreignColumns)) {
             throw new \InvalidArgumentException("Incomplete definition. 'foreign' required.");
         }
-        
+
         if (empty($foreignTableName)) {
             throw new \InvalidArgumentException("Incomplete definition. 'foreignTable' required.");
         }
-        
+
         if ($foreignKey->hasOption('notnull') && (boolean) $foreignKey->getOption('notnull')) {
             $sql .= 'NOT NULL ';
         }
-        
-        return $sql . 'FOREIGN KEY (' . $this->getIndexFieldDeclarationListSQL($localColumns) . ') ' . 'REFERENCES ' . $foreignKey->getQuotedForeignTableName($this) . ' (' . $this->getIndexFieldDeclarationListSQL($foreignColumns) . ')';
+
+        return $sql .
+            'FOREIGN KEY (' . $this->getIndexFieldDeclarationListSQL($localColumns) . ') ' .
+            'REFERENCES ' . $foreignKey->getQuotedForeignTableName($this) .
+            ' (' . $this->getIndexFieldDeclarationListSQL($foreignColumns) . ')';
     }
 
     /**
      * Returns foreign key MATCH clause for given type.
      *
-     * @param integer $type
-     *            The foreign key match type
-     *            
+     * @param integer $type The foreign key match type
+     *
      * @return string
      *
      * @throws \InvalidArgumentException if unknown match type given
@@ -700,9 +648,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getForeignKeyReferentialActionSQL($action)
     {
@@ -710,14 +656,12 @@ class SQLAnywherePlatform extends AbstractPlatform
         if (strtoupper($action) === 'NO ACTION') {
             return 'RESTRICT';
         }
-        
+
         return parent::getForeignKeyReferentialActionSQL($action);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getForUpdateSQL()
     {
@@ -725,9 +669,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getGuidExpression()
     {
@@ -735,9 +677,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getGuidTypeDeclarationSQL(array $field)
     {
@@ -745,9 +685,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getIndexDeclarationSQL($name, Index $index)
     {
@@ -756,21 +694,17 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getIntegerTypeDeclarationSQL(array $columnDef)
     {
         $columnDef['integer_type'] = 'INT';
-        
+
         return $this->_getCommonIntegerTypeDeclarationSQL($columnDef);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListDatabasesSQL()
     {
@@ -778,19 +712,17 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListTableColumnsSQL($table, $database = null)
     {
         $user = 'USER_NAME()';
-        
+
         if (strpos($table, '.') !== false) {
-            list ($user, $table) = explode('.', $table);
+            list($user, $table) = explode('.', $table);
             $user = "'" . $user . "'";
         }
-        
+
         return "SELECT    col.column_name,
                           COALESCE(def.user_type_name, def.domain_name) AS 'type',
                           def.declared_width AS 'length',
@@ -810,20 +742,19 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
+     * {@inheritdoc}
      *
      * @todo Where is this used? Which information should be retrieved?
      */
     public function getListTableConstraintsSQL($table)
     {
         $user = '';
-        
+
         if (strpos($table, '.') !== false) {
-            list ($user, $table) = explode('.', $table);
+            list($user, $table) = explode('.', $table);
             $user = "'" . $user . "'";
         }
-        
+
         return "SELECT con.*
                 FROM   SYS.SYSCONSTRAINT AS con
                 JOIN   SYS.SYSTAB AS tab ON con.table_object_id = tab.object_id
@@ -832,19 +763,17 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListTableForeignKeysSQL($table)
     {
         $user = '';
-        
+
         if (strpos($table, '.') !== false) {
-            list ($user, $table) = explode('.', $table);
+            list($user, $table) = explode('.', $table);
             $user = "'" . $user . "'";
         }
-        
+
         return "SELECT    fcol.column_name AS local_column,
                           ptbl.table_name AS foreign_table,
                           pcol.column_name AS foreign_column,
@@ -917,19 +846,17 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListTableIndexesSQL($table, $currentDatabase = null)
     {
         $user = '';
-        
+
         if (strpos($table, '.') !== false) {
-            list ($user, $table) = explode('.', $table);
+            list($user, $table) = explode('.', $table);
             $user = "'" . $user . "'";
         }
-        
+
         return "SELECT   idx.index_name AS key_name,
                          IF idx.index_category = 1
                              THEN 1
@@ -969,9 +896,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListTablesSQL()
     {
@@ -986,8 +911,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
+     * {@inheritdoc}
      *
      * @todo Where is this used? Which information should be retrieved?
      */
@@ -997,9 +921,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getListViewsSQL($database)
     {
@@ -1013,23 +935,19 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getLocateExpression($str, $substr, $startPos = false)
     {
         if ($startPos == false) {
             return 'LOCATE(' . $str . ', ' . $substr . ')';
         }
-        
+
         return 'LOCATE(' . $str . ', ' . $substr . ', ' . $startPos . ')';
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getMaxIdentifierLength()
     {
@@ -1037,9 +955,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getMd5Expression($column)
     {
@@ -1047,9 +963,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -1060,28 +974,26 @@ class SQLAnywherePlatform extends AbstractPlatform
      * Obtain DBMS specific SQL code portion needed to set a primary key
      * declaration to be used in statements like ALTER TABLE.
      *
-     * @param Index $index
-     *            Index definition
-     * @param string $name
-     *            Name of the primary key
-     *            
+     * @param Index  $index Index definition
+     * @param string $name  Name of the primary key
+     *
      * @return string DBMS specific SQL code portion needed to set a primary key
-     *        
+     *
      * @throws \InvalidArgumentException if the given index is not a primary key.
      */
     public function getPrimaryKeyDeclarationSQL(Index $index, $name = null)
     {
-        if (! $index->isPrimary()) {
-            throw new \InvalidArgumentException('Can only create primary key declarations with getPrimaryKeyDeclarationSQL()');
+        if ( ! $index->isPrimary()) {
+            throw new \InvalidArgumentException(
+                'Can only create primary key declarations with getPrimaryKeyDeclarationSQL()'
+            );
         }
-        
+
         return $this->getTableConstraintDeclarationSQL($index, $name);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSetTransactionIsolationSQL($level)
     {
@@ -1089,14 +1001,12 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSmallIntTypeDeclarationSQL(array $columnDef)
     {
         $columnDef['integer_type'] = 'SMALLINT';
-        
+
         return $this->_getCommonIntegerTypeDeclarationSQL($columnDef);
     }
 
@@ -1109,9 +1019,8 @@ class SQLAnywherePlatform extends AbstractPlatform
      * as it has to be explicitly started to be usable.
      * SQL Anywhere does not automatically start a database after creation!
      *
-     * @param string $database
-     *            Name of the database to start.
-     *            
+     * @param string $database Name of the database to start.
+     *
      * @return string
      */
     public function getStartDatabaseSQL($database)
@@ -1127,9 +1036,8 @@ class SQLAnywherePlatform extends AbstractPlatform
      * This is a required statement before dropping an existing database
      * as it has to be explicitly stopped before it can be dropped.
      *
-     * @param string $database
-     *            Name of the database to stop.
-     *            
+     * @param string $database Name of the database to stop.
+     *
      * @return string
      */
     public function getStopDatabaseSQL($database)
@@ -1138,23 +1046,19 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSubstringExpression($value, $from, $length = null)
     {
         if (null === $length) {
             return 'SUBSTRING(' . $value . ', ' . $from . ')';
         }
-        
+
         return 'SUBSTRING(' . $value . ', ' . $from . ', ' . $length . ')';
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getTemporaryTableSQL()
     {
@@ -1162,9 +1066,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getTimeFormatString()
     {
@@ -1172,9 +1074,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getTimeTypeDeclarationSQL(array $fieldDeclaration)
     {
@@ -1182,13 +1082,11 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getTrimExpression($str, $pos = self::TRIM_UNSPECIFIED, $char = false)
     {
-        if (! $char) {
+        if ( ! $char) {
             switch ($pos) {
                 case self::TRIM_LEADING:
                     return $this->getLtrimExpression($str);
@@ -1198,23 +1096,23 @@ class SQLAnywherePlatform extends AbstractPlatform
                     return 'TRIM(' . $str . ')';
             }
         }
-        
+
         $pattern = "'%[^' + $char + ']%'";
-        
+
         switch ($pos) {
             case self::TRIM_LEADING:
                 return 'SUBSTR(' . $str . ', PATINDEX(' . $pattern . ', ' . $str . '))';
             case self::TRIM_TRAILING:
                 return 'REVERSE(SUBSTR(REVERSE(' . $str . '), PATINDEX(' . $pattern . ', REVERSE(' . $str . '))))';
             default:
-                return 'REVERSE(SUBSTR(REVERSE(SUBSTR(' . $str . ', PATINDEX(' . $pattern . ', ' . $str . '))), ' . 'PATINDEX(' . $pattern . ', REVERSE(SUBSTR(' . $str . ', PATINDEX(' . $pattern . ', ' . $str . '))))))';
+                return
+                    'REVERSE(SUBSTR(REVERSE(SUBSTR(' . $str . ', PATINDEX(' . $pattern . ', ' . $str . '))), ' .
+                    'PATINDEX(' . $pattern . ', REVERSE(SUBSTR(' . $str . ', PATINDEX(' . $pattern . ', ' . $str . '))))))';
         }
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getTruncateTableSQL($tableName, $cascade = false)
     {
@@ -1222,27 +1120,28 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getUniqueConstraintDeclarationSQL($name, Index $index)
     {
         if ($index->isPrimary()) {
-            throw new \InvalidArgumentException('Cannot create primary key constraint declarations with getUniqueConstraintDeclarationSQL().');
+            throw new \InvalidArgumentException(
+                'Cannot create primary key constraint declarations with getUniqueConstraintDeclarationSQL().'
+            );
         }
-        
-        if (! $index->isUnique()) {
-            throw new \InvalidArgumentException('Can only create unique constraint declarations, no common index declarations with ' . 'getUniqueConstraintDeclarationSQL().');
+
+        if ( ! $index->isUnique()) {
+            throw new \InvalidArgumentException(
+                'Can only create unique constraint declarations, no common index declarations with ' .
+                'getUniqueConstraintDeclarationSQL().'
+            );
         }
-        
+
         return $this->getTableConstraintDeclarationSQL($index, $name);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getVarcharDefaultLength()
     {
@@ -1250,9 +1149,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getVarcharMaxLength()
     {
@@ -1260,9 +1157,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function hasNativeGuidType()
     {
@@ -1270,9 +1165,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function prefersIdentityColumns()
     {
@@ -1280,9 +1173,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function supportsCommentOnStatement()
     {
@@ -1290,9 +1181,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function supportsIdentityColumns()
     {
@@ -1300,77 +1189,67 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
     {
-        $unsigned = ! empty($columnDef['unsigned']) ? 'UNSIGNED ' : '';
+        $unsigned      = ! empty($columnDef['unsigned']) ? 'UNSIGNED ' : '';
         $autoincrement = ! empty($columnDef['autoincrement']) ? ' IDENTITY' : '';
-        
+
         return $unsigned . $columnDef['integer_type'] . $autoincrement;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getCreateTableSQL($tableName, array $columns, array $options = array())
     {
         $columnListSql = $this->getColumnDeclarationListSQL($columns);
         $indexSql = array();
-        
-        if (! empty($options['uniqueConstraints'])) {
+
+        if ( ! empty($options['uniqueConstraints'])) {
             foreach ((array) $options['uniqueConstraints'] as $name => $definition) {
                 $columnListSql .= ', ' . $this->getUniqueConstraintDeclarationSQL($name, $definition);
             }
         }
-        
-        if (! empty($options['indexes'])) {
-            /**
-             * @var \Doctrine\DBAL\Schema\Index $index
-             */
+
+        if ( ! empty($options['indexes'])) {
+            /** @var \Doctrine\DBAL\Schema\Index $index */
             foreach ((array) $options['indexes'] as $index) {
                 $indexSql[] = $this->getCreateIndexSQL($index, $tableName);
             }
         }
-        
-        if (! empty($options['primary'])) {
+
+        if ( ! empty($options['primary'])) {
             $flags = '';
-            
+
             if (isset($options['primary_index']) && $options['primary_index']->hasFlag('clustered')) {
                 $flags = ' CLUSTERED ';
             }
-            
+
             $columnListSql .= ', PRIMARY KEY' . $flags . ' (' . implode(', ', array_unique(array_values((array) $options['primary']))) . ')';
         }
-        
-        if (! empty($options['foreignKeys'])) {
+
+        if ( ! empty($options['foreignKeys'])) {
             foreach ((array) $options['foreignKeys'] as $definition) {
                 $columnListSql .= ', ' . $this->getForeignKeyDeclarationSQL($definition);
             }
         }
-        
+
         $query = 'CREATE TABLE ' . $tableName . ' (' . $columnListSql;
         $check = $this->getCheckDeclarationSQL($columns);
-        
-        if (! empty($check)) {
+
+        if ( ! empty($check)) {
             $query .= ', ' . $check;
         }
-        
+
         $query .= ')';
-        
-        return array_merge(array(
-            $query
-        ), $indexSql);
+
+        return array_merge(array($query), $indexSql);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getTransactionIsolationLevelSQL($level)
     {
@@ -1389,30 +1268,28 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function doModifyLimitQuery($query, $limit, $offset)
     {
         $limitOffsetClause = '';
-        
+
         if ($limit > 0) {
             $limitOffsetClause = 'TOP ' . $limit . ' ';
         }
-        
+
         if ($offset > 0) {
             if ($limit == 0) {
                 $limitOffsetClause = 'TOP ALL ';
             }
-            
+
             $limitOffsetClause .= 'START AT ' . ($offset + 1) . ' ';
         }
-        
+
         if ($limitOffsetClause) {
             return preg_replace('/^\s*(SELECT\s+(DISTINCT\s+)?)/i', '\1' . $limitOffsetClause, $query);
         }
-        
+
         return $query;
     }
 
@@ -1420,40 +1297,37 @@ class SQLAnywherePlatform extends AbstractPlatform
      * Return the INDEX query section dealing with non-standard
      * SQL Anywhere options.
      *
-     * @param Index $index
-     *            Index definition
-     *            
+     * @param Index $index Index definition
+     *
      * @return string
      */
     protected function getAdvancedIndexOptionsSQL(Index $index)
     {
         $sql = '';
-        
-        if (! $index->isPrimary() && $index->hasFlag('for_olap_workload')) {
+
+        if ( ! $index->isPrimary() && $index->hasFlag('for_olap_workload')) {
             $sql .= ' FOR OLAP WORKLOAD';
         }
-        
+
         return $sql;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getBinaryTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? 'BINARY(' . ($length ?  : $this->getBinaryDefaultLength()) . ')' : 'VARBINARY(' . ($length ?  : $this->getBinaryDefaultLength()) . ')';
+        return $fixed
+            ? 'BINARY(' . ($length ?: $this->getBinaryDefaultLength()) . ')'
+            : 'VARBINARY(' . ($length ?: $this->getBinaryDefaultLength()) . ')';
     }
 
     /**
      * Returns the SQL snippet for creating a table constraint.
      *
-     * @param Constraint $constraint
-     *            The table constraint to create the SQL snippet for.
-     * @param string|null $name
-     *            The table constraint name to use if any.
-     *            
+     * @param Constraint  $constraint The table constraint to create the SQL snippet for.
+     * @param string|null $name       The table constraint name to use if any.
+     *
      * @return string
      *
      * @throws \InvalidArgumentException if the given table constraint type is not supported by this method.
@@ -1463,44 +1337,45 @@ class SQLAnywherePlatform extends AbstractPlatform
         if ($constraint instanceof ForeignKeyConstraint) {
             return $this->getForeignKeyDeclarationSQL($constraint);
         }
-        
-        if (! $constraint instanceof Index) {
+
+        if ( ! $constraint instanceof Index) {
             throw new \InvalidArgumentException('Unsupported constraint type: ' . get_class($constraint));
         }
-        
-        if (! $constraint->isPrimary() && ! $constraint->isUnique()) {
-            throw new \InvalidArgumentException('Can only create primary, unique or foreign key constraint declarations, no common index declarations ' . 'with getTableConstraintDeclarationSQL().');
+
+        if ( ! $constraint->isPrimary() && ! $constraint->isUnique()) {
+            throw new \InvalidArgumentException(
+                'Can only create primary, unique or foreign key constraint declarations, no common index declarations ' .
+                'with getTableConstraintDeclarationSQL().'
+            );
         }
-        
+
         $constraintColumns = $constraint->getQuotedColumns($this);
-        
+
         if (empty($constraintColumns)) {
             throw new \InvalidArgumentException("Incomplete definition. 'columns' required.");
         }
-        
-        $sql = '';
+
+        $sql   = '';
         $flags = '';
-        
-        if (! empty($name)) {
+
+        if ( ! empty($name)) {
             $name = new Identifier($name);
             $sql .= 'CONSTRAINT ' . $name->getQuotedName($this) . ' ';
         }
-        
+
         if ($constraint->hasFlag('clustered')) {
             $flags = 'CLUSTERED ';
         }
-        
+
         if ($constraint->isPrimary()) {
-            return $sql . 'PRIMARY KEY ' . $flags . '(' . $this->getIndexFieldDeclarationListSQL($constraintColumns) . ')';
+            return $sql . 'PRIMARY KEY ' . $flags . '('. $this->getIndexFieldDeclarationListSQL($constraintColumns) . ')';
         }
-        
-        return $sql . 'UNIQUE ' . $flags . '(' . $this->getIndexFieldDeclarationListSQL($constraintColumns) . ')';
+
+        return $sql . 'UNIQUE ' . $flags . '('. $this->getIndexFieldDeclarationListSQL($constraintColumns) . ')';
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getCreateIndexSQLFlags(Index $index)
     {
@@ -1508,22 +1383,20 @@ class SQLAnywherePlatform extends AbstractPlatform
         if ($index->hasFlag('virtual')) {
             $type .= 'VIRTUAL ';
         }
-        
+
         if ($index->isUnique()) {
             $type .= 'UNIQUE ';
         }
-        
+
         if ($index->hasFlag('clustered')) {
             $type .= 'CLUSTERED ';
         }
-        
+
         return $type;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getRenameIndexSQL($oldIndexName, Index $index, $tableName)
     {
@@ -1533,9 +1406,7 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getReservedKeywordsClass()
     {
@@ -1543,19 +1414,17 @@ class SQLAnywherePlatform extends AbstractPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
-        return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(' . $this->getVarcharDefaultLength() . ')') : ($length ? 'VARCHAR(' . $length . ')' : 'VARCHAR(' . $this->getVarcharDefaultLength() . ')');
+        return $fixed
+            ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(' . $this->getVarcharDefaultLength() . ')')
+            : ($length ? 'VARCHAR(' . $length . ')' : 'VARCHAR(' . $this->getVarcharDefaultLength() . ')');
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function initializeDoctrineTypeMappings()
     {
@@ -1581,11 +1450,9 @@ class SQLAnywherePlatform extends AbstractPlatform
             'unsigned int' => 'integer',
             'numeric' => 'decimal',
             'smallint' => 'smallint',
-            'unsigned smallint',
-            'smallint',
+            'unsigned smallint', 'smallint',
             'tinyint' => 'smallint',
-            'unsigned tinyint',
-            'smallint',
+            'unsigned tinyint', 'smallint',
             'money' => 'decimal',
             'smallmoney' => 'decimal',
             'long varbit' => 'text',
@@ -1599,7 +1466,7 @@ class SQLAnywherePlatform extends AbstractPlatform
             'image' => 'blob',
             'long binary' => 'blob',
             'uniqueidentifier' => 'guid',
-            'varbinary' => 'binary'
+            'varbinary' => 'binary',
         );
     }
 }

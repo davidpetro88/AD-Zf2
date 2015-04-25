@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Event;
 
 use Doctrine\Common\EventArgs;
@@ -24,22 +25,19 @@ use Doctrine\DBAL\Connection;
 /**
  * Event Arguments used when a Driver connection is established inside Doctrine\DBAL\Connection.
  *
- * @link www.doctrine-project.org
- * @since 1.0
+ * @link   www.doctrine-project.org
+ * @since  1.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class ConnectionEventArgs extends EventArgs
 {
-
     /**
-     *
      * @var \Doctrine\DBAL\Connection
      */
     private $_connection;
 
     /**
-     *
-     * @param \Doctrine\DBAL\Connection $connection            
+     * @param \Doctrine\DBAL\Connection $connection
      */
     public function __construct(Connection $connection)
     {
@@ -47,7 +45,6 @@ class ConnectionEventArgs extends EventArgs
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Connection
      */
     public function getConnection()
@@ -56,7 +53,6 @@ class ConnectionEventArgs extends EventArgs
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Driver
      */
     public function getDriver()
@@ -65,7 +61,6 @@ class ConnectionEventArgs extends EventArgs
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Platforms\AbstractPlatform
      */
     public function getDatabasePlatform()
@@ -74,7 +69,6 @@ class ConnectionEventArgs extends EventArgs
     }
 
     /**
-     *
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
      */
     public function getSchemaManager()

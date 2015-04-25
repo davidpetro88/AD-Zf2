@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Assetic\Filter;
 
 use Assetic\Asset\AssetInterface;
@@ -20,9 +21,7 @@ use Assetic\Asset\AssetInterface;
  */
 class CssCacheBustingFilter extends BaseCssFilter
 {
-
     private $version;
-
     private $format = '%s?%s';
 
     public function setVersion($version)
@@ -36,23 +35,31 @@ class CssCacheBustingFilter extends BaseCssFilter
     }
 
     public function filterLoad(AssetInterface $asset)
-    {}
+    {
+    }
 
     public function filterDump(AssetInterface $asset)
     {
-        if (! $this->version) {
+        if (!$this->version) {
             return;
         }
-        
+
         $version = $this->version;
         $format = $this->format;
-        
-        $asset->setContent($this->filterReferences($asset->getContent(), function ($matches) use($version, $format) {
-            if (0 === strpos($matches['url'], 'data:')) {
-                return $matches[0];
+
+        $asset->setContent($this->filterReferences(
+            $asset->getContent(),
+            function ($matches) use ($version, $format) {
+                if (0 === strpos($matches['url'], 'data:')) {
+                    return $matches[0];
+                }
+
+                return str_replace(
+                    $matches['url'],
+                    sprintf($format, $matches['url'], $version),
+                    $matches[0]
+                );
             }
-            
-            return str_replace($matches['url'], sprintf($format, $matches['url'], $version), $matches[0]);
-        }));
+        ));
     }
 }

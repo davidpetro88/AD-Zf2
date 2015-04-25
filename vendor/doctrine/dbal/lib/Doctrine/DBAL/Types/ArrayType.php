@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -27,11 +28,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class ArrayType extends Type
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
@@ -39,9 +37,7 @@ class ArrayType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -50,29 +46,25 @@ class ArrayType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
         }
-        
+
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
         $val = unserialize($value);
         if ($val === false && $value != 'b:0;') {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
-        
+
         return $val;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -80,9 +72,7 @@ class ArrayType extends Type
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -27,8 +28,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * {@see DateTimeType}, however in certain PostgreSQL configurations with
  * TIMESTAMP(n) columns where n > 0 it is necessary to use this type.
  *
- * @link www.doctrine-project.org
- * @since 2.0
+ * @link   www.doctrine-project.org
+ * @since  2.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Jonathan Wage <jonwage@gmail.com>
@@ -36,23 +37,20 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class VarDateTimeType extends DateTimeType
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
         }
-        
+
         $val = date_create($value);
-        if (! $val) {
+        if ( ! $val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
-        
+
         return $val;
     }
 }

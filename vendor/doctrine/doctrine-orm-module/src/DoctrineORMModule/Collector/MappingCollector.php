@@ -16,12 +16,16 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Collector;
 
 use Serializable;
+
 use ZendDeveloperTools\Collector\CollectorInterface;
 use ZendDeveloperTools\Collector\AutoHideInterface;
+
 use Zend\Mvc\MvcEvent;
+
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 
@@ -29,44 +33,39 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
  * Collector to be used in ZendDeveloperTools to record and display mapping information
  *
  * @license MIT
- * @link www.doctrine-project.org
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    www.doctrine-project.org
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class MappingCollector implements CollectorInterface, AutoHideInterface, Serializable
 {
-
     /**
      * Collector priority
      */
     const PRIORITY = 10;
 
     /**
-     *
      * @var string
      */
     protected $name;
 
     /**
-     *
      * @var ClassMetadataFactory|null
      */
     protected $classMetadataFactory = array();
 
     /**
-     *
      * @var \Doctrine\Common\Persistence\Mapping\ClassMetadata[] indexed by class name
      */
     protected $classes = array();
 
     /**
-     *
-     * @param ClassMetadataFactory $classMetadataFactory            
-     * @param string $name            
+     * @param ClassMetadataFactory $classMetadataFactory
+     * @param string               $name
      */
     public function __construct(ClassMetadataFactory $classMetadataFactory, $name)
     {
         $this->classMetadataFactory = $classMetadataFactory;
-        $this->name = (string) $name;
+        $this->name                 = (string) $name;
     }
 
     /**
@@ -90,14 +89,14 @@ class MappingCollector implements CollectorInterface, AutoHideInterface, Seriali
      */
     public function collect(MvcEvent $mvcEvent)
     {
-        if (! $this->classMetadataFactory) {
+        if (!$this->classMetadataFactory) {
             return;
         }
-        
+
         /* @var $metadata \Doctrine\Common\Persistence\Mapping\ClassMetadata[] */
-        $metadata = $this->classMetadataFactory->getAllMetadata();
+        $metadata      = $this->classMetadataFactory->getAllMetadata();
         $this->classes = array();
-        
+
         foreach ($metadata as $class) {
             $this->classes[$class->getName()] = $class;
         }
@@ -116,10 +115,12 @@ class MappingCollector implements CollectorInterface, AutoHideInterface, Seriali
      */
     public function serialize()
     {
-        return serialize(array(
-            'name' => $this->name,
-            'classes' => $this->classes
-        ));
+        return serialize(
+            array(
+                'name'    => $this->name,
+                'classes' => $this->classes,
+            )
+        );
     }
 
     /**
@@ -127,13 +128,12 @@ class MappingCollector implements CollectorInterface, AutoHideInterface, Seriali
      */
     public function unserialize($serialized)
     {
-        $data = unserialize($serialized);
-        $this->name = $data['name'];
+        $data          = unserialize($serialized);
+        $this->name    = $data['name'];
         $this->classes = $data['classes'];
     }
 
     /**
-     *
      * @return \Doctrine\Common\Persistence\Mapping\ClassMetadata[]
      */
     public function getClasses()

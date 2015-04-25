@@ -16,16 +16,15 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Driver\OCI8;
 
 use Doctrine\DBAL\Driver\AbstractDriverException;
 
 class OCI8Exception extends AbstractDriverException
 {
-
     /**
-     *
-     * @param array $error            
+     * @param array $error
      *
      * @return \Doctrine\DBAL\Driver\OCI8\OCI8Exception
      */

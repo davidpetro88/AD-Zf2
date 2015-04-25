@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Sharding;
 
 /**
@@ -38,7 +39,6 @@ namespace Doctrine\DBAL\Sharding;
  */
 interface ShardManager
 {
-
     /**
      * Selects global database with global data.
      *
@@ -52,7 +52,7 @@ interface ShardManager
     /**
      * Selects the shard against which the queries after this statement will be issued.
      *
-     * @param string $distributionValue            
+     * @param string $distributionValue
      *
      * @return void
      *
@@ -79,14 +79,13 @@ interface ShardManager
 
     /**
      * Queries all shards in undefined order and return the results appended to
-     * each other.
-     * Restore the previous distribution value after execution.
+     * each other. Restore the previous distribution value after execution.
      *
      * Using {@link \Doctrine\DBAL\Connection::fetchAll} to retrieve rows internally.
      *
-     * @param string $sql            
-     * @param array $params            
-     * @param array $types            
+     * @param string $sql
+     * @param array  $params
+     * @param array  $types
      *
      * @return array
      */

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms\Keywords;
 
 /**
@@ -25,11 +26,8 @@ namespace Doctrine\DBAL\Platforms\Keywords;
  */
 class DrizzleKeywords extends KeywordList
 {
-
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -37,9 +35,7 @@ class DrizzleKeywords extends KeywordList
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getKeywords()
     {
@@ -343,7 +339,7 @@ class DrizzleKeywords extends KeywordList
             'XMLPI',
             'XMLROOT',
             'XMLSERIALIZE',
-            'YEAR'
+            'YEAR',
         );
     }
 }

@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModule\Service;
 
 use Doctrine\DBAL\DriverManager;
@@ -27,12 +28,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Service factory responsible for instantiating {@see \DoctrineORMModule\Form\Annotation\AnnotationBuilder}
  *
  * @license MIT
- * @link http://www.doctrine-project.org/
- * @author Marco Pivetta <ocramius@gmail.com>
+ * @link    http://www.doctrine-project.org/
+ * @author  Marco Pivetta <ocramius@gmail.com>
  */
 class FormAnnotationBuilderFactory extends AbstractFactory
 {
-
     /**
      * {@inheritDoc}
      *
@@ -42,7 +42,7 @@ class FormAnnotationBuilderFactory extends AbstractFactory
     {
         /* @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $serviceLocator->get('doctrine.entitymanager.' . $this->getName());
-        
+
         return new AnnotationBuilder($entityManager);
     }
 
@@ -50,5 +50,6 @@ class FormAnnotationBuilderFactory extends AbstractFactory
      * {@inheritDoc}
      */
     public function getOptionsClass()
-    {}
+    {
+    }
 }

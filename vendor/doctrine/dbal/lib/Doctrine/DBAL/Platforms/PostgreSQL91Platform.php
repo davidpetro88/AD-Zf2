@@ -16,18 +16,18 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Platforms;
 
 /**
  * Provides the behavior, features and SQL dialect of the PostgreSQL 9.1 database platform.
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
- * @link www.doctrine-project.org
- * @since 2.5
+ * @link   www.doctrine-project.org
+ * @since  2.5
  */
 class PostgreSQL91Platform extends PostgreSqlPlatform
 {
-
     /**
      * {@inheritDoc}
      */
@@ -37,9 +37,7 @@ class PostgreSQL91Platform extends PostgreSqlPlatform
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function getReservedKeywordsClass()
     {
@@ -61,7 +59,7 @@ class PostgreSQL91Platform extends PostgreSqlPlatform
     {
         $sql = parent::getListTableColumnsSQL($table, $database);
         $parts = explode('AS complete_type,', $sql, 2);
-        
-        return $parts[0] . 'AS complete_type, (SELECT tc.collcollate FROM pg_catalog.pg_collation tc WHERE tc.oid = a.attcollation) AS collation,' . $parts[1];
+
+        return $parts[0].'AS complete_type, (SELECT tc.collcollate FROM pg_catalog.pg_collation tc WHERE tc.oid = a.attcollation) AS collation,'.$parts[1];
     }
 }

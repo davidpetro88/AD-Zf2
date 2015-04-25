@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +28,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class FormEntityTarget
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

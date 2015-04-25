@@ -16,6 +16,7 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace DoctrineORMModuleTest\Collector;
 
 use PHPUnit_Framework_TestCase as TestCase;
@@ -25,21 +26,17 @@ use Zend\Mvc\MvcEvent;
 
 class SQLLoggerCollectorTest extends TestCase
 {
-
     /**
-     *
      * @var DebugStack
      */
     protected $logger;
 
     /**
-     *
      * @var string
      */
     protected $name = 'test-collector-name';
 
     /**
-     *
      * @var SQLLoggerCollector
      */
     protected $collector;
@@ -86,14 +83,14 @@ class SQLLoggerCollectorTest extends TestCase
     {
         $start = microtime(true);
         $this->assertEquals(0, $this->collector->getQueryTime());
-        
+
         $this->logger->startQuery('some sql');
         $this->logger->stopQuery();
         $time = microtime(true) - $start;
         $time1 = $this->collector->getQueryTime();
         $this->assertGreaterThan(0, $time1);
         $this->assertLessThan($time, $time1);
-        
+
         $this->logger->startQuery('some more sql');
         $this->logger->stopQuery();
         $time = microtime(true) - $start;

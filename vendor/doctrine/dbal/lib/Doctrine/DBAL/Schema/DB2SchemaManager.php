@@ -16,56 +16,55 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL\Schema;
 
 /**
  * IBM Db2 Schema Manager.
  *
- * @link www.doctrine-project.org
- * @since 1.0
+ * @link   www.doctrine-project.org
+ * @since  1.0
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class DB2SchemaManager extends AbstractSchemaManager
 {
-
     /**
+     * {@inheritdoc}
      *
-     * @ERROR!!! Apparently creator is the schema not the user who created it:
-     *           {@link http://publib.boulder.ibm.com/infocenter/dzichelp/v2r2/index.jsp?topic=/com.ibm.db29.doc.sqlref/db2z_sysibmsystablestable.htm}
+     * Apparently creator is the schema not the user who created it:
+     * {@link http://publib.boulder.ibm.com/infocenter/dzichelp/v2r2/index.jsp?topic=/com.ibm.db29.doc.sqlref/db2z_sysibmsystablestable.htm}
      */
     public function listTableNames()
     {
         $sql = $this->_platform->getListTablesSQL();
-        $sql .= " AND CREATOR = UPPER('" . $this->_conn->getUsername() . "')";
-        
+        $sql .= " AND CREATOR = UPPER('".$this->_conn->getUsername()."')";
+
         $tables = $this->_conn->fetchAll($sql);
-        
+
         return $this->_getPortableTablesList($tables);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $tableColumn = array_change_key_case($tableColumn, \CASE_LOWER);
-        
+
         $length = null;
         $fixed = null;
         $unsigned = false;
         $scale = false;
         $precision = false;
-        
+
         $default = null;
-        
+
         if (null !== $tableColumn['default'] && 'NULL' != $tableColumn['default']) {
             $default = trim($tableColumn['default'], "'");
         }
-        
+
         $type = $this->_platform->getDoctrineTypeMapping($tableColumn['typename']);
-        
+
         switch (strtolower($tableColumn['typename'])) {
             case 'varchar':
                 $length = $tableColumn['length'];
@@ -85,31 +84,29 @@ class DB2SchemaManager extends AbstractSchemaManager
                 $precision = $tableColumn['length'];
                 break;
         }
-        
+
         $options = array(
-            'length' => $length,
-            'unsigned' => (bool) $unsigned,
-            'fixed' => (bool) $fixed,
-            'default' => $default,
+            'length'        => $length,
+            'unsigned'      => (bool) $unsigned,
+            'fixed'         => (bool) $fixed,
+            'default'       => $default,
             'autoincrement' => (boolean) $tableColumn['autoincrement'],
-            'notnull' => (bool) ($tableColumn['nulls'] == 'N'),
-            'scale' => null,
-            'precision' => null,
-            'platformOptions' => array()
+            'notnull'       => (bool) ($tableColumn['nulls'] == 'N'),
+            'scale'         => null,
+            'precision'     => null,
+            'platformOptions' => array(),
         );
-        
+
         if ($scale !== null && $precision !== null) {
             $options['scale'] = $scale;
             $options['precision'] = $precision;
         }
-        
+
         return new Column($tableColumn['colname'], \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTablesList($tables)
     {
@@ -118,14 +115,12 @@ class DB2SchemaManager extends AbstractSchemaManager
             $tableRow = array_change_key_case($tableRow, \CASE_LOWER);
             $tableNames[] = $tableRow['name'];
         }
-        
+
         return $tableNames;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableIndexesList($tableIndexRows, $tableName = null)
     {
@@ -133,45 +128,43 @@ class DB2SchemaManager extends AbstractSchemaManager
             $tableIndexRow = array_change_key_case($tableIndexRow, \CASE_LOWER);
             $tableIndexRow['primary'] = (boolean) $tableIndexRow['primary'];
         }
-        
+
         return parent::_getPortableTableIndexesList($tableIndexRows, $tableName);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
-        return new ForeignKeyConstraint($tableForeignKey['local_columns'], $tableForeignKey['foreign_table'], $tableForeignKey['foreign_columns'], $tableForeignKey['name'], $tableForeignKey['options']);
+        return new ForeignKeyConstraint(
+            $tableForeignKey['local_columns'],
+            $tableForeignKey['foreign_table'],
+            $tableForeignKey['foreign_columns'],
+            $tableForeignKey['name'],
+            $tableForeignKey['options']
+        );
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
         $foreignKeys = array();
-        
+
         foreach ($tableForeignKeys as $tableForeignKey) {
             $tableForeignKey = array_change_key_case($tableForeignKey, \CASE_LOWER);
-            
-            if (! isset($foreignKeys[$tableForeignKey['index_name']])) {
+
+            if (!isset($foreignKeys[$tableForeignKey['index_name']])) {
                 $foreignKeys[$tableForeignKey['index_name']] = array(
-                    'local_columns' => array(
-                        $tableForeignKey['local_column']
-                    ),
-                    'foreign_table' => $tableForeignKey['foreign_table'],
-                    'foreign_columns' => array(
-                        $tableForeignKey['foreign_column']
-                    ),
-                    'name' => $tableForeignKey['index_name'],
-                    'options' => array(
+                    'local_columns'   => array($tableForeignKey['local_column']),
+                    'foreign_table'   => $tableForeignKey['foreign_table'],
+                    'foreign_columns' => array($tableForeignKey['foreign_column']),
+                    'name'            => $tableForeignKey['index_name'],
+                    'options'         => array(
                         'onUpdate' => $tableForeignKey['on_update'],
-                        'onDelete' => $tableForeignKey['on_delete']
+                        'onDelete' => $tableForeignKey['on_delete'],
                     )
                 );
             } else {
@@ -179,14 +172,12 @@ class DB2SchemaManager extends AbstractSchemaManager
                 $foreignKeys[$tableForeignKey['index_name']]['foreign_columns'][] = $tableForeignKey['foreign_column'];
             }
         }
-        
+
         return parent::_getPortableTableForeignKeysList($foreignKeys);
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableForeignKeyRuleDef($def)
     {
@@ -195,27 +186,25 @@ class DB2SchemaManager extends AbstractSchemaManager
         } elseif ($def == "N") {
             return "SET NULL";
         }
-        
+
         return null;
     }
 
     /**
-     *
-     * @ERROR!!!
-     *
+     * {@inheritdoc}
      */
     protected function _getPortableViewDefinition($view)
     {
         $view = array_change_key_case($view, \CASE_LOWER);
         // sadly this still segfaults on PDO_IBM, see http://pecl.php.net/bugs/bug.php?id=17199
-        // $view['text'] = (is_resource($view['text']) ? stream_get_contents($view['text']) : $view['text']);
-        if (! is_resource($view['text'])) {
+        //$view['text'] = (is_resource($view['text']) ? stream_get_contents($view['text']) : $view['text']);
+        if (!is_resource($view['text'])) {
             $pos = strpos($view['text'], ' AS ');
-            $sql = substr($view['text'], $pos + 4);
+            $sql = substr($view['text'], $pos+4);
         } else {
             $sql = '';
         }
-        
+
         return new View($view['name'], $sql);
     }
 }

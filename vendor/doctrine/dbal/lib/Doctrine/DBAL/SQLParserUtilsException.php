@@ -1,6 +1,6 @@
 <?php
 /*
- * $Id: $
+ *  $Id: $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -18,22 +18,21 @@
  * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
+
 namespace Doctrine\DBAL;
 
 /**
  * Doctrine\DBAL\ConnectionException
  *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
- * @link www.doctrine-project.org
- * @since 2.4
- * @author Lars Strojny <lars@strojny.net>
+ * @link    www.doctrine-project.org
+ * @since   2.4
+ * @author  Lars Strojny <lars@strojny.net>
  */
 class SQLParserUtilsException extends DBALException
 {
-
     /**
-     *
-     * @param string $paramName            
+     * @param string $paramName
      *
      * @return \Doctrine\DBAL\SQLParserUtilsException
      */
@@ -43,8 +42,7 @@ class SQLParserUtilsException extends DBALException
     }
 
     /**
-     *
-     * @param string $typeName            
+     * @param string $typeName
      *
      * @return \Doctrine\DBAL\SQLParserUtilsException
      */
