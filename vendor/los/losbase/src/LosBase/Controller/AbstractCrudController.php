@@ -98,7 +98,9 @@ abstract class AbstractCrudController extends AbstractActionController
      */
     public function getRouteName()
     {
-        return strtolower($this->getModuleName());
+        return strtolower(preg_replace('/(?<!^)([A-Z])/', '-\\1', $this->getModuleName()));
+        //return strtolower($this->getModuleName());
+        //return $this->getModuleName();
     }
 
     public function getEntityClass()
@@ -117,6 +119,7 @@ abstract class AbstractCrudController extends AbstractActionController
 
     protected function getAddForm()
     {
+        
         $form = $this->getForm();
 
         if ($this->uniqueField !== null) {
@@ -165,10 +168,11 @@ abstract class AbstractCrudController extends AbstractActionController
      */
     public function getForm($entityClass = null)
     {
+
         if (null === $entityClass) {
             $entityClass = $this->getEntityClass();
         }
-
+        
         $builder = new AnnotationBuilder();
         $form = $builder->createForm($entityClass);
 
@@ -186,6 +190,7 @@ abstract class AbstractCrudController extends AbstractActionController
             }
         }
 
+
         if ($hasEntity) {
             $hydrator = new DoctrineHydrator($this->getEntityManager(), $entityClass);
             $form->setHydrator($hydrator);
@@ -197,28 +202,33 @@ abstract class AbstractCrudController extends AbstractActionController
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'csrf',
         ]);
-
+        
         $submitElement = new \Zend\Form\Element\Button('submit');
         $submitElement->setAttributes([
             'type' => 'submit',
             'class' => 'btn btn-primary',
         ]);
+        
         $submitElement->setLabel('Salvar');
         $form->add($submitElement, [
             'priority' => - 100,
         ]);
-
+        
         $cancelarElement = new \Zend\Form\Element\Button('cancelar');
+
         $cancelarElement->setAttributes([
             'type' => 'button',
             'class' => 'btn btn-default',
             'onclick' => 'top.location=\''.$this->url()
                 ->fromRoute($this->getActionRoute('list')).'\'',
         ]);
+
         $cancelarElement->setLabel('Cancelar');
         $form->add($cancelarElement, [
             'priority' => - 100,
         ]);
+
+
 
         return $form;
     }
