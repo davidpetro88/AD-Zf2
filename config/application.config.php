@@ -13,9 +13,9 @@ return array(
         'ZfcRbac',
         'ZfcUserDoctrineORM',
         'AssetManager',
-        'LosBase',
-        'LosUi',
-        'LosLog',
+        'AcploBase',
+        'AcploUi',
+        'AcploLog',
         'Cliente',
         'Usuario',
         'Dvd'

@@ -1,19 +1,20 @@
 {
-  "name" : "los/tutorial",
+  "name" : "AD-ZF2/tutorial",
   "description" : "Tutorial ZF2, Doctrine e pacotes Los",
+  "version" : "0.0.3",
   "require" : {
     "php" : ">=5.4.0",
     "zendframework/zendframework" : "~2.3",
     "doctrine/doctrine-module" : "~0.8.1",
     "doctrine/doctrine-orm-module" : "~0.8",
-    "los/losbase" : "~2.5",
-    "los/losui" : "~1.0",
+    "acplo/acplobase" : "0.0.1",
+    "acplo/acploui" : "1.0.0",
     "zf-commons/zfc-user-doctrine-orm" : "~1.0",
     "zf-commons/zfc-rbac" : "~2.4"
   },
   "require-dev" : {
     "zendframework/zend-developer-tools" : "=0.0.2",
-    "los/loslog" : "~1.0"
+    "acplo/acplolog" : "dev-master"
   },
   "license" : "BSD-3-Clause",
   "keywords" : [ "framework", "zf2" ],

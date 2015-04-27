@@ -1,4 +1,4 @@
 local.php
 mail.config.local.php
 zfcuser.global.php
-zfcrbac.global
+zfcrbac.global.php

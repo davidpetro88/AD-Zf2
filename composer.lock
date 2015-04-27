@@ -4,8 +4,123 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9374d1be7a39cb607c8e68a318f5de2f",
+    "hash": "b29d4d9b71e37a8905bdd4cf4dc55e4d",
     "packages": [
+        {
+            "name": "acplo/acplobase",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acplo/AcploBase.git",
+                "reference": "156e088a22c371142561eed0bc7e704293c0cdf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acplo/AcploBase/zipball/156e088a22c371142561eed0bc7e704293c0cdf6",
+                "reference": "156e088a22c371142561eed0bc7e704293c0cdf6",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-orm-module": "~0.8",
+                "php": ">=5.4",
+                "zendframework/zendframework": ">=2.3.2,<3.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "suggest": {
+                "acplo/acplolog": "acplo/acplolog for logging",
+                "acplo/acplosui": "acplo/acploui for twitter bootstrap 3 styling, jquery, chosen and other libraries"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AcploBase\\": "src/"
+                },
+                "psr-4": {
+                    "AcploBase\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Abel Lopes",
+                    "email": "abel@abellopes.eti.br",
+                    "homepage": "http://www.abellopes.eti.br"
+                }
+            ],
+            "description": "Library with common classes for Los packages",
+            "keywords": [
+                "acplo",
+                "base",
+                "common",
+                "library"
+            ],
+            "time": "2015-04-24 17:14:17"
+        },
+        {
+            "name": "acplo/acploui",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acplo/AcploUi.git",
+                "reference": "5f1c7252d3cd2cf9438ba46fc3dbb0e9a7bb3f40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acplo/AcploUi/zipball/5f1c7252d3cd2cf9438ba46fc3dbb0e9a7bb3f40",
+                "reference": "5f1c7252d3cd2cf9438ba46fc3dbb0e9a7bb3f40",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "rwoverdijk/assetmanager": "~1.4",
+                "zendframework/zendframework": ">=2.3.2,<3.0.0"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "suggest": {
+                "acplo/acplobase": "acplo/acplobase for some abstract classes to speed development ",
+                "acplo/acplolog": "acplo/acplolog for logging"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AcploUi\\": "src/"
+                },
+                "psr-0": {
+                    "AcploUi\\": "src/"
+                },
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Abel Lopes",
+                    "email": "abel@abellopes.eti.br",
+                    "homepage": "http://www.abellopes.eti.br"
+                }
+            ],
+            "description": "AcploUi provides some UI utility classes your ZF2 application using Jquery2, Bootstrap3, Chosen, etc",
+            "homepage": "http://github.com/Acplo/AcploUi",
+            "keywords": [
+                "acplo",
+                "module",
+                "ui",
+                "zf2"
+            ],
+            "time": "2015-04-25 22:59:05"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.4",
@@ -846,121 +961,6 @@
             "time": "2014-12-12 05:04:05"
         },
         {
-            "name": "los/losbase",
-            "version": "2.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Lansoweb/LosBase.git",
-                "reference": "b420f41d65190285ac4a76ac9091c2601fbf5d33"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Lansoweb/LosBase/zipball/b420f41d65190285ac4a76ac9091c2601fbf5d33",
-                "reference": "b420f41d65190285ac4a76ac9091c2601fbf5d33",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/doctrine-orm-module": "~0.8",
-                "php": ">=5.4",
-                "zendframework/zendframework": ">=2.3.2,<3.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.4",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "suggest": {
-                "los/loslog": "los/loslog for logging",
-                "los/losui": "los/losui for twitter bootstrap 3 styling, jquery, chosen and other libraries"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "LosBase\\": "src/"
-                },
-                "psr-4": {
-                    "LosBase\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Leandro Silva",
-                    "email": "leandro@leandrosilva.info",
-                    "homepage": "http://leandrosilva.info"
-                }
-            ],
-            "description": "Library with common classes for Los packages",
-            "keywords": [
-                "base",
-                "common",
-                "library",
-                "los"
-            ],
-            "time": "2015-04-01 12:03:29"
-        },
-        {
-            "name": "los/losui",
-            "version": "1.0.19",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Lansoweb/LosUi.git",
-                "reference": "1b4abed5c616036e3802e75917c51a9d52f10c04"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Lansoweb/LosUi/zipball/1b4abed5c616036e3802e75917c51a9d52f10c04",
-                "reference": "1b4abed5c616036e3802e75917c51a9d52f10c04",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "rwoverdijk/assetmanager": "~1.4",
-                "zendframework/zendframework": ">=2.3.2,<3.0.0"
-            },
-            "require-dev": {
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "suggest": {
-                "los/losbase": "los/losbase for some abstract classes to speed development ",
-                "los/loslog": "los/loslog for logging"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "LosUi\\": "src/"
-                },
-                "psr-0": {
-                    "LosUi\\": "src/"
-                },
-                "classmap": [
-                    "./"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Leandro Silva",
-                    "email": "leandro@leandrosilva.info",
-                    "homepage": "http://leandrosilva.info"
-                }
-            ],
-            "description": "LosUi provides some UI utility classes your ZF2 application using Jquery2, Bootstrap3, Chosen, etc",
-            "homepage": "http://github.com/Lansoweb/LosUi",
-            "keywords": [
-                "los",
-                "module",
-                "ui",
-                "zf2"
-            ],
-            "time": "2015-04-08 11:11:44"
-        },
-        {
             "name": "rwoverdijk/assetmanager",
             "version": "1.4.4",
             "source": {
@@ -1606,17 +1606,17 @@
     ],
     "packages-dev": [
         {
-            "name": "los/loslog",
-            "version": "1.0.14",
+            "name": "acplo/acplolog",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Lansoweb/LosLog.git",
-                "reference": "3b17c6520bb12f781c20868115bdd5fc768ac46a"
+                "url": "https://github.com/acplo/AcploLog.git",
+                "reference": "b9c7faaf29d059f077ed3cc9d6b417dfdaf0b646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Lansoweb/LosLog/zipball/3b17c6520bb12f781c20868115bdd5fc768ac46a",
-                "reference": "3b17c6520bb12f781c20868115bdd5fc768ac46a",
+                "url": "https://api.github.com/repos/acplo/AcploLog/zipball/b9c7faaf29d059f077ed3cc9d6b417dfdaf0b646",
+                "reference": "b9c7faaf29d059f077ed3cc9d6b417dfdaf0b646",
                 "shasum": ""
             },
             "require": {
@@ -1633,7 +1633,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "LosLog\\": "src/"
+                    "AcploLog\\": "src/"
                 },
                 "classmap": [
                     "./"
@@ -1645,20 +1645,20 @@
             ],
             "authors": [
                 {
-                    "name": "Leandro Silva",
-                    "email": "leandro@leandrosilva.info",
-                    "homepage": "http://leandrosilva.info"
+                    "name": "Abel Lopes",
+                    "email": "abel@abellpes.eti.br",
+                    "homepage": "http://abellpes.eti.br"
                 }
             ],
-            "description": "LosLog provides some log utility your ZF2 application",
-            "homepage": "http://github.com/Lansoweb/LosLog",
+            "description": "AcploLog provides some log utility your ZF2 application",
+            "homepage": "http://github.com/Acplo/AcploLog",
             "keywords": [
+                "acplo",
                 "log",
-                "los",
                 "module",
                 "zf2"
             ],
-            "time": "2015-04-01 13:42:56"
+            "time": "2015-04-25 22:55:49"
         },
         {
             "name": "zendframework/zend-developer-tools",
@@ -1724,7 +1724,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "acplo/acplolog": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
