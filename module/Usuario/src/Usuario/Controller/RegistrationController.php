@@ -309,7 +309,7 @@ class RegistrationController extends AbstractActionController
             'id' => $user->getUsrRegistrationToken()
         )));
         
-        // $this->losUrl()->from('usuario/confirm-email',['id'=>$user->getUsrRegistrationToken()], true)
+        // $this->acploUrl()->from('usuario/confirm-email',['id'=>$user->getUsrRegistrationToken()], true)
         
         $transport->send($message);
     }

@@ -4,8 +4,8 @@
 		<tr>
 			<th class="col-xs-11">Id</th>
 			<th class="col-xs-1"><a
-				href="<?php echo $this->losUrl()->from('dvd/add',[],true)?>"
-				class="btn btn-sm btn-success pull-right"><?= $this->losIcon('glyphicon-plus') ?></a></th>
+				href="<?php echo $this->acploUrl()->from('dvd/add',[],true)?>"
+				class="btn btn-sm btn-success pull-right"><?= $this->acploIcon('glyphicon-plus') ?></a></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -13,11 +13,11 @@
         <tr class="linha">
 			<td><?= $entity->getId()?></td>
 			<td class="text-right"><a
-				href="<?php echo $this->losUrl()->from('dvd/edit',['id'=>$entity->getId()], true)?>"
-				class="btn btn-xs btn-warning"><?= $this->losIcon('glyphicon-edit') ?></a>
+				href="<?php echo $this->acploUrl()->from('dvd/edit',['id'=>$entity->getId()], true)?>"
+				class="btn btn-xs btn-warning"><?= $this->acploIcon('glyphicon-edit') ?></a>
 				<a
-				href="<?php echo $this->losUrl()->from('dvd/delete',['id'=>$entity->getId()], true)?>"
-				class="btn btn-xs btn-danger"><?= $this->losIcon('glyphicon-trash') ?></a>
+				href="<?php echo $this->acploUrl()->from('dvd/delete',['id'=>$entity->getId()], true)?>"
+				class="btn btn-xs btn-danger"><?= $this->acploIcon('glyphicon-trash') ?></a>
 			</td>
 		</tr>
     <?php endforeach;?>

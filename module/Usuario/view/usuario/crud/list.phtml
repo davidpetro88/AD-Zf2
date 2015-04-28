@@ -17,8 +17,8 @@
 							<th class="col-xs-3">E-mail</th>
 							<th class="col-xs-3">Permissao</th>
 							<th class="col-xs-2"><a
-								href="<?php echo $this->losUrl()->from('usuario/add', [], true) ?>"
-								class="btn btn-sm btn-success pull-right"><?= $this->losIcon('glyphicon-plus') ?></a></th>
+								href="<?php echo $this->acploUrl()->from('usuario/add', [], true) ?>"
+								class="btn btn-sm btn-success pull-right"><?= $this->acploIcon('glyphicon-plus') ?></a></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -29,11 +29,11 @@
 							<td><?= $entity->getEmail() ?></td>
 							<td><?= $entity->getPermissao() ?></td>
 							<td class="text-right"><a
-								href="<?php echo $this->losUrl()->from('usuario/edit', ['id' => $entity->getId()], true) ?>"
-								class="btn btn-xs btn-warning"><?= $this->losIcon('glyphicon-edit') ?></a>
+								href="<?php echo $this->acploUrl()->from('usuario/edit', ['id' => $entity->getId()], true) ?>"
+								class="btn btn-xs btn-warning"><?= $this->acploIcon('glyphicon-edit') ?></a>
 								<a
-								href="<?php echo $this->losUrl()->from('usuario/delete', ['id' => $entity->getId()], true) ?>"
-								class="btn btn-xs btn-danger"><?= $this->losIcon('glyphicon-trash') ?></a>
+								href="<?php echo $this->acploUrl()->from('usuario/delete', ['id' => $entity->getId()], true) ?>"
+								class="btn btn-xs btn-danger"><?= $this->acploIcon('glyphicon-trash') ?></a>
 							</td>
 						</tr>
 			<?php endforeach; ?>
