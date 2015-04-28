@@ -1,7 +1,7 @@
 <?php
 namespace Cliente\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class Cliente extends AbstractEntity
 {

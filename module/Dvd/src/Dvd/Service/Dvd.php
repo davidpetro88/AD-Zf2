@@ -1,7 +1,7 @@
 <?php
 namespace Dvd\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class Dvd extends AbstractEntity
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Servico;
 
-use LosBase\Module\AbstractModule;
+use AcploBase\Module\AbstractModule;
 
 class Module extends AbstractModule
 {

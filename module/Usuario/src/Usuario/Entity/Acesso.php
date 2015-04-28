@@ -2,7 +2,7 @@
 namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use LosBase\Entity\AbstractEntity as AbstractEntity;
+use AcploBase\Entity\AbstractEntity as AbstractEntity;
 
 /**
  * @ORM\Entity

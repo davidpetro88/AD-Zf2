@@ -1,7 +1,7 @@
 <?php
 namespace Usuario;
 
-use LosBase\Module\AbstractModule;
+use AcploBase\Module\AbstractModule;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;

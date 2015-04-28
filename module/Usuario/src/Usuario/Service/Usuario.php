@@ -1,7 +1,7 @@
 <?php
 namespace Usuario\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class Usuario extends AbstractEntity
 {

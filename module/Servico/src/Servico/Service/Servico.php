@@ -1,7 +1,7 @@
 <?php
 namespace Servico\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class Servico extends AbstractEntity
 {

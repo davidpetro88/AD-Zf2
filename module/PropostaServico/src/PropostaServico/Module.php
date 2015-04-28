@@ -1,7 +1,7 @@
 <?php
 namespace PropostaServico;
 
-use LosBase\Module\AbstractModule;
+use AcploBase\Module\AbstractModule;
 
 class Module extends AbstractModule
 {

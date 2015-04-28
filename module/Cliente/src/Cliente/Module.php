@@ -1,7 +1,7 @@
 <?php
 namespace Cliente;
 
-use LosBase\Module\AbstractModule;
+use AcploBase\Module\AbstractModule;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 

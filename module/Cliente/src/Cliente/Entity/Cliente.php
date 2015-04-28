@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation as Form;
 use ZfcUser\Entity\UserInterface as ZfcUserInterface;
 use ZfcRbac\Identity\IdentityInterface;
-use LosBase\Entity\AbstractEntity;
+use AcploBase\Entity\AbstractEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="cliente")
  * @Form\Name("formCliente")
  * @Form\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Form\Type("LosBase\Form\AbstractForm")
+ * @Form\Type("AcploBase\Form\AbstractForm")
  */
 class Cliente extends AbstractEntity
 {

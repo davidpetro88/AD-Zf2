@@ -1,7 +1,7 @@
 <?php
 namespace PropostaServico\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class PropostaServico extends AbstractEntity
 {

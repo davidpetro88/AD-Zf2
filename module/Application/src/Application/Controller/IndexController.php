@@ -2,7 +2,7 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use LosBase\Entity\EntityManagerAwareTrait;
+use AcploBase\Entity\EntityManagerAwareTrait;
 
 class IndexController extends AbstractActionController
 {

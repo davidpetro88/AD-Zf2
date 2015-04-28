@@ -3,14 +3,14 @@ namespace Dvd\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation as Form;
-use LosBase\Entity\AbstractEntity;
+use AcploBase\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="dvd")
  * @Form\Name("formDvd")
  * @Form\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Form\Type("LosBase\Form\AbstractForm")
+ * @Form\Type("AcploBase\Form\AbstractForm")
  */
 class Dvd extends AbstractEntity
 {

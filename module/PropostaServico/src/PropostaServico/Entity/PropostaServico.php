@@ -3,14 +3,14 @@ namespace PropostaServico\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation as Form;
-use LosBase\Entity\AbstractEntity;
+use AcploBase\Entity\AbstractEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="proposta-servico")
  * @Form\Name("formPropostaServico")
  * @Form\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Form\Type("LosBase\Form\AbstractForm")
+ * @Form\Type("AcploBase\Form\AbstractForm")
  */
 class PropostaServico extends AbstractEntity
 {

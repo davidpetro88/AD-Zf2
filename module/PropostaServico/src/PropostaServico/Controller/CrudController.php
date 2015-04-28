@@ -1,7 +1,7 @@
 <?php
 namespace PropostaServico\Controller;
 
-use LosBase\Controller\AbstractCrudController;
+use AcploBase\Controller\AbstractCrudController;
 
 class CrudController extends AbstractCrudController
 {

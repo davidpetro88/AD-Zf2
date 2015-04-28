@@ -12,7 +12,7 @@
 <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0')->appendHttpEquiv('X-UA-Compatible', 'IE=edge');?>
 <?php
 
-echo $this->losHeadLink(array(
+echo $this->acploHeadLink(array(
     'rel' => 'shortcut icon',
     'type' => 'image/vnd.microsoft.icon',
     'href' => $this->basePath() . '/img/favicon.ico'
@@ -24,7 +24,7 @@ echo $this->losHeadLink(array(
     ->prependBootstrap()
     ->appendFontAwesome();
 ?>
-<?php echo $this->losHeadScript()->prependBootstrap()->prependJquery(); ?>
+<?php echo $this->acploHeadScript()->prependBootstrap()->prependJquery(); ?>
 <?php echo $this->headStyle();?>
 
    </head>
@@ -44,11 +44,11 @@ echo $this->losHeadLink(array(
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav" id="ul_nav_layout">
-			    <?php echo $this->losNavigation()->menu('Navigation')?>
+			    <?php echo $this->acploNavigation()->menu('Navigation')?>
     		    </ul>
 
 				<ul class="nav navbar-nav" id="ul_nav_layout">    			    
-			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
+			    <?php // echo $this->acploNavigation()->menu('Navigation') ?>
     		    </ul>
 				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
 					<li style="min-width: 100px;"></li>
@@ -350,7 +350,7 @@ echo $this->losHeadLink(array(
 
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav" id="ul_nav_layout">    			    
-			    <?php // echo $this->losNavigation()->menu('Navigation') ?>
+			    <?php // echo $this->acploNavigation()->menu('Navigation') ?>
     		    </ul>
 				<ul class="nav navbar-nav navbar-right" id="ul_nav_layout">
 					<li style="min-width: 100px;"></li>
@@ -647,7 +647,7 @@ echo $this->losHeadLink(array(
 	<section id="content">
 		<div id="topbar">
 			<ol class="breadcrumb">
-		    <?php echo $this->losNavigation()->breadcrumbs('Navigation')?>		
+		    <?php echo $this->acploNavigation()->breadcrumbs('Navigation')?>		
 			</ol>
 		</div>
 		<style>
@@ -683,8 +683,8 @@ a:active {
 	    <?php
     ?>
 	    <div class="container">
-            <?php echo $this->losNavigation()->breadcrumbs('Navigation')?>
-            <?php echo $this->losflashmessenger()->renderAll()?>
+            <?php echo $this->acploNavigation()->breadcrumbs('Navigation')?>
+            <?php echo $this->acploflashmessenger()->renderAll()?>
             <div style="clear: both;"></div>
 		    <?php echo $this->content; ?>
 		</div>

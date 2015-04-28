@@ -1,7 +1,7 @@
 <?php
 namespace Dvd;
 
-use LosBase\Module\AbstractModule;
+use AcploBase\Module\AbstractModule;
 
 class Module extends AbstractModule
 {

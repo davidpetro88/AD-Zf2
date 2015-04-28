@@ -1,7 +1,7 @@
 <?php
 namespace FormaPagamento\Service;
 
-use LosBase\Service\AbstractEntity;
+use AcploBase\Service\AbstractEntity;
 
 class FormaPagamento extends AbstractEntity
 {

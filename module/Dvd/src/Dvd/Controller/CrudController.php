@@ -1,7 +1,7 @@
 <?php
 namespace Dvd\Controller;
 
-use LosBase\Controller\AbstractCrudController;
+use AcploBase\Controller\AbstractCrudController;
 
 class CrudController extends AbstractCrudController
 {

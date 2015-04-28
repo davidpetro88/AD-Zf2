@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b29d4d9b71e37a8905bdd4cf4dc55e4d",
+    "hash": "5098a4cab5829e50df136ef6ddb61160",
     "packages": [
         {
             "name": "acplo/acplobase",
