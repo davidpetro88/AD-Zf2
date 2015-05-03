@@ -18,7 +18,10 @@ return array(
         'AcploLog',
         'Cliente',
         'Usuario',
-        'Dvd'
+        'Dvd',
+        'Servico',
+        'FormaPagamento',
+        'PropostaServico',
     ),
     'module_listener_options' => array(
         'module_paths' => array(
